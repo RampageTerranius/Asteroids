@@ -24,6 +24,8 @@ public:
 	// State management.
 	bool HasActiveState();
 
+	Renderer GetRenderer() { return renderer; }
+
 private:
 	bool running = false;
 	Renderer renderer = Renderer();

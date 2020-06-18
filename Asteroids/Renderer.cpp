@@ -31,5 +31,8 @@ bool Renderer::Init(const char* name, int width, int height, bool fullScreen, bo
 		return false;
 	}
 
+	this->windowWidth = width;
+	this->windowHeight = height;
+
 	return true;
 }

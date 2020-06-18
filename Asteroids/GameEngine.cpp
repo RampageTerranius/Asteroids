@@ -60,7 +60,6 @@ void GameEngine::Init()
 	GameState* mainMenu = new GameState_MainMenu();
 	GameState* playField = new GameState_PlayField();
 
-
 	this->stateList.push_back(mainMenu);
 	this->stateList.push_back(playField);
 

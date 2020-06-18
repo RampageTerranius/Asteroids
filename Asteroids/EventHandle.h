@@ -5,6 +5,8 @@
 #include <map>
 #include <vector>
 
+#include "Textures.h"
+
 // With help from the following sources:
 // https://gameprogrammingpatterns.com/command.html
 // https://codereview.stackexchange.com/questions/55365/input-handling-system-using-the-command-pattern
@@ -18,10 +20,23 @@ enum KeyState
 class Command
 {
 public:
-	virtual ~Command() {};
 	virtual void Execute() = 0;
 };
 
+class CommandMainMenuDown : public Command
+{
+	void Execute() {  };
+};
+
+class CommandMainMenuUp : public Command
+{
+	void Execute() {  };
+};
+
+class CommandMainMenuSelect : public Command
+{
+	void Execute() {  };
+};
 
 class InputManager
 {
@@ -54,4 +69,11 @@ private:
 	bool IsHeld(int key);
 };
 
-extern InputManager iManager;
+class InputManagerMainMenu : public InputManager
+{
+
+};
+
+class InputManagerPlayField : public InputManager
+{
+};

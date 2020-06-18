@@ -7,7 +7,13 @@ class Renderer
 public:
 	bool Init(const char* name, int width, int height, bool fullScreen, bool VSync);
 
-private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+
+	int WindowWidth() { return windowWidth; }
+	int WindowHeight() { return windowHeight; }
+
+private:
+	int windowWidth;
+	int windowHeight;
 };

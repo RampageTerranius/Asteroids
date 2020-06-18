@@ -1,6 +1,11 @@
 #include "GameState.h"
 #include "EventHandle.h"
 
+GameState_PlayField::GameState_PlayField()
+{
+	Init();
+}
+
 void GameState_PlayField::Init()
 {
 
@@ -15,7 +20,7 @@ bool GameState_PlayField::HandleInput()
 {
 	std::vector<Command*> CommandList;
 
-	bool quitProgram = iManager.GenerateInput(CommandList);
+	bool quitProgram = this->iManager->GenerateInput(CommandList);
 
 	while (!CommandList.empty())
 	{
