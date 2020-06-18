@@ -74,7 +74,7 @@ void TTF::SetText(SDL_Renderer* renderer, std::string newText)
 }
 
 //draws the surface to the given renderer
-void TTF::Draw(SDL_Renderer* renderer, int x, int y)
+void TTF::Draw(SDL_Renderer* renderer, int x, int y, bool centerImage)
 {
 	//make sure we have data to work with
 	if (renderer != nullptr && texture != nullptr && font != nullptr)
@@ -83,7 +83,14 @@ void TTF::Draw(SDL_Renderer* renderer, int x, int y)
 		SDL_Rect rect;
 		rect.x = x;
 		rect.y = y;
+		
 		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
+
+		if (centerImage)
+		{
+			rect.x -= rect.w / 2;
+			rect.y -= rect.h / 2;
+		}
 
 		//render the texture of the words to the given renderer
 		SDL_RenderCopy(renderer, texture, nullptr, &rect);

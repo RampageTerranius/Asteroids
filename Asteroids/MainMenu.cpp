@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include "EventHandle.h"
 #include "GameEngine.h"
+#include "Misc Functions.h"
 
 GameState_MainMenu::GameState_MainMenu()
 {
@@ -9,9 +10,9 @@ GameState_MainMenu::GameState_MainMenu()
 
 void GameState_MainMenu::Init()
 {
-	menuOptionOptions.SetFont("\\Fonts\\pxl.ttf", 30);
-	menuOptionStart.SetFont("\\Fonts\\pxl.ttf", 30);
-	menuOptionQuit.SetFont("\\Fonts\\pxl.ttf", 30);
+	menuOptionOptions.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	menuOptionStart.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	menuOptionQuit.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 
 	menuOptionOptions.SetText(game.GetRenderer().renderer, "Options");
 	menuOptionStart.SetText(game.GetRenderer().renderer, "Start");
@@ -51,9 +52,9 @@ void GameState_MainMenu::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
 
-	menuOptionStart.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, (game.GetRenderer().WindowHeight() / 4) * 1);
-	menuOptionOptions.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, (game.GetRenderer().WindowHeight() / 4) * 2);
-	menuOptionQuit.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, (game.GetRenderer().WindowHeight() / 4) * 3);
+	menuOptionStart.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, (game.GetRenderer().WindowHeight() / 5) * 2, true);
+	menuOptionOptions.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, (game.GetRenderer().WindowHeight() / 5) * 3, true);
+	menuOptionQuit.Draw(game.GetRenderer().renderer, game.GetRenderer().WindowWidth() / 2, (game.GetRenderer().WindowHeight() / 5) * 4, true);
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }
