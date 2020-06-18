@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL.h>
+#include <vector>
 #include "GameState.h"
 #include "Renderer.h"
 #include "EventHandle.h"
@@ -14,17 +15,20 @@ public:
 
 	// Loop management.
 	void HandleInput();
-	//void HandleEvents();
-	//void Render();
+	void HandleEvents();
+	void Render();
 
 	bool Running() { return running; }
 	void Shutdown() { running = false; }
 
 	// State management.
+	bool HasActiveState();
 
 private:
 	bool running = false;
 	Renderer renderer = Renderer();
+	GameState* state = nullptr;
+	std::vector<GameState*> stateList;
 };
 
 extern GameEngine game;

@@ -55,6 +55,16 @@ void GameEngine::Init()
 	// Prepare the renderer
 	this->renderer = Renderer();
 	this->renderer.Init("Test", 800, 600, false, false);
+
+	// Prepare the game states.
+	GameState* mainMenu = new GameState_MainMenu();
+	GameState* playField = new GameState_PlayField();
+
+
+	this->stateList.push_back(mainMenu);
+	this->stateList.push_back(playField);
+
+	this->state = mainMenu;
 	
 	debug.Log("GameEngine", "Init", "Completed setup");
 	this->running = true;
@@ -63,24 +73,44 @@ void GameEngine::Init()
 void GameEngine::Cleanup()
 {
 	debug.Log("GameEngine", "Cleanup", "Cleaning up engine...");
+
+	debug.Log("GameEngine", "Cleanup", "Cleaning up states...");
+	for (auto var : this->stateList)
+		var->Cleanup();
+
+	for (auto var : this->stateList)
+		delete var;
+
+	debug.Log("GameEngine", "Cleanup", "Cleaning up sub-routines...");
 	Mix_Quit();
 	IMG_Quit();
 	TTF_Quit();
 	SDL_Quit();
+
 	debug.Log("GameEngine", "Cleanup", "Cleanup complete");
 }
 
 void GameEngine::HandleInput()
+{	
+	this->running = state->HandleInput();
+}
+
+void GameEngine::HandleEvents()
 {
-	std::vector<Command*> CommandList;
+	state->HandleEvents();
+}
 
-	running = iManager.GenerateInput(CommandList);
+void GameEngine::Render()
+{
+	state->Render();
+}
 
-	while (!CommandList.empty())
-	{
-		//CommandList.back()->Execute(currentPlayer);
-		CommandList.pop_back();
-	}
+bool GameEngine::HasActiveState()
+{
+	if (this->state == nullptr)
+		return false;
+	else 
+		return true;
 }
 
 GameEngine game = GameEngine();

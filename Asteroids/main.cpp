@@ -6,9 +6,17 @@ int main(int argc, char* argv[])
 
 	while (game.Running())
 	{
-		game.HandleInput();
-		//game.HandleEvents();
-		//game.Render();
+		if (game.HasActiveState())
+		{
+			game.HandleInput();
+			game.HandleEvents();
+			game.Render();
+		}
+		else
+		{
+			debug.Log("Main", "main", "Game engine has no active state!");
+			return 1;
+		}
 	}
 
 	game.Cleanup();
