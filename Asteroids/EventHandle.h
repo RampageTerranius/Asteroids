@@ -45,10 +45,10 @@ public:
 	InputManager();
 	bool GenerateInput(std::vector<Command*>& commandVector);
 	void Bind(int key, Command* command);
-	void Bind(int key, std::string str);
+	virtual void Bind(int key, std::string str);
 	SDL_Point GetMouseLocation();
 
-private:
+protected:
 	// Commands and keystates.
 	std::map <int, Command*> commands;
 	std::map <int, KeyState> state;
@@ -71,7 +71,8 @@ private:
 
 class InputManagerMainMenu : public InputManager
 {
-
+	void Bind(int key, std::string str);
+	void Bind(int key, Command* command) { InputManager::Bind(key, command); }
 };
 
 class InputManagerPlayField : public InputManager

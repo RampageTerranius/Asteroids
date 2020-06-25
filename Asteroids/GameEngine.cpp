@@ -60,10 +60,7 @@ void GameEngine::Init()
 	GameState* mainMenu = new GameState_MainMenu();
 	GameState* playField = new GameState_PlayField();
 
-	this->stateList.push_back(mainMenu);
-	this->stateList.push_back(playField);
-
-	this->state = mainMenu;
+	this->PushNewState(mainMenu);
 	
 	debug.Log("GameEngine", "Init", "Completed setup");
 	this->running = true;
@@ -74,10 +71,10 @@ void GameEngine::Cleanup()
 	debug.Log("GameEngine", "Cleanup", "Cleaning up engine...");
 
 	debug.Log("GameEngine", "Cleanup", "Cleaning up states...");
-	for (auto var : this->stateList)
+	for (auto var : this->states)
 		var->Cleanup();
 
-	for (auto var : this->stateList)
+	for (auto var : this->states)
 		delete var;
 
 	debug.Log("GameEngine", "Cleanup", "Cleaning up sub-routines...");
@@ -91,22 +88,22 @@ void GameEngine::Cleanup()
 
 void GameEngine::HandleInput()
 {	
-	this->running = state->HandleInput();
+	this->running = this->State()->HandleInput();
 }
 
 void GameEngine::HandleEvents()
 {
-	state->HandleEvents();
+	this->State()->HandleEvents();
 }
 
 void GameEngine::Render()
 {
-	state->Render();
+	this->State()->Render();
 }
 
 bool GameEngine::HasActiveState()
 {
-	if (this->state == nullptr)
+	if (this->State() == nullptr)
 		return false;
 	else 
 		return true;

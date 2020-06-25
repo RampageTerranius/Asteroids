@@ -23,14 +23,16 @@ public:
 
 	// State management.
 	bool HasActiveState();
+	GameState* State() { return states.back(); }
+	void PushNewState(GameState* state) { states.push_back(state); }
+	void PopLastState() { states.pop_back(); }
 
 	Renderer GetRenderer() { return renderer; }
 
 private:
 	bool running = false;
 	Renderer renderer = Renderer();
-	GameState* state = nullptr;
-	std::vector<GameState*> stateList;
+	std::vector<GameState*> states;
 };
 
 extern GameEngine game;

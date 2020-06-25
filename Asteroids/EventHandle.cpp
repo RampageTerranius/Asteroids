@@ -30,9 +30,10 @@ bool InputManager::InputToActions()
 		case SDL_QUIT:
 			return false;
 
-		case SDL_KEYDOWN:
+		case SDL_KEYDOWN:			
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				return false;
+
 			OnKeyDownInput(event);
 			break;
 
@@ -142,4 +143,14 @@ void InputManager::Bind(int key, std::string str)
 		debug.Log("InputManager", "Bind", "Failed to find a command that '" + str + "' could be bound to");
 }
 
-InputManager iManager = InputManager();
+void InputManagerMainMenu::Bind(int key, std::string str)
+{
+	Command* command = nullptr;
+
+
+
+	if (command != nullptr)
+		this->Bind(key, command);
+	else
+		debug.Log("InputManager", "Bind", "Failed to find a command that '" + str + "' could be bound to");
+}
