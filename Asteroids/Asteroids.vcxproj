@@ -145,17 +145,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EventHandle.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Misc Functions.h" />
+    <ClInclude Include="PlayField.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="TTF.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EventHandle.cpp" />
     <ClCompile Include="GameEngine.cpp" />

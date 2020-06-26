@@ -1,7 +1,8 @@
-#include "GameState.h"
+#include "MainMenu.h"
 #include "EventHandle.h"
 #include "GameEngine.h"
 #include "Misc Functions.h"
+#include "Command.h"
 #include "Debug.h"
 
 GameState_MainMenu::GameState_MainMenu()
@@ -32,6 +33,8 @@ void GameState_MainMenu::Init()
 	menuOptionOptions.centerImage = true;
 	menuOptionStart.centerImage = true;
 	menuOptionQuit.centerImage = true;
+
+	this->iManager->Bind(SDL_BUTTON_LEFT, new CommandMainMenuSelect());
 }
 
 void GameState_MainMenu::Cleanup()
@@ -51,38 +54,42 @@ bool GameState_MainMenu::HandleInput()
 
 	while (!CommandList.empty())
 	{
-		//CommandList.back()->Execute(currentPlayer);
+		if (!CommandList.back()->Execute())
+		{
+			quitProgram = false;
+			break;
+		}
 		CommandList.pop_back();
-	}
+	}	
 
 	return quitProgram;
 }
 
 void GameState_MainMenu::HandleEvents()
 {
-	selectedOption = 0;	
+	game.menuOption = 0;	
 
 	SDL_Point point = iManager->GetMouseLocation();	
 
-	if (menuOptionOptions.PointInterectsImage(point))
+	if (menuOptionOptions.PointIntersectsTexture(point))
 	{
-		selectedOption = 1;
+		game.menuOption = 1;
 		menuOptionOptions.SetColor(0, 0, 200);
 	}
 	else
 		menuOptionOptions.SetColor(255, 255, 255);
 
-	if (menuOptionQuit.PointInterectsImage(point))
+	if (menuOptionQuit.PointIntersectsTexture(point))
 	{
-		selectedOption = 2;
+		game.menuOption = 2;
 		menuOptionQuit.SetColor(0, 0, 200);
 	}
 	else
 		menuOptionQuit.SetColor(255, 255, 255);
 
-	if (menuOptionStart.PointInterectsImage(point))
+	if (menuOptionStart.PointIntersectsTexture(point))
 	{
-		selectedOption = 3;
+		game.menuOption = 3;
 		menuOptionStart.SetColor(0, 0, 200);
 	}
 	else

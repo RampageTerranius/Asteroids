@@ -4,7 +4,7 @@ int main(int argc, char* argv[])
 {
 	game.Init();
 
-	while (game.Running())
+	while (game.running)
 	{
 		if (game.HasActiveState())
 		{

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Textures.h"
+#include "Command.h"
 
 // With help from the following sources:
 // https://gameprogrammingpatterns.com/command.html
@@ -17,27 +18,6 @@ enum KeyState
 	KEYSTATE_PRESSED = true
 };
 
-class Command
-{
-public:
-	virtual void Execute() = 0;
-};
-
-class CommandMainMenuDown : public Command
-{
-	void Execute() {  };
-};
-
-class CommandMainMenuUp : public Command
-{
-	void Execute() {  };
-};
-
-class CommandMainMenuSelect : public Command
-{
-	void Execute() {  };
-};
-
 class InputManager
 {
 public:
@@ -45,7 +25,6 @@ public:
 	InputManager();
 	bool GenerateInput(std::vector<Command*>& commandVector);
 	void Bind(int key, Command* command);
-	virtual void Bind(int key, std::string str);
 	SDL_Point GetMouseLocation();
 
 protected:
@@ -67,14 +46,4 @@ protected:
 	void OnMouseUpInput(SDL_Event& event);
 
 	bool IsHeld(int key);
-};
-
-class InputManagerMainMenu : public InputManager
-{
-	void Bind(int key, std::string str);
-	void Bind(int key, Command* command) { InputManager::Bind(key, command); }
-};
-
-class InputManagerPlayField : public InputManager
-{
 };

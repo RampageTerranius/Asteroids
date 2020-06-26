@@ -18,9 +18,6 @@ public:
 	void HandleEvents();
 	void Render();
 
-	bool Running() { return running; }
-	void Shutdown() { running = false; }
-
 	// State management.
 	bool HasActiveState();
 	GameState* State() { return states.back(); }
@@ -29,8 +26,10 @@ public:
 
 	Renderer GetRenderer() { return renderer; }
 
-private:
+	int menuOption = 0;
 	bool running = false;
+
+private:	
 	Renderer renderer = Renderer();
 	std::vector<GameState*> states;
 };

@@ -7,6 +7,8 @@
 #include <iostream>
 
 #include "GameEngine.h"
+#include "MainMenu.h"
+#include "PlayField.h"
 #include "Debug.h"
 
 void GameEngine::Init()
@@ -56,11 +58,8 @@ void GameEngine::Init()
 	this->renderer = Renderer();
 	this->renderer.Init("Test", 800, 600, false, false);
 
-	// Prepare the game states.
-	GameState* mainMenu = new GameState_MainMenu();
-	GameState* playField = new GameState_PlayField();
-
-	this->PushNewState(mainMenu);
+	// Prepare the game state.
+	this->PushNewState(new GameState_MainMenu());
 	
 	debug.Log("GameEngine", "Init", "Completed setup");
 	this->running = true;
