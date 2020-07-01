@@ -14,6 +14,6 @@ public:
 	void Render();
 
 private:
-	InputManager* iManager = new InputManager();
 	Textures allTextures;
+	TTF playFieldTest = TTF(nullptr);
 };

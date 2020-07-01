@@ -26,6 +26,8 @@ public:
 	bool GenerateInput(std::vector<Command*>& commandVector);
 	void Bind(int key, Command* command);
 	SDL_Point GetMouseLocation();
+	std::vector<Command*> commandList;
+	void ClearInput();
 
 protected:
 	// Commands and keystates.
@@ -33,7 +35,7 @@ protected:
 	std::map <int, KeyState> state;
 	std::map <int, KeyState> previousState;
 
-	SDL_Point mouse;
+	SDL_Point mouse;	
 
 	bool InputToActions();
 	void DispatchCommands(std::vector<Command*>& command_queue);

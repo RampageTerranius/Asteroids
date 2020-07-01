@@ -13,10 +13,15 @@ bool CommandMainMenuSelect::Execute()
 			return false;
 			break;
 
-		case 3:
-			game.PushNewState(new GameState_PlayField());
+		case 3:			
+ 			game.PushNewState(new GameState_PlayField());
 			break;
 	}
 
 	return true;
 };
+
+bool CommandPlayFieldReturnToLastState::Execute()
+{
+	return false;
+}

@@ -100,6 +100,18 @@ void GameEngine::Render()
 	this->State()->Render();
 }
 
+void GameEngine::PushNewState(GameState* state)
+{
+	states.push_back(state);
+	debug.Log("GameEngine", "PushNewState", "Pushed new state as active.");
+}
+void GameEngine::PopLastState()
+{
+	this->states.pop_back();
+	this->State()->ClearCommands();
+	debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
+}
+
 bool GameEngine::HasActiveState()
 {
 	if (this->State() == nullptr)

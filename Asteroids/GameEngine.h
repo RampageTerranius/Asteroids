@@ -21,8 +21,8 @@ public:
 	// State management.
 	bool HasActiveState();
 	GameState* State() { return states.back(); }
-	void PushNewState(GameState* state) { states.push_back(state); }
-	void PopLastState() { states.pop_back(); }
+	void PushNewState(GameState* state);
+	void PopLastState();
 
 	Renderer GetRenderer() { return renderer; }
 

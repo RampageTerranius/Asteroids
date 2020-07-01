@@ -15,4 +15,9 @@ public:
 	virtual bool HandleInput() = 0;
 	virtual void HandleEvents() = 0;
 	virtual void Render() = 0;
+
+	void ClearCommands() { this->iManager->ClearInput(); }
+
+protected:
+	InputManager* iManager = new InputManager();	
 };

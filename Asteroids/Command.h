@@ -10,3 +10,8 @@ class CommandMainMenuSelect : public Command
 {
 	bool Execute();
 };
+
+class CommandPlayFieldReturnToLastState : public Command
+{
+	bool Execute();
+};

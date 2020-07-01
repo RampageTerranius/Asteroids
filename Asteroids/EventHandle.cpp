@@ -15,6 +15,17 @@ InputManager::~InputManager()
 		delete iter->second;
 }
 
+void InputManager::ClearInput()
+{
+	this->commandList.clear();
+
+	for (std::map<int, KeyState>::iterator iter = state.begin(); iter != state.end(); iter++)
+		iter->second = KEYSTATE_RELEASED;
+
+	for (std::map<int, KeyState>::iterator iter = previousState.begin(); iter != previousState.end(); iter++)
+		iter->second = KEYSTATE_RELEASED;
+}
+
 SDL_Point InputManager::GetMouseLocation()
 {
 	return SDL_Point{ mouse.x, mouse.y };

@@ -48,21 +48,20 @@ void GameState_MainMenu::Cleanup()
 
 bool GameState_MainMenu::HandleInput()
 {
-	std::vector<Command*> CommandList;
+	bool running = this->iManager->GenerateInput(this->iManager->commandList);
 
-	bool quitProgram = this->iManager->GenerateInput(CommandList);
-
-	while (!CommandList.empty())
+	while (!this->iManager->commandList.empty())
 	{
-		if (!CommandList.back()->Execute())
+		if (!this->iManager->commandList.back()->Execute())
 		{
-			quitProgram = false;
+			running = false;
 			break;
 		}
-		CommandList.pop_back();
-	}	
+		if (this->iManager->commandList.size() > 0)
+			this->iManager->commandList.pop_back();
+	}
 
-	return quitProgram;
+	return running;
 }
 
 void GameState_MainMenu::HandleEvents()

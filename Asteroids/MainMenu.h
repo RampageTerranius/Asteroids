@@ -13,9 +13,7 @@ public:
 	void HandleEvents();
 	void Render();
 
-private:
-	InputManager* iManager = new InputManager();
-	
+private:	
 	Textures allTextures;
 	TTF menuOptionStart = TTF(nullptr);
 	TTF menuOptionOptions = TTF(nullptr);
