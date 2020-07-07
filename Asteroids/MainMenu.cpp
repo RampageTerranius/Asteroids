@@ -1,4 +1,5 @@
 #include "MainMenu.h"
+#include "PlayField.h"
 #include "EventHandle.h"
 #include "GameEngine.h"
 #include "Misc Functions.h"
@@ -15,26 +16,24 @@ GameState_MainMenu::GameState_MainMenu()
 
 void GameState_MainMenu::Init()
 {
-	menuOptionOptions.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 	menuOptionStart.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	menuOptionOptions.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);	
 	menuOptionQuit.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 
-	menuOptionOptions.x = game.GetRenderer().WindowWidth() / 2;
-	menuOptionOptions.y = (game.GetRenderer().WindowHeight() / 5) * 2;
 	menuOptionStart.x = game.GetRenderer().WindowWidth() / 2;
-	menuOptionStart.y = (game.GetRenderer().WindowHeight() / 5) * 3;
+	menuOptionStart.y = (game.GetRenderer().WindowHeight() / 5) * 2;
+	menuOptionOptions.x = game.GetRenderer().WindowWidth() / 2;
+	menuOptionOptions.y = (game.GetRenderer().WindowHeight() / 5) * 3;
 	menuOptionQuit.x = game.GetRenderer().WindowWidth() / 2;
 	menuOptionQuit.y = (game.GetRenderer().WindowHeight() / 5) * 4;
 
-	menuOptionOptions.SetText("Options");
 	menuOptionStart.SetText("Start");
+	menuOptionOptions.SetText("Options");	
 	menuOptionQuit.SetText("Quit");
 
-	menuOptionOptions.centerImage = true;
 	menuOptionStart.centerImage = true;
+	menuOptionOptions.centerImage = true;	
 	menuOptionQuit.centerImage = true;
-
-	this->iManager->Bind(SDL_BUTTON_LEFT, new CommandMainMenuSelect());
 }
 
 void GameState_MainMenu::Cleanup()
@@ -60,6 +59,22 @@ bool GameState_MainMenu::HandleInput()
 		if (this->iManager->commandList.size() > 0)
 			this->iManager->commandList.pop_back();
 	}
+
+	if (iManager->IsHeld(SDL_BUTTON_LEFT))	
+		switch (game.menuOption)
+		{
+		case 1:// options
+
+			break;
+
+		case 2:// quit
+			return false;
+			break;
+
+		case 3:// start
+			game.PushNewState(new GameState_PlayField());
+			break;
+		}	
 
 	return running;
 }

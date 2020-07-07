@@ -153,6 +153,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Misc Functions.h" />
+    <ClInclude Include="optionsMenu.h" />
     <ClInclude Include="PlayField.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Textures.h" />

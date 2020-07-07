@@ -35,6 +35,7 @@ bool TTF::SetFont(std::string fontLocation, int size)
 	if (font != nullptr)
 	{
 		debug.Log("TTF", "SetFont", "TTF object loaded font into memory at : " + fontLocation + " at font size : " + std::to_string(size));
+		Update();
 		return true;
 	}
 	else

@@ -28,6 +28,7 @@ public:
 	SDL_Point GetMouseLocation();
 	std::vector<Command*> commandList;
 	void ClearInput();
+	bool IsHeld(int key);
 
 protected:
 	// Commands and keystates.
@@ -45,7 +46,5 @@ protected:
 
 	void OnMouseMotion(SDL_Event& event);
 	void OnMouseDownInput(SDL_Event& event);
-	void OnMouseUpInput(SDL_Event& event);
-
-	bool IsHeld(int key);
+	void OnMouseUpInput(SDL_Event& event);	
 };

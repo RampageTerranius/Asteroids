@@ -15,9 +15,7 @@ void GameState_PlayField::Init()
 	playFieldTest.x = 300;
 	playFieldTest.y = 300;
 	playFieldTest.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
-	playFieldTest.SetText("Test");	
-
-	iManager->Bind(SDLK_SPACE, new CommandPlayFieldReturnToLastState());
+	playFieldTest.SetText("Test");
 }
 
 void GameState_PlayField::Cleanup()
@@ -41,6 +39,9 @@ bool GameState_PlayField::HandleInput()
 		if (this->iManager->commandList.size() > 0)
 			this->iManager->commandList.pop_back();
 	}
+
+	if (iManager->IsHeld(SDLK_SPACE))
+		running = false;
 
 	if (!running)	
 		game.PopLastState();

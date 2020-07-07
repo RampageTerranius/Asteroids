@@ -6,6 +6,11 @@
 #include "Renderer.h"
 #include "EventHandle.h"
 
+class Settings
+{
+
+};
+
 class GameEngine
 {
 public:
@@ -25,6 +30,8 @@ public:
 	void PopLastState();
 
 	Renderer GetRenderer() { return renderer; }
+
+	Settings settings;
 
 	int menuOption = 0;
 	bool running = false;

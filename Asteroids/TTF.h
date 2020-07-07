@@ -25,5 +25,4 @@ private:
 	TTF_Font* font;
 	SDL_Texture* texture;
 	SDL_Color color;
-
 };
