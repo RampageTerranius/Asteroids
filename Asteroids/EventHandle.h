@@ -12,22 +12,31 @@
 // https://gameprogrammingpatterns.com/command.html
 // https://codereview.stackexchange.com/questions/55365/input-handling-system-using-the-command-pattern
 
+// used to determine the current state of a key/button.
 enum class KeyState
 {
 	released = false,
 	pressed = true
 };
 
+// Handles input.
+// Currently designed for use primarily with mouse/keyboard.
 class InputManager
 {
 public:
 	~InputManager();
 	InputManager();
+	bool GenerateInput();
 	bool GenerateInput(std::vector<Command*>& commandVector);
 	void Bind(int key, Command* command);
 	SDL_Point GetMouseLocation();
+	
 	std::vector<Command*> commandList;
 	void ClearInput();
+
+	// Functions for determining key presses.
+	// These functions are used by DispatchCommands to determine if keys are in use and to run their correspondign commands if needed.
+	// These functions can be called on their own should the programmer need to use a NON command based input system (). 
 	bool IsHeld(int key);
 	bool JustPressed(int key);
 
@@ -36,6 +45,7 @@ protected:
 	std::map <int, Command*> commands;
 	static std::map <int, KeyState> state;
 	static std::map <int, bool> firstPress;
+
 
 	SDL_Point mouse;	
 

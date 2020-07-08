@@ -18,20 +18,20 @@ InputManager::~InputManager()
 		delete iter->second;
 }
 
-void InputManager::ClearInput()
+bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
 {
-	this->commandList.clear();
-
-	for (std::map<int, KeyState>::iterator iter = state.begin(); iter != state.end(); iter++)
-		iter->second = KeyState::released;
-
-	for (std::map<int, bool>::iterator iter = firstPress.begin(); iter != firstPress.end(); iter++)
-		iter->second = false;
+	if (!InputToActions())
+		return false;
+	else
+	{
+		DispatchCommands(CommandVector);
+		return true;
+	}
 }
 
-SDL_Point InputManager::GetMouseLocation()
+bool InputManager::GenerateInput()
 {
-	return SDL_Point{ mouse.x, mouse.y };
+	return GenerateInput(this->commandList);
 }
 
 // Gather the users input and maps it as required.
@@ -74,19 +74,22 @@ bool InputManager::InputToActions()
 void InputManager::DispatchCommands(std::vector<Command*>& command_queue)
 {
 	for (std::map<int, Command*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
-		if (IsHeld(iter->first))
-			command_queue.push_back(iter->second);
+	{
+		if (iter->second->allowContinuousExecution)
+		{
+			if (this->IsHeld(iter->first))
+				command_queue.push_back(iter->second);
+		}
+		else
+			if (this->JustPressed(iter->first))
+				command_queue.push_back(iter->second);
+	}
 }
 
-bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
+// Assigns the given command to the given key.
+void InputManager::Bind(int key, Command* command)
 {
-	if (!InputToActions())
-		return false;
-	else
-	{
-		DispatchCommands(CommandVector);
-		return true;
-	}
+	commands[key] = command;
 }
 
 void InputManager::OnMouseMotion(SDL_Event& event)
@@ -136,7 +139,18 @@ bool InputManager::JustPressed(int key)
 		return false;
 }
 
-void InputManager::Bind(int key, Command* command)
+void InputManager::ClearInput()
 {
-	commands[key] = command;
+	this->commandList.clear();
+
+	for (std::map<int, KeyState>::iterator iter = state.begin(); iter != state.end(); iter++)
+		iter->second = KeyState::released;
+
+	for (std::map<int, bool>::iterator iter = firstPress.begin(); iter != firstPress.end(); iter++)
+		iter->second = false;
+}
+
+SDL_Point InputManager::GetMouseLocation()
+{
+	return SDL_Point{ mouse.x, mouse.y };
 }

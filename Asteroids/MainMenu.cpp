@@ -129,7 +129,7 @@ void GameState_MainMenu::Render()
 		menuOptionQuit.SetColor(0, 0, 200);
 		break;
 
-	case MenuOption::start:// start
+	case MenuOption::start:
 		menuOptionStart.SetColor(0, 0, 200);
 		break;
 	}

@@ -40,10 +40,8 @@ bool GameState_PlayField::HandleInput()
 			this->iManager->commandList.pop_back();
 	}
 
-	if (iManager->JustPressed(SDLK_SPACE))
-		running = false;
-
-	if (!running)	
+	// If the user has signeld to exit we instead want to pop the current state and revert to the last state (generally this means gonig back to the menu)
+	if (!running)
 		game.PopLastState();
 
 	return true;
