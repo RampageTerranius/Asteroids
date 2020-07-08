@@ -10,19 +10,11 @@ GameState_PlayField::GameState_PlayField()
 
 void GameState_PlayField::Init()
 {
-	playFieldTest = TTF(game.GetRenderer().renderer);
-
-	playFieldTest.x = 300;
-	playFieldTest.y = 300;
-	playFieldTest.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
-	playFieldTest.SetText("Test");
 }
 
 void GameState_PlayField::Cleanup()
 {
 	allTextures.Cleanup();
-
-	playFieldTest.Clear();
 }
 
 bool GameState_PlayField::HandleInput()
@@ -49,17 +41,12 @@ bool GameState_PlayField::HandleInput()
 
 void GameState_PlayField::HandleEvents()
 {
-	if (playFieldTest.PointIntersectsTexture(iManager->GetMouseLocation()))
-		playFieldTest.SetColor(0, 0, 255);
-	else
-		playFieldTest.SetColor(255, 255, 255);
+
 }
 
 void GameState_PlayField::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
-
-	playFieldTest.Draw();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }

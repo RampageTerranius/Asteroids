@@ -12,11 +12,13 @@ public:
 	~Texture();
 
 	void Clear();
+	bool Draw(SDL_Renderer* renderer, bool centerImage, float rotation, int x, int y);
+	bool Draw(SDL_Renderer* renderer, int x, int y);
 	bool Load(std::string fileLoc, std::string name);
 	bool SetTexture(SDL_Texture* texture, std::string name);
+	bool HasTexture();
 
 	std::string Name() { return name; };
-	SDL_Texture* Tex() { return tex; };
 	SDL_Rect Rect() { return rect; };
 	SDL_Point Center() { SDL_Point centerPoint; centerPoint.y = static_cast<int> (round(static_cast<float> (rect.h / 2))); centerPoint.x = static_cast<int> (round(static_cast<float> (rect.w / 2))); return centerPoint; }
 

@@ -75,6 +75,41 @@ bool Texture::Load(std::string fileLoc, std::string name)
 	return true;
 }
 
+bool Texture::Draw(SDL_Renderer* renderer, int x, int y)
+{
+	return Draw(renderer, true, 0, x, y);
+}
+
+bool Texture::Draw(SDL_Renderer* renderer, bool centerImage, float rotation, int x, int y)
+{
+	if (renderer != nullptr && HasTexture())
+	{
+		// Prepare the render zones ahead of time.
+		rect.x = x;
+		rect.y = y;
+
+		if (centerImage)
+		{
+			rect.x -= rect.w / 2;
+			rect.y -= rect.h / 2;
+		}
+
+		// Render the texture to the given renderer.
+		if (SDL_RenderCopyEx(renderer, tex, NULL, &rect, rotation, nullptr, SDL_FLIP_NONE) >= 0)
+			return true;
+	}
+
+	return false;
+}
+
+bool Texture::HasTexture()
+{
+	if (this->tex != nullptr)
+		return true;
+	else
+		return false;
+}
+
 bool Texture::SetTexture(SDL_Texture* texture, std::string name)
 {
 	if (texture == nullptr)

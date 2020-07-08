@@ -11,15 +11,15 @@ TTF::TTF(SDL_Renderer* givenRenderer)
 	this->text = "";
 	this->font = nullptr;
 	this->color = { 255, 255 ,255, 0 };
-	this->texture = nullptr;
+	this->texture = Texture();
 	this->renderer = givenRenderer;
 }
 
 // Cleans up any in use fonts and surfaces, should be called on closing program.
 void TTF::Clear()
 {
-	if (texture != nullptr)
-		SDL_DestroyTexture(texture);
+	if (texture.HasTexture())
+		texture.Clear();
 
 	if (font != nullptr)
 		TTF_CloseFont(font);
@@ -59,15 +59,17 @@ void TTF::SetColor(int r, int g, int b)
 
 void TTF::Update()
 {
-	if (font == nullptr)
+	if (font == nullptr || text == "")
 		return;
 
 	// Delete the old texture if it exists.
-	if (texture != nullptr)
-		SDL_DestroyTexture(texture);
+	if (texture.HasTexture())
+		texture.Clear();
 
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);	
+
+	this->texture.SetTexture(texture, this->text);
 
 	SDL_FreeSurface(surface);
 }
@@ -91,35 +93,16 @@ void TTF::SetText(std::string newText)
 void TTF::Draw()
 {
 	// Make sure we have data to work with.
-	if (renderer != nullptr && texture != nullptr && font != nullptr)
-	{
-		// Prepare the render zones ahead of time.
-		SDL_Rect rect;
-		rect.x = x;
-		rect.y = y;
-
-		SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
-
-		if (centerImage)
-		{
-			rect.x -= rect.w / 2;
-			rect.y -= rect.h / 2;
-		}
-
-		// Render the texture of the words to the given renderer.
-		SDL_RenderCopy(renderer, texture, nullptr, &rect);
-	}
-	else
+	if (!this->texture.Draw(this->renderer, this->x, this->y))
 		debug.Log("TTF", "Draw", "Failed to draw TTF surface with text :" + text);
 }
 
 bool TTF::PointIntersectsTexture(SDL_Point point)
 {
-	if (texture == nullptr)
+	if (!texture.HasTexture())
 		return false;
 
-	SDL_Rect rect;
-	SDL_QueryTexture(this->texture, nullptr, nullptr, &rect.w, &rect.h);
+	SDL_Rect rect = this->texture.Rect();
 
 	if (centerImage)
 	{

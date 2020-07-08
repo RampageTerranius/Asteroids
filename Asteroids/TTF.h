@@ -4,6 +4,8 @@
 #include <SDL_ttf.h>
 #include <string>
 
+#include "Textures.h"
+
 class TTF
 {
 public:
@@ -23,6 +25,6 @@ private:
 	SDL_Renderer* renderer;
 	std::string text;
 	TTF_Font* font;
-	SDL_Texture* texture;
+	Texture texture;
 	SDL_Color color;
 };

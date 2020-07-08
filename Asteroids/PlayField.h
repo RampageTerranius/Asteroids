@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "Entity.h"
 
 class GameState_PlayField : public GameState
 {
@@ -15,5 +16,6 @@ public:
 
 private:
 	Textures allTextures;
-	TTF playFieldTest = TTF(nullptr);
+	Player player;
+	Bullets bullets;
 };

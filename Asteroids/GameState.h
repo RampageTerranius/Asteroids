@@ -16,5 +16,5 @@ public:
 	virtual void Render() = 0;
 
 protected:
-	InputManager* iManager = new InputManager();	
+	InputManager* iManager = new InputManager();
 };
