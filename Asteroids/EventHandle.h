@@ -12,10 +12,10 @@
 // https://gameprogrammingpatterns.com/command.html
 // https://codereview.stackexchange.com/questions/55365/input-handling-system-using-the-command-pattern
 
-enum KeyState
+enum class KeyState
 {
-	KEYSTATE_RELEASED = false,
-	KEYSTATE_PRESSED = true
+	released = false,
+	pressed = true
 };
 
 class InputManager
@@ -29,12 +29,13 @@ public:
 	std::vector<Command*> commandList;
 	void ClearInput();
 	bool IsHeld(int key);
+	bool JustPressed(int key);
 
 protected:
 	// Commands and keystates.
 	std::map <int, Command*> commands;
-	std::map <int, KeyState> state;
-	std::map <int, KeyState> previousState;
+	static std::map <int, KeyState> state;
+	static std::map <int, bool> firstPress;
 
 	SDL_Point mouse;	
 

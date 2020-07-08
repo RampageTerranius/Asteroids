@@ -108,7 +108,6 @@ void GameEngine::PushNewState(GameState* state)
 void GameEngine::PopLastState()
 {
 	this->states.pop_back();
-	this->State()->ClearCommands();
 	debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
 }
 

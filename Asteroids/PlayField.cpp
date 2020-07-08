@@ -40,7 +40,7 @@ bool GameState_PlayField::HandleInput()
 			this->iManager->commandList.pop_back();
 	}
 
-	if (iManager->IsHeld(SDLK_SPACE))
+	if (iManager->JustPressed(SDLK_SPACE))
 		running = false;
 
 	if (!running)	

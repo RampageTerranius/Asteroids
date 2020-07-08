@@ -3,9 +3,12 @@
 
 #include <SDL.h>
 
+std::map <int, KeyState> InputManager::state = std::map <int, KeyState>();
+std::map <int, bool> InputManager::firstPress = std::map <int, bool>();
+
 InputManager::InputManager()
 {
-	mouse = SDL_Point{ 0,0 };
+	mouse = SDL_Point{ 0,0 };	
 }
 
 // Delete all command pointers on deconstruction.
@@ -20,10 +23,10 @@ void InputManager::ClearInput()
 	this->commandList.clear();
 
 	for (std::map<int, KeyState>::iterator iter = state.begin(); iter != state.end(); iter++)
-		iter->second = KEYSTATE_RELEASED;
+		iter->second = KeyState::released;
 
-	for (std::map<int, KeyState>::iterator iter = previousState.begin(); iter != previousState.end(); iter++)
-		iter->second = KEYSTATE_RELEASED;
+	for (std::map<int, bool>::iterator iter = firstPress.begin(); iter != firstPress.end(); iter++)
+		iter->second = false;
 }
 
 SDL_Point InputManager::GetMouseLocation()
@@ -93,28 +96,44 @@ void InputManager::OnMouseMotion(SDL_Event& event)
 
 void InputManager::OnKeyDownInput(SDL_Event& event)
 {
-	state[event.key.keysym.sym] = KEYSTATE_PRESSED;
+	state[event.key.keysym.sym] = KeyState::pressed;
 }
 
 void InputManager::OnKeyUpInput(SDL_Event& event)
 {
-	state[event.key.keysym.sym] = KEYSTATE_RELEASED;
+	firstPress[event.key.keysym.sym] = false;
+	state[event.key.keysym.sym] = KeyState::released;
 }
 
 void InputManager::OnMouseDownInput(SDL_Event& event)
 {
-	state[event.button.button] = KEYSTATE_PRESSED;
+	state[event.button.button] = KeyState::pressed;
 }
 
 void InputManager::OnMouseUpInput(SDL_Event& event)
 {
-	state[event.button.button] = KEYSTATE_RELEASED;
+	firstPress[event.button.button] = false;
+	state[event.button.button] = KeyState::released;
 }
 
 // Check if the key is currently being held.
 bool InputManager::IsHeld(int key)
 {
-	return state[key];
+	if (state[key] == KeyState::pressed)
+		return true;
+	else
+		return false;
+}
+
+bool InputManager::JustPressed(int key)
+{
+	if (state[key] == KeyState::pressed && firstPress[key] == false)
+	{
+		firstPress[key] = true;
+		return true;
+	}
+	else
+		return false;
 }
 
 void InputManager::Bind(int key, Command* command)

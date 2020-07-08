@@ -60,59 +60,79 @@ bool GameState_MainMenu::HandleInput()
 			this->iManager->commandList.pop_back();
 	}
 
-	if (iManager->IsHeld(SDL_BUTTON_LEFT))	
-		switch (game.menuOption)
+	if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDLK_SPACE))
+		switch (this->menuOption)
 		{
-		case 1:// options
-
+		case MenuOption::options:
 			break;
 
-		case 2:// quit
+		case MenuOption::quit:
 			return false;
 			break;
 
-		case 3:// start
+		case MenuOption::start:
 			game.PushNewState(new GameState_PlayField());
 			break;
-		}	
+		}
+
+	if (iManager->JustPressed(SDLK_s))
+	{
+		int i = static_cast <int> (this->menuOption);
+		i++;
+		if (i >= static_cast <int> (MenuOption::totalCount))
+			i = 1;
+		this->menuOption = static_cast <MenuOption> (i);
+	}
+
+	if (iManager->JustPressed(SDLK_w))
+	{
+		int i = static_cast <int> (this->menuOption);
+		i--;
+		if (i < 1)
+			i = static_cast <int> (MenuOption::totalCount) - 1;
+
+		this->menuOption = static_cast <MenuOption> (i);
+	}
 
 	return running;
 }
 
 void GameState_MainMenu::HandleEvents()
 {
-	game.menuOption = 0;	
-
 	SDL_Point point = iManager->GetMouseLocation();	
 
-	if (menuOptionOptions.PointIntersectsTexture(point))
-	{
-		game.menuOption = 1;
-		menuOptionOptions.SetColor(0, 0, 200);
-	}
-	else
-		menuOptionOptions.SetColor(255, 255, 255);
+	if (menuOptionOptions.PointIntersectsTexture(point))	
+		this->menuOption = MenuOption::options;
 
-	if (menuOptionQuit.PointIntersectsTexture(point))
-	{
-		game.menuOption = 2;
-		menuOptionQuit.SetColor(0, 0, 200);
-	}
-	else
-		menuOptionQuit.SetColor(255, 255, 255);
+	if (menuOptionQuit.PointIntersectsTexture(point))	
+		this->menuOption = MenuOption::quit;	
 
-	if (menuOptionStart.PointIntersectsTexture(point))
-	{
-		game.menuOption = 3;
-		menuOptionStart.SetColor(0, 0, 200);
-	}
-	else
-		menuOptionStart.SetColor(255, 255, 255);
+	if (menuOptionStart.PointIntersectsTexture(point))	
+		this->menuOption = MenuOption::start;
 }
 
 void GameState_MainMenu::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
+
+	menuOptionOptions.SetColor(255, 255, 255);
+	menuOptionQuit.SetColor(255, 255, 255);
+	menuOptionStart.SetColor(255, 255, 255);
+
+	switch (this->menuOption)
+	{
+	case MenuOption::options:
+		menuOptionOptions.SetColor(0, 0, 200);
+		break;
+
+	case MenuOption::quit:
+		menuOptionQuit.SetColor(0, 0, 200);
+		break;
+
+	case MenuOption::start:// start
+		menuOptionStart.SetColor(0, 0, 200);
+		break;
+	}
 
 	menuOptionStart.Draw();
 	menuOptionOptions.Draw();

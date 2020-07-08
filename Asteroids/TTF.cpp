@@ -47,9 +47,12 @@ bool TTF::SetFont(std::string fontLocation, int size)
 
 void TTF::SetColor(int r, int g, int b)
 {
+	if (color.r == r || color.g == g || color.b == b) // Make sure to check if we need to do any updates to begin with.
+		return;
+	
 	color.r = r;
 	color.g = g;
-	color.b = b;
+	color.b = b;	
 
 	Update();
 };
