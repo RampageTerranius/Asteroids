@@ -46,7 +46,6 @@ protected:
 	static std::map <int, KeyState> state;
 	static std::map <int, bool> firstPress;
 
-
 	SDL_Point mouse;	
 
 	bool InputToActions();
