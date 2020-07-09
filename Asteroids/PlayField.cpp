@@ -19,20 +19,9 @@ void GameState_PlayField::Cleanup()
 
 bool GameState_PlayField::HandleInput()
 {
-	bool running = this->iManager->GenerateInput(this->iManager->commandList);
+	bool running = this->iManager->GenerateInput();
 
-	while (!this->iManager->commandList.empty())
-	{
-		if (!this->iManager->commandList.back()->Execute())
-		{
-			running = false;
-			break;
-		}
-		if (this->iManager->commandList.size() > 0)
-			this->iManager->commandList.pop_back();
-	}
-
-	// If the user has signeld to exit we instead want to pop the current state and revert to the last state (generally this means gonig back to the menu)
+	// If the user has signaled to exit we instead want to pop the current state and revert to the last state (generally this means going back to the menu)
 	if (!running)
 		game.PopLastState();
 
@@ -47,6 +36,8 @@ void GameState_PlayField::HandleEvents()
 void GameState_PlayField::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
+
+	//player.Draw();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }

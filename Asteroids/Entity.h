@@ -1,23 +1,25 @@
 #pragma once
+#include "Textures.h"
 
 class Entity
 {
 public:
-	//void Draw();
+	void Draw();
+	virtual void Update() = 0;
 
-	Texture tex;
+	Texture* tex;
 	int x, y;
 	float rotation;
 };
 
-class Player : Entity
+class Player : public Entity
 {
-
+	void Update();
 };
 
-class Bullet : Entity
+class Bullet : public Entity
 {
-
+	void Update();
 };
 
 class Bullets

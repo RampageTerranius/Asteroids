@@ -18,9 +18,11 @@ InputManager::~InputManager()
 		delete iter->second;
 }
 
-bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
+// Generates all input and processes commands.
+// Used if Commands are required.
+bool InputManager::GenerateInputAndDispatchCommands(std::vector<Command*>& CommandVector)
 {
-	if (!InputToActions())
+	if (!GenerateInput())
 		return false;
 	else
 	{
@@ -29,13 +31,15 @@ bool InputManager::GenerateInput(std::vector<Command*>& CommandVector)
 	}
 }
 
-bool InputManager::GenerateInput()
+bool InputManager::GenerateInputAndDispatchCommands()
 {
-	return GenerateInput(this->commandList);
+	return GenerateInputAndDispatchCommands(this->commandList);
 }
 
 // Gather the users input and maps it as required.
-bool InputManager::InputToActions()
+// Used to process only input.
+// This can be called alone to ONLY process input if need be.
+bool InputManager::GenerateInput()
 {
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -71,18 +75,18 @@ bool InputManager::InputToActions()
 }
 
 // Add all commands to a list for processing.
-void InputManager::DispatchCommands(std::vector<Command*>& command_queue)
+void InputManager::DispatchCommands(std::vector<Command*>& commandVector)
 {
 	for (std::map<int, Command*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
 	{
 		if (iter->second->allowContinuousExecution)
 		{
 			if (this->IsHeld(iter->first))
-				command_queue.push_back(iter->second);
+				commandVector.push_back(iter->second);
 		}
 		else
 			if (this->JustPressed(iter->first))
-				command_queue.push_back(iter->second);
+				commandVector.push_back(iter->second);
 	}
 }
 
@@ -92,6 +96,7 @@ void InputManager::Bind(int key, Command* command)
 	commands[key] = command;
 }
 
+// Functions used as part of InputToActions()
 void InputManager::OnMouseMotion(SDL_Event& event)
 {
 	SDL_GetMouseState(&mouse.x, &mouse.y);
@@ -119,7 +124,7 @@ void InputManager::OnMouseUpInput(SDL_Event& event)
 	state[event.button.button] = KeyState::released;
 }
 
-// Check if the key is currently being held.
+// Checks if the key is currently being held.
 bool InputManager::IsHeld(int key)
 {
 	if (state[key] == KeyState::pressed)
@@ -128,6 +133,7 @@ bool InputManager::IsHeld(int key)
 		return false;
 }
 
+// Checks if the key is currently in a pushed state then triggers a flag to not show it again untill key is let up.
 bool InputManager::JustPressed(int key)
 {
 	if (state[key] == KeyState::pressed && firstPress[key] == false)

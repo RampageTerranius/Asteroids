@@ -47,19 +47,9 @@ void GameState_MainMenu::Cleanup()
 
 bool GameState_MainMenu::HandleInput()
 {
-	bool running = this->iManager->GenerateInput(this->iManager->commandList);
+	bool running = this->iManager->GenerateInput();
 
-	while (!this->iManager->commandList.empty())
-	{
-		if (!this->iManager->commandList.back()->Execute())
-		{
-			running = false;
-			break;
-		}
-		if (this->iManager->commandList.size() > 0)
-			this->iManager->commandList.pop_back();
-	}
-
+	// Player has asked to goto next state.
 	if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDLK_SPACE))
 		switch (this->menuOption)
 		{
@@ -75,7 +65,8 @@ bool GameState_MainMenu::HandleInput()
 			break;
 		}
 
-	if (iManager->JustPressed(SDLK_s))
+	// On pressing down go to next menu option.
+	if (iManager->JustPressed(SDLK_s) || iManager->JustPressed(SDLK_DOWN))
 	{
 		int i = static_cast <int> (this->menuOption);
 		i++;
@@ -84,7 +75,8 @@ bool GameState_MainMenu::HandleInput()
 		this->menuOption = static_cast <MenuOption> (i);
 	}
 
-	if (iManager->JustPressed(SDLK_w))
+	// On pressing up go to the previous menu option.
+	if (iManager->JustPressed(SDLK_w) || iManager->JustPressed(SDLK_UP))
 	{
 		int i = static_cast <int> (this->menuOption);
 		i--;

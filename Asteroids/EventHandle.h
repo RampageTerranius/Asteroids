@@ -26,8 +26,9 @@ class InputManager
 public:
 	~InputManager();
 	InputManager();
+	bool GenerateInputAndDispatchCommands();
+	bool GenerateInputAndDispatchCommands(std::vector<Command*>& commandVector);
 	bool GenerateInput();
-	bool GenerateInput(std::vector<Command*>& commandVector);
 	void Bind(int key, Command* command);
 	SDL_Point GetMouseLocation();
 	
@@ -35,7 +36,7 @@ public:
 	void ClearInput();
 
 	// Functions for determining key presses.
-	// These functions are used by DispatchCommands to determine if keys are in use and to run their correspondign commands if needed.
+	// These functions are used by DispatchCommands to determine if keys are in use and to run their corresponding commands if needed.
 	// These functions can be called on their own should the programmer need to use a NON command based input system (). 
 	bool IsHeld(int key);
 	bool JustPressed(int key);
@@ -47,9 +48,8 @@ protected:
 	static std::map <int, bool> firstPress;
 
 	SDL_Point mouse;	
-
-	bool InputToActions();
-	void DispatchCommands(std::vector<Command*>& command_queue);
+	
+	void DispatchCommands(std::vector<Command*>& commandVector);
 
 	void OnKeyDownInput(SDL_Event& event);
 	void OnKeyUpInput(SDL_Event& event);

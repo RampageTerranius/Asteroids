@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="Entitiy.cpp" />
     <ClCompile Include="EventHandle.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="main.cpp" />
