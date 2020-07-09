@@ -29,6 +29,7 @@ public:
 	bool GenerateInputAndDispatchCommands();
 	bool GenerateInputAndDispatchCommands(std::vector<Command*>& commandVector);
 	bool GenerateInput();
+	bool ProcessCommandList(Player* player);
 	void Bind(int key, Command* command);
 	SDL_Point GetMouseLocation();
 	

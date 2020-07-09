@@ -1,4 +1,5 @@
 #include "EventHandle.h"
+#include "Entity.h"
 #include "Debug.h"
 
 #include <SDL.h>
@@ -88,6 +89,24 @@ void InputManager::DispatchCommands(std::vector<Command*>& commandVector)
 			if (this->JustPressed(iter->first))
 				commandVector.push_back(iter->second);
 	}
+}
+
+// Loops through all currently qued commands and executes them.
+// Relys on DispatchCommadns to have been run beforehand.
+bool InputManager::ProcessCommandList(Player* player)
+{
+	while (!this->commandList.empty())
+	{
+		if (!this->commandList.back()->Execute(player))
+		{
+			return false;
+			break;
+		}
+		if (this->commandList.size() > 0)
+			this->commandList.pop_back();
+	}
+
+	return true;
 }
 
 // Assigns the given command to the given key.

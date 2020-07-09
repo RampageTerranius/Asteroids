@@ -28,11 +28,11 @@ void GameState_MainMenu::Init()
 	menuOptionQuit.y = (game.GetRenderer().WindowHeight() / 5) * 4;
 
 	menuOptionStart.SetText("Start");
-	menuOptionOptions.SetText("Options");	
+	menuOptionOptions.SetText("Options");
 	menuOptionQuit.SetText("Quit");
 
 	menuOptionStart.centerImage = true;
-	menuOptionOptions.centerImage = true;	
+	menuOptionOptions.centerImage = true;
 	menuOptionQuit.centerImage = true;
 }
 

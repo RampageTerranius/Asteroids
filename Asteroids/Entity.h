@@ -8,13 +8,18 @@ public:
 	virtual void Update() = 0;
 
 	Texture* tex;
-	int x, y;
+	float x, y;
 	float rotation;
+	bool centerTexture = true;
 };
 
 class Player : public Entity
 {
+public:
 	void Update();
+	float velX, velY;
+	float velocity;
+	float turnRate;
 };
 
 class Bullet : public Entity

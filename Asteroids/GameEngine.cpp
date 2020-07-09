@@ -56,7 +56,7 @@ void GameEngine::Init()
 
 	// Prepare the renderer
 	this->renderer = Renderer();
-	this->renderer.Init("Test", 800, 600, false, false);
+	this->renderer.Init("Test", this->SCREEN_WIDTH, this->SCREEN_HEIGHT, false, false);
 
 	// Prepare the game state.
 	this->PushNewState(new GameState_MainMenu());

@@ -77,10 +77,10 @@ bool Texture::Load(std::string fileLoc, std::string name)
 
 bool Texture::Draw(SDL_Renderer* renderer, int x, int y)
 {
-	return Draw(renderer, true, 0, x, y);
+	return Draw(renderer, 0, x, y);
 }
 
-bool Texture::Draw(SDL_Renderer* renderer, bool centerImage, float rotation, int x, int y)
+bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 {
 	if (renderer != nullptr && HasTexture())
 	{
@@ -88,7 +88,7 @@ bool Texture::Draw(SDL_Renderer* renderer, bool centerImage, float rotation, int
 		rect.x = x;
 		rect.y = y;
 
-		if (centerImage)
+		if (this->centerTextureOnDraw)
 		{
 			rect.x -= rect.w / 2;
 			rect.y -= rect.h / 2;
