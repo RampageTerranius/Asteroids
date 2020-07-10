@@ -14,7 +14,7 @@ void GameState_PlayField::Init()
 {	
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
 
-	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "images\\player.png", "player");
+	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
 	this->player.x = game.SCREEN_WIDTH / 2;
 	this->player.y = game.SCREEN_HEIGHT / 2;
 	this->player.velocity = game.VEL_INC;

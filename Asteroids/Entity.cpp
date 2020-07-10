@@ -56,7 +56,9 @@ void Player::FireWeapon()
 
 bool Bullet::Update()
 {
-	this->distanceLeft--;
+	this->x -= this->velX;
+	this->y -= this->velY;
+	this->distanceLeft--;	
 
 	if (this->distanceLeft < 0)
 		return false;
@@ -70,9 +72,8 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 
 	bullet->x = player->x;
 	bullet->y = player->y;
-	bullet->rotation = 0;
-	bullet->velX = (player->velocity + 1) * (cos((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity);
-	bullet->velY = (player->velocity + 1) * (sin((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity);
+	bullet->velX = cos((player->rotation + 90.0f) * (M_PI / 180)) * (player->velocity + 1);
+	bullet->velY = sin((player->rotation + 90.0f) * (M_PI / 180)) * (player->velocity + 1);
 	bullet->distanceLeft = game.BULLET_DISTANCE;
 	bullet->tex = tex;
 

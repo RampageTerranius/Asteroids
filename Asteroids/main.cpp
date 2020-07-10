@@ -1,11 +1,18 @@
 #include "main.h"
+#include "timer.h"
 
 int main(int argc, char* argv[])
 {
 	game.Init();
 
+	Timer timer;
+
+	timer.Start();
+
 	while (game.running)
 	{
+		timer.Start();
+
 		if (game.HasActiveState())
 		{
 			game.HandleInput();

@@ -80,26 +80,26 @@ public:
 	{		
 		if (player->velX > 0)
 		{
-			player->velX -= (player->velocity / 4);
+			player->velX -= (player->velocity / 2);
 			if (player->velX < 0)
 				player->velX = 0;
 		}
 		else if (player->velX < 0)
 		{
-			player->velX += (player->velocity / 4);
+			player->velX += (player->velocity / 2);
 			if (player->velX > 0)
 				player->velX = 0;
 		}
 
 		if (player->velY > 0)
 		{
-			player->velY -= (player->velocity / 4);
+			player->velY -= (player->velocity / 2);
 			if (player->velY < 0)
 				player->velY = 0;
 		}
 		else if (player->velY < 0)
 		{
-			player->velY += (player->velocity / 4);
+			player->velY += (player->velocity / 2);
 			if (player->velY > 0)
 				player->velY = 0;
 		}
