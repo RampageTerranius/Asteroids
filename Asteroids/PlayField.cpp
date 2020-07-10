@@ -13,8 +13,8 @@ GameState_PlayField::GameState_PlayField()
 void GameState_PlayField::Init()
 {	
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "images\\player.png", "player");
-	player.x = 400;
-	player.y = 400;
+	player.x = game.SCREEN_WIDTH / 2;
+	player.y = game.SCREEN_HEIGHT / 2;
 	player.velocity = game.VEL_INC;
 	player.turnRate = game.TURN_RATE;
 
@@ -43,32 +43,13 @@ bool GameState_PlayField::HandleInput()
 	return true;
 }
 
+void GameState_PlayField::CalcPlayerMovement()
+{
+
+}
+
 void GameState_PlayField::HandleEvents()
 {
-	// Handle movement of player first.
-	if (this->player.velX > game.MAX_VEL)
-		this->player.velX = game.MAX_VEL;
-	if (this->player.velX < -game.MAX_VEL)
-		this->player.velX = -game.MAX_VEL;
-
-	if (this->player.velY > game.MAX_VEL)
-		this->player.velY = game.MAX_VEL;
-	if (this->player.velY < -game.MAX_VEL)
-		this->player.velY = -game.MAX_VEL;
-
-	this->player.x += this->player.velX;
-	this->player.y += this->player.velY;
-
-	if (this->player.x < 0)
-		this->player.x = 0;
-	else if (this->player.x > game.SCREEN_WIDTH)
-		this->player.x = static_cast <float> (game.SCREEN_WIDTH);
-
-	if (this->player.y < 0)
-		this->player.y = 0;
-	else if (this->player.y > game.SCREEN_HEIGHT)
-		this->player.y = static_cast <float> (game.SCREEN_HEIGHT);
-
 	// Handle players events.
 	player.Update();
 }

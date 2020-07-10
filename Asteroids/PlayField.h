@@ -23,8 +23,13 @@ public:
 	CommandMoveForward() { this->allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->velX += (sin((player->rotation * (M_PI / 180))) * player->velocity);
-		player->velY -= (cos((player->rotation * (M_PI / 180))) * player->velocity);
+		double i = 1;
+		if (player->speedBoost)
+			i = 2;
+
+		player->velX -= (cos((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velY -= (sin((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+
 		return true;
 	}
 };
@@ -35,8 +40,12 @@ public:
 	CommandMoveBackwards() { this->allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->velX -= (sin((player->rotation * (M_PI / 180))) * player->velocity);
-		player->velY += (cos((player->rotation * (M_PI / 180))) * player->velocity);
+		double i = 1;
+		if (player->speedBoost)
+			i = 2;
+
+		player->velX += (cos((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velY += (sin((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
 		return true;
 	}
 };
@@ -52,6 +61,8 @@ public:
 	bool HandleInput();
 	void HandleEvents();
 	void Render();
+
+	void CalcPlayerMovement();
 
 private:
 	Textures allTextures;

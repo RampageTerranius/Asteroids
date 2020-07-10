@@ -20,6 +20,7 @@ public:
 	float velX, velY;
 	float velocity;
 	float turnRate;
+	bool speedBoost;
 };
 
 class Bullet : public Entity

@@ -31,14 +31,12 @@ public:
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 768;
 	const float TURN_RATE = 0.1f;
-	const float VEL_INC = 0.001f;
-	const float MAX_VEL = 0.1f;
+	const float VEL_INC = 0.0001f;
+	const float MAX_VEL = 0.21f;
 
 private:	
 	Renderer renderer = Renderer();
-	std::vector<GameState*> states;
-
-	
+	std::vector<GameState*> states;	
 };
 
 extern GameEngine game;
