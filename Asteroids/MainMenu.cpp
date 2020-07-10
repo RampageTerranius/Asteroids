@@ -33,7 +33,7 @@ void GameState_MainMenu::Init()
 
 	menuOptionStart.centerImage = true;
 	menuOptionOptions.centerImage = true;
-	menuOptionQuit.centerImage = true;
+	menuOptionQuit.centerImage = true;	
 }
 
 void GameState_MainMenu::Cleanup()

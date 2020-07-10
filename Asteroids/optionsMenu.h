@@ -13,7 +13,6 @@ public:
 	void HandleEvents();
 	void Render();
 
-private:
-	Textures allTextures;
+private:	
 	TTF playFieldTest = TTF(nullptr);
 };

@@ -12,12 +12,14 @@ GameState_PlayField::GameState_PlayField()
 
 void GameState_PlayField::Init()
 {	
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
+
 	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "images\\player.png", "player");
 	this->player.x = game.SCREEN_WIDTH / 2;
 	this->player.y = game.SCREEN_HEIGHT / 2;
 	this->player.velocity = game.VEL_INC;
 	this->player.turnRate = game.TURN_RATE;
-	this->player.fireTimer = 30;
+	this->player.fireInterval = 60;
 	this->player.centerTexture = true;
 
 	this->iManager->Bind(SDLK_SPACE, this->commandFire);	
@@ -69,15 +71,14 @@ bool GameState_PlayField::HandleInput()
 	return true;
 }
 
-void GameState_PlayField::CalcPlayerMovement()
-{
-
-}
-
 void GameState_PlayField::HandleEvents()
 {
 	// Handle players events.
 	player.Update();
+
+	allBullets.UpdateAll();
+
+	allAsteroids.UpdateAll();
 }
 
 void GameState_PlayField::Render()
@@ -85,6 +86,10 @@ void GameState_PlayField::Render()
 	SDL_RenderClear(game.GetRenderer().renderer);
 
 	player.Draw();
+
+	allBullets.RenderAll();
+
+	allAsteroids.RenderAll();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }

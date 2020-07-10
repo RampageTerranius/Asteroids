@@ -27,8 +27,8 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->velX -= (cos((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
-		player->velY -= (sin((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velX -= (cos((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
+		player->velY -= (sin((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
 
 		return true;
 	}
@@ -44,8 +44,8 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->velX += (cos((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
-		player->velY += (sin((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velX += (cos((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
+		player->velY += (sin((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
 		return true;
 	}
 };
@@ -56,6 +56,7 @@ public:
 	CommandFire() { this->allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
+		player->FireWeapon();
 		return true;
 	}
 };
@@ -76,7 +77,7 @@ class CommandEqualizeVelocity : public Command
 public:
 	CommandEqualizeVelocity() { this->allowContinuousExecution = true; }
 	bool Execute(Player* player)
-	{
+	{		
 		if (player->velX > 0)
 		{
 			player->velX -= (player->velocity / 4);
@@ -118,12 +119,8 @@ public:
 	void HandleEvents();
 	void Render();
 
-	void CalcPlayerMovement();
-
 private:
-	Textures allTextures;
 	Player player;
-	Bullets bullets;
 
 	Command* commandFire = new CommandFire();
 	Command* commandForwards = new CommandMoveForward();

@@ -22,8 +22,7 @@ public:
 	void HandleEvents();
 	void Render();
 
-private:	
-	Textures allTextures;
+private:
 	TTF menuOptionStart = TTF(nullptr);
 	TTF menuOptionOptions = TTF(nullptr);
 	TTF menuOptionQuit = TTF(nullptr);

@@ -128,7 +128,7 @@ bool Texture::SetTexture(SDL_Texture* texture, std::string name)
 
 void Textures::Cleanup()
 {
-	for (auto& texture : textureList)
+	for (auto& texture : this->textureList)
 		texture->Clear();
 
 	debug.Log("Textures", "Cleanup", "Destroyed all textures");
@@ -136,7 +136,7 @@ void Textures::Cleanup()
 
 Texture* Textures::GetTexture(std::string name)
 {
-	for (auto& tex : textureList)
+	for (auto& tex : this->textureList)
 		if (tex->Name() == name)
 			return tex;
 

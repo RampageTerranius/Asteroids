@@ -33,6 +33,7 @@ public:
 	const float TURN_RATE = 0.1f;
 	const float VEL_INC = 0.0001f;
 	const float MAX_VEL = 0.21f;
+	const int BULLET_DISTANCE = 300;
 
 private:	
 	Renderer renderer = Renderer();
