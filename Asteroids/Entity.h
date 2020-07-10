@@ -21,6 +21,8 @@ public:
 	float velocity;
 	float turnRate;
 	bool speedBoost;
+	int fireTimer;
+	int fireInterval;
 };
 
 class Bullet : public Entity

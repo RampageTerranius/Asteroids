@@ -32,6 +32,9 @@ void Player::Update()
 		this->y = 0;
 	else if (this->y > game.SCREEN_HEIGHT)
 		this->y = static_cast <float> (game.SCREEN_HEIGHT);
+
+	// Reset the speed boost back to false, otherwise the palyer will permanently be boosted.
+	this->speedBoost = false;
 }
 
 void Bullet::Update()

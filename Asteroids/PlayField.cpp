@@ -12,21 +12,47 @@ GameState_PlayField::GameState_PlayField()
 
 void GameState_PlayField::Init()
 {	
-	player.tex = allTextures.CreateTexture(GetEXEPath() + "images\\player.png", "player");
-	player.x = game.SCREEN_WIDTH / 2;
-	player.y = game.SCREEN_HEIGHT / 2;
-	player.velocity = game.VEL_INC;
-	player.turnRate = game.TURN_RATE;
+	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "images\\player.png", "player");
+	this->player.x = game.SCREEN_WIDTH / 2;
+	this->player.y = game.SCREEN_HEIGHT / 2;
+	this->player.velocity = game.VEL_INC;
+	this->player.turnRate = game.TURN_RATE;
+	this->player.fireTimer = 30;
+	this->player.centerTexture = true;
 
-	this->iManager->Bind(SDLK_w, new CommandMoveForward());
-	this->iManager->Bind(SDLK_s, new CommandMoveBackwards());
-	this->iManager->Bind(SDLK_a, new CommandMoveLeft());
-	this->iManager->Bind(SDLK_d, new CommandMoveRight());
+	this->iManager->Bind(SDLK_SPACE, this->commandFire);	
+	this->iManager->Bind(SDLK_w, this->commandForwards);
+	this->iManager->Bind(SDLK_s, this->commandBackwards);
+	this->iManager->Bind(SDLK_a, this->commandRotateLeft);
+	this->iManager->Bind(SDLK_d, this->commandRotateRight);
+	this->iManager->Bind(SDLK_LSHIFT, this->commandBoost);
+	this->iManager->Bind(SDLK_c, this->commandEqualizeVelocity);
 }
 
 void GameState_PlayField::Cleanup()
 {
-	allTextures.Cleanup();
+	this->allTextures.Cleanup();
+
+	delete this->commandFire;
+	this->commandFire = nullptr;
+
+	delete this->commandForwards;
+	this->commandForwards = nullptr;
+
+	delete this->commandBackwards;
+	this->commandBackwards = nullptr;
+
+	delete this->commandRotateLeft;
+	this->commandRotateLeft = nullptr;
+
+	delete this->commandRotateRight;
+	this->commandRotateRight = nullptr;
+
+	delete this->commandBoost;
+	this->commandBoost = nullptr;
+
+	delete this->commandEqualizeVelocity;
+	this->commandEqualizeVelocity = nullptr;
 }
 
 bool GameState_PlayField::HandleInput()

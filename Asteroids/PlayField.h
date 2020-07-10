@@ -27,8 +27,8 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->velX -= (cos((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
-		player->velY -= (sin((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velX -= (cos((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velY -= (sin((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
 
 		return true;
 	}
@@ -44,8 +44,64 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->velX += (cos((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
-		player->velY += (sin((player->rotation + 90) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velX += (cos((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		player->velY += (sin((player->rotation + 90.0f) * (M_PI / 180)) * 0.5f * player->velocity) * i;
+		return true;
+	}
+};
+
+class CommandFire : public Command
+{
+public:
+	CommandFire() { this->allowContinuousExecution = true; }
+	bool Execute(Player* player)
+	{
+		return true;
+	}
+};
+
+class CommandBoost : public Command
+{
+public:
+	CommandBoost() { this->allowContinuousExecution = true; }
+	bool Execute(Player* player)
+	{
+		player->speedBoost = true;
+		return true;
+	}
+};
+
+class CommandEqualizeVelocity : public Command
+{
+public:
+	CommandEqualizeVelocity() { this->allowContinuousExecution = true; }
+	bool Execute(Player* player)
+	{
+		if (player->velX > 0)
+		{
+			player->velX -= (player->velocity / 4);
+			if (player->velX < 0)
+				player->velX = 0;
+		}
+		else if (player->velX < 0)
+		{
+			player->velX += (player->velocity / 4);
+			if (player->velX > 0)
+				player->velX = 0;
+		}
+
+		if (player->velY > 0)
+		{
+			player->velY -= (player->velocity / 4);
+			if (player->velY < 0)
+				player->velY = 0;
+		}
+		else if (player->velY < 0)
+		{
+			player->velY += (player->velocity / 4);
+			if (player->velY > 0)
+				player->velY = 0;
+		}
 		return true;
 	}
 };
@@ -68,4 +124,12 @@ private:
 	Textures allTextures;
 	Player player;
 	Bullets bullets;
+
+	Command* commandFire = new CommandFire();
+	Command* commandForwards = new CommandMoveForward();
+	Command* commandBackwards = new CommandMoveBackwards();
+	Command* commandRotateLeft = new CommandMoveLeft();
+	Command* commandRotateRight = new CommandMoveRight();
+	Command* commandBoost = new CommandBoost();
+	Command* commandEqualizeVelocity = new CommandEqualizeVelocity();
 };
