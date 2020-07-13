@@ -7,6 +7,7 @@
 
 GameState_PlayField::GameState_PlayField()
 {
+	fps = TTF(game.GetRenderer().renderer);
 	Init();	
 }
 
@@ -17,6 +18,7 @@ void GameState_PlayField::Init()
 	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
 	this->player.x = game.SCREEN_WIDTH / 2;
 	this->player.y = game.SCREEN_HEIGHT / 2;
+	this->player.velX = 1;
 	this->player.velocity = game.VEL_INC;
 	this->player.turnRate = game.TURN_RATE;
 	this->player.fireInterval = 60;
@@ -29,6 +31,11 @@ void GameState_PlayField::Init()
 	this->iManager->Bind(SDLK_d, this->commandRotateRight);
 	this->iManager->Bind(SDLK_LSHIFT, this->commandBoost);
 	this->iManager->Bind(SDLK_c, this->commandEqualizeVelocity);
+
+	fps.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	fps.CenterImage(false);
+	fps.x = 10;
+	fps.y = 10;
 }
 
 void GameState_PlayField::Cleanup()
@@ -90,6 +97,9 @@ void GameState_PlayField::Render()
 	allBullets.RenderAll();
 
 	allAsteroids.RenderAll();
+
+	fps.SetText(std::to_string(game.fps));
+	fps.Draw();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }

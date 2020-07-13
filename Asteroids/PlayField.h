@@ -122,6 +122,8 @@ public:
 private:
 	Player player;
 
+	TTF fps = TTF(nullptr);
+
 	Command* commandFire = new CommandFire();
 	Command* commandForwards = new CommandMoveForward();
 	Command* commandBackwards = new CommandMoveBackwards();

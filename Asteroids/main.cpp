@@ -7,23 +7,24 @@ int main(int argc, char* argv[])
 
 	Timer timer;
 
-	timer.Start();
+	if (!game.HasActiveState())
+	{
+		debug.Log("Main", "main", "Game engine has no active state!");
+		game.running = false;
+	}
 
 	while (game.running)
 	{
 		timer.Start();
+		
+		game.HandleInput();
+		game.HandleEvents();
+		game.Render();
 
-		if (game.HasActiveState())
-		{
-			game.HandleInput();
-			game.HandleEvents();
-			game.Render();
-		}
-		else
-		{
-			debug.Log("Main", "main", "Game engine has no active state!");
-			return 1;
-		}
+		float timerFps = timer.GetTicks();
+
+		if (timerFps < 1000 / game.FRAME_RATE)
+			SDL_Delay( (1000 / game.FRAME_RATE) - timerFps);
 	}
 
 	game.Cleanup();

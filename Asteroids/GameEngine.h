@@ -28,12 +28,16 @@ public:
 	
 	bool running = false;
 
+	float fps;
+
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 768;
-	const float TURN_RATE = 0.1f;
-	const float VEL_INC = 0.0001f;
-	const float MAX_VEL = 0.21f;
+	const float TURN_RATE = 2.0f;
+	const float VEL_INC = 0.04f;
+	const float MAX_VEL = 5.0f;
 	const int BULLET_DISTANCE = 300;
+	const int FRAME_RATE = 60;
+	const int FRAME_TIME = 1000 / FRAME_RATE;
 
 private:	
 	Renderer renderer = Renderer();

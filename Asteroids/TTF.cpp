@@ -25,6 +25,16 @@ void TTF::Clear()
 		TTF_CloseFont(font);
 }
 
+void TTF::CenterImage(bool center)
+{
+	this->texture.centerTextureOnDraw = center;
+}
+
+bool TTF::IsImageCentered()
+{
+	return this->texture.centerTextureOnDraw;
+}
+
 // Set the currently in use font.
 bool TTF::SetFont(std::string fontLocation, int size)
 {

@@ -31,9 +31,9 @@ void GameState_MainMenu::Init()
 	menuOptionOptions.SetText("Options");
 	menuOptionQuit.SetText("Quit");
 
-	menuOptionStart.centerImage = true;
-	menuOptionOptions.centerImage = true;
-	menuOptionQuit.centerImage = true;	
+	menuOptionStart.CenterImage(true);
+	menuOptionOptions.CenterImage(true);
+	menuOptionQuit.CenterImage(true);	
 }
 
 void GameState_MainMenu::Cleanup()
