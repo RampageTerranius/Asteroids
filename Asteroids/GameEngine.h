@@ -35,7 +35,7 @@ public:
 	const float TURN_RATE = 2.0f;
 	const float VEL_INC = 0.05f;
 	const float MAX_VEL = 5.0f;
-	const int BULLET_DISTANCE = 180;
+	const int BULLET_DISTANCE = 90;
 	const float BULLET_VELOCITY = 5;
 	const int FRAME_RATE = 60;
 	const int FRAME_TIME = 1000 / FRAME_RATE;

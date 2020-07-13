@@ -62,6 +62,16 @@ bool Bullet::Update()
 	this->y -= this->velY;
 	this->distanceLeft--;	
 
+	if (this->x < 0)
+		this->x = static_cast <float> (game.SCREEN_WIDTH - 1);
+	else if (this->x > game.SCREEN_WIDTH)
+		this->x = 0;
+
+	if (this->y < 0)
+		this->y = static_cast <float> (game.SCREEN_HEIGHT - 1);
+	else if (this->y > game.SCREEN_HEIGHT)
+		this->y = 0;
+
 	if (this->distanceLeft < 0)
 		return false;
 
