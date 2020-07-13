@@ -38,7 +38,7 @@ public:
 
 	// Functions for determining key presses.
 	// These functions are used by DispatchCommands to determine if keys are in use and to run their corresponding commands if needed.
-	// These functions can be called on their own should the programmer need to use a NON command based input system (). 
+	// These functions can be called on their own should the programmer need to use a NON command based input system. 
 	bool IsHeld(int key);
 	bool JustPressed(int key);
 

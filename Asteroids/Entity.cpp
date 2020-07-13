@@ -13,6 +13,7 @@ void Entity::Draw()
 
 bool Player::Update()
 {
+	// Make sure player hasnt gone over max velocity.
 	if (this->velX > game.MAX_VEL)
 		this->velX = game.MAX_VEL;
 	if (this->velX < -game.MAX_VEL)
@@ -23,20 +24,21 @@ bool Player::Update()
 	if (this->velY < -game.MAX_VEL)
 		this->velY = -game.MAX_VEL;
 
+	// Add the velocity to its respective axis.
 	this->x += this->velX;
 	this->y += this->velY;
 
 	if (this->x < 0)
-		this->x = 0;
+		this->x = static_cast <float> (game.SCREEN_WIDTH - 1);
 	else if (this->x > game.SCREEN_WIDTH)
-		this->x = static_cast <float> (game.SCREEN_WIDTH);
+		this->x = 0;
 
 	if (this->y < 0)
-		this->y = 0;
+		this->y = static_cast <float> (game.SCREEN_HEIGHT - 1);
 	else if (this->y > game.SCREEN_HEIGHT)
-		this->y = static_cast <float> (game.SCREEN_HEIGHT);
+		this->y = 0;
 
-	// Reset the speed boost back to false, otherwise the palyer will permanently be boosted.
+	// Reset the speed boost back to false, otherwise the player will permanently be boosted.
 	this->speedBoost = false;
 
 	if (this->fireTimer > 0)

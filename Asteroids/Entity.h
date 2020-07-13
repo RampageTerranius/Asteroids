@@ -8,6 +8,7 @@ class Entity
 public:
 	void Draw();
 	virtual bool Update() = 0;
+	//bool PointIntersectsTexture(SDL_Point point);
 
 	Texture* tex;
 	float x, y;
