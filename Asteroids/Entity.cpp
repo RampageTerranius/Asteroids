@@ -72,8 +72,8 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 
 	bullet->x = player->x;
 	bullet->y = player->y;
-	bullet->velX = cos((player->rotation + 90.0f) * (M_PI / 180)) * (player->velocity + 1);
-	bullet->velY = sin((player->rotation + 90.0f) * (M_PI / 180)) * (player->velocity + 1);
+	bullet->velX = cos((player->rotation + 90.0f) * (M_PI / 180)) * ((player->velX * 0.25) + game.BULLET_VELOCITY);
+	bullet->velY = sin((player->rotation + 90.0f) * (M_PI / 180)) * ((player->velY * 0.25) + game.BULLET_VELOCITY);
 	bullet->distanceLeft = game.BULLET_DISTANCE;
 	bullet->tex = tex;
 

@@ -7,14 +7,30 @@ class CommandMoveLeft : public Command
 {
 public:
 	CommandMoveLeft() { this->allowContinuousExecution = true; }
-	bool Execute(Player* player) { player->rotation -= player->turnRate; return true; }
+	bool Execute(Player* player)
+	{
+		double i = 1;
+		if (player->speedBoost)
+			i = 2;
+
+		player->rotation -= player->turnRate * i;
+		return true;
+	}
 };
 
 class CommandMoveRight : public Command
 {
 public:
 	CommandMoveRight() { this->allowContinuousExecution = true; }
-	bool Execute(Player* player) { player->rotation += player->turnRate; return true; }
+	bool Execute(Player* player) 
+	{ 
+		double i = 1;
+		if (player->speedBoost)
+			i = 2;
+
+		player->rotation += player->turnRate * i;
+		return true;
+	}
 };
 
 class CommandMoveForward : public Command
