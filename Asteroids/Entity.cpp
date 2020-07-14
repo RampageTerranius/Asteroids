@@ -1,5 +1,7 @@
 #include "Entity.h"
 #include "GameEngine.h"
+#include "Debug.h"
+#include "Misc Functions.h"
 #include <math.h>
 
 Bullets allBullets = Bullets();
@@ -112,13 +114,77 @@ void Bullets::RenderAll()
 
 bool Asteroid::Update()
 {
+	this->x -= this->velX;
+	this->y -= this->velY;
+
+	if (this->x < 0)
+		this->x = static_cast <float> (game.SCREEN_WIDTH - 1);
+	else if (this->x > game.SCREEN_WIDTH)
+		this->x = 0;
+
+	if (this->y < 0)
+		this->y = static_cast <float> (game.SCREEN_HEIGHT - 1);
+	else if (this->y > game.SCREEN_HEIGHT)
+		this->y = 0;
+
 	return true;
+}
+
+void Asteroids::CreateAsteroid()
+{
+	Asteroid* asteroid = new Asteroid();
+
+	int randomNum;
+
+	asteroid->velX = RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+	asteroid->velY = RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+
+	// Setup the asteroids size.
+	// Asteroid sizes are in multiples of 5.
+	asteroid->size = 5 * (rand() % 4 + 1);
+	asteroid->tex = game.State()->allTextures.GetTexture("asteroid " + std::to_string(asteroid->size));
+
+	randomNum = rand() % 4;
+	switch (randomNum)
+	{
+	case 0: // spawn randomly at left of screen.
+		asteroid->y = rand() % game.SCREEN_HEIGHT;			
+
+		allAsteroids.push_back(asteroid);
+		break;
+
+	case 1:// spawn randomly at right of screen.
+		asteroid->y = rand() % game.SCREEN_HEIGHT;
+		asteroid->x = game.SCREEN_WIDTH - 1;		
+
+		allAsteroids.push_back(asteroid);
+		break;
+
+	case 2:// spawn randomly at top of screen;
+		asteroid->x = rand() % game.SCREEN_WIDTH;
+
+		allAsteroids.push_back(asteroid);
+		break;
+
+	case 3:// spawn randomly at bottom of screen;
+		asteroid->x = rand() % game.SCREEN_WIDTH;
+		asteroid->y = game.SCREEN_HEIGHT - 1;		
+
+		allAsteroids.push_back(asteroid);
+		break;
+	}	
+
+	debug.Log("Asteroids", "CreateAsteroid", "Created asteroid at " + std::to_string(asteroid->x) + " \\" + std::to_string(asteroid->y) + " with velocity " + std::to_string(asteroid->velX) + "\\" + std::to_string(asteroid->velY) + " at size of " + std::to_string(asteroid->size));
 }
 
 void Asteroids::UpdateAll()
 {
+	for (auto& var : this->allAsteroids)
+		var->Update();
 }
 
 void Asteroids::RenderAll()
 {
+	for (auto& var : this->allAsteroids)
+		var->Draw();
 }

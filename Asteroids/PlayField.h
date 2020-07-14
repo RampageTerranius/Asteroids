@@ -123,6 +123,17 @@ public:
 	}
 };
 
+class CommandCreateAsteroid : public Command
+{
+public:
+	CommandCreateAsteroid() { this->allowContinuousExecution = false; }
+	bool Execute(Player* player)
+	{
+		allAsteroids.CreateAsteroid();
+		return true;
+	}
+};
+
 class GameState_PlayField : public GameState
 {
 public:
@@ -147,4 +158,5 @@ private:
 	Command* commandRotateRight = new CommandMoveRight();
 	Command* commandBoost = new CommandBoost();
 	Command* commandEqualizeVelocity = new CommandEqualizeVelocity();
+	Command* commandCreateAsteroid = new CommandCreateAsteroid();
 };

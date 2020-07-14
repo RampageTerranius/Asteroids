@@ -13,8 +13,14 @@ GameState_PlayField::GameState_PlayField()
 
 void GameState_PlayField::Init()
 {	
+	// Load all the textures the playfield requires.
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 5x5.png", "asteroid 5");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 10x10.png", "asteroid 10");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 15x15.png", "asteroid 15");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 20x20.png", "asteroid 20");
 
+	// Setup player varaibles.
 	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
 	this->player.x = game.SCREEN_WIDTH / 2;
 	this->player.y = game.SCREEN_HEIGHT / 2;
@@ -24,6 +30,7 @@ void GameState_PlayField::Init()
 	this->player.fireInterval = 60;
 	this->player.centerTexture = true;
 
+	// Setup key bindings.
 	this->iManager->Bind(SDLK_SPACE, this->commandFire);	
 	this->iManager->Bind(SDLK_w, this->commandForwards);
 	this->iManager->Bind(SDLK_s, this->commandBackwards);
@@ -31,6 +38,7 @@ void GameState_PlayField::Init()
 	this->iManager->Bind(SDLK_d, this->commandRotateRight);
 	this->iManager->Bind(SDLK_LSHIFT, this->commandBoost);
 	this->iManager->Bind(SDLK_c, this->commandEqualizeVelocity);
+	this->iManager->Bind(SDLK_f, this->commandCreateAsteroid);
 
 	fps.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 	fps.CenterImage(false);

@@ -57,13 +57,19 @@ class Asteroid : public Entity
 {
 public:
 	bool Update();
+	float velX, velY;
+	int size;
 };
 
 class Asteroids
 {
 public:
+	void CreateAsteroid();
 	void UpdateAll();
 	void RenderAll();
+
+private:
+	std::list<Asteroid*> allAsteroids;
 };
 
 extern Asteroids allAsteroids;
