@@ -1,7 +1,7 @@
 #include "Entity.h"
 #include "GameEngine.h"
 #include "Debug.h"
-#include "Misc Functions.h"
+#include "Random.h"
 #include <math.h>
 
 Bullets allBullets = Bullets();
@@ -136,38 +136,40 @@ void Asteroids::CreateAsteroid()
 
 	int randomNum;
 
-	asteroid->velX = RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
-	asteroid->velY = RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+	Random random;
+
+	asteroid->velX = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+	asteroid->velY = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
 
 	// Setup the asteroids size.
 	// Asteroid sizes are in multiples of 5.
-	asteroid->size = 5 * (rand() % 4 + 1);
+	asteroid->size = 5 * (random.RandomInt(0, 4) + 1);
 	asteroid->tex = game.State()->allTextures.GetTexture("asteroid " + std::to_string(asteroid->size));
 
-	randomNum = rand() % 4;
+	randomNum = random.RandomInt(0, 4);
 	switch (randomNum)
 	{
 	case 0: // spawn randomly at left of screen.
-		asteroid->y = rand() % game.SCREEN_HEIGHT;			
+		asteroid->y = random.RandomInt(0, game.SCREEN_HEIGHT);
 
 		allAsteroids.push_back(asteroid);
 		break;
 
 	case 1:// spawn randomly at right of screen.
-		asteroid->y = rand() % game.SCREEN_HEIGHT;
+		asteroid->y = random.RandomInt(0, game.SCREEN_HEIGHT);
 		asteroid->x = game.SCREEN_WIDTH - 1;		
 
 		allAsteroids.push_back(asteroid);
 		break;
 
 	case 2:// spawn randomly at top of screen;
-		asteroid->x = rand() % game.SCREEN_WIDTH;
+		asteroid->x = random.RandomInt(0, game.SCREEN_WIDTH);
 
 		allAsteroids.push_back(asteroid);
 		break;
 
 	case 3:// spawn randomly at bottom of screen;
-		asteroid->x = rand() % game.SCREEN_WIDTH;
+		asteroid->x = random.RandomInt(0, game.SCREEN_WIDTH);
 		asteroid->y = game.SCREEN_HEIGHT - 1;		
 
 		allAsteroids.push_back(asteroid);

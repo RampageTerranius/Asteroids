@@ -24,7 +24,6 @@ void GameState_PlayField::Init()
 	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
 	this->player.x = game.SCREEN_WIDTH / 2;
 	this->player.y = game.SCREEN_HEIGHT / 2;
-	this->player.velX = 1;
 	this->player.velocity = game.VEL_INC;
 	this->player.turnRate = game.TURN_RATE;
 	this->player.fireInterval = 60;

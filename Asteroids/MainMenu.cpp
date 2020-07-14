@@ -6,6 +6,8 @@
 #include "Command.h"
 #include "Debug.h"
 
+#include "Random.h"
+
 GameState_MainMenu::GameState_MainMenu()
 {
 	menuOptionStart = TTF(game.GetRenderer().renderer);

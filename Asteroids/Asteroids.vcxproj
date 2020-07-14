@@ -156,6 +156,7 @@
     <ClInclude Include="Misc Functions.h" />
     <ClInclude Include="optionsMenu.h" />
     <ClInclude Include="PlayField.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Timer.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Misc Functions.cpp" />
     <ClCompile Include="PlayField.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Timer.cpp" />

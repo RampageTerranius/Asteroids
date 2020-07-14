@@ -25,8 +25,3 @@ float GetDistance(SDL_Point pointA, SDL_Point pointB)
 {
 	return sqrt( pow(pointB.x - pointA.x, 2) + pow(pointB.y - pointA.y, 2) );
 }
-
-float RandomFloat(float min, float max)
-{
-	return ((static_cast<float> (rand()) / static_cast<float> (RAND_MAX)) * (max - min)) + min;
-}
