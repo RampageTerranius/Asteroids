@@ -17,7 +17,7 @@ int Random::RandomInt(int min, int max)
 
 	this->Seed();
 
-	return  ( ( rand() / RAND_MAX) * (max - min) ) + min;
+	return rand() % (max - min) + min;
 }
 
 void Random::Seed()

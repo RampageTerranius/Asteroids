@@ -107,8 +107,12 @@ void GameEngine::PushNewState(GameState* state)
 }
 void GameEngine::PopLastState()
 {
-	this->states.pop_back();
-	debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
+	if (this->states.size() > 0)
+	{
+		delete this->states.at(this->states.size() - 1);
+		this->states.pop_back();
+		debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
+	}
 }
 
 bool GameEngine::HasActiveState()
