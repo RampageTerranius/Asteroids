@@ -8,12 +8,11 @@ class Entity
 public:
 	void Draw();
 	virtual bool Update() = 0;
-	//bool PointIntersectsTexture(SDL_Point point);
+	bool PointIntersectsTexture(SDL_Point point);
 
 	Texture* tex;
 	float x, y;
 	float rotation;
-	bool centerTexture = true;
 };
 
 class Player : public Entity
@@ -57,6 +56,7 @@ class Asteroid : public Entity
 {
 public:
 	bool Update();
+	void Break();
 	float velX, velY;
 	int size;
 };
@@ -65,10 +65,11 @@ class Asteroids
 {
 public:
 	void CreateAsteroid();
+	void CreateAsteroid(int x, int y, float velX, float velY, int size);
 	void UpdateAll();
 	void RenderAll();
 
-private:
+//private:
 	std::list<Asteroid*> allAsteroids;
 };
 

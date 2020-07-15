@@ -21,7 +21,7 @@ std::string GetEXEPath()
 	return "";
 }
 
-float GetDistance(SDL_Point pointA, SDL_Point pointB)
+float GetDistance(float x1, float x2, float y1, float y2)
 {
-	return sqrt( pow(pointB.x - pointA.x, 2) + pow(pointB.y - pointA.y, 2) );
+	return sqrt( pow(x2 - x1, 2) + pow(y2 - y1, 2) );
 }

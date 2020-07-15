@@ -27,7 +27,6 @@ void GameState_PlayField::Init()
 	this->player.velocity = game.VEL_INC;
 	this->player.turnRate = game.TURN_RATE;
 	this->player.fireInterval = 60;
-	this->player.centerTexture = true;
 
 	// Setup key bindings.
 	this->iManager->Bind(SDLK_SPACE, this->commandFire);	

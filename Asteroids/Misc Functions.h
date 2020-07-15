@@ -4,4 +4,4 @@
 #include <string>
 
 std::string GetEXEPath();
-float GetDistance(SDL_Point pointA, SDL_Point pointB);
+float GetDistance(float x1, float x2, float y1, float y2);
