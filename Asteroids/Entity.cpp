@@ -14,33 +14,6 @@ void Entity::Draw()
 		this->tex->Draw(game.GetRenderer().renderer, this->rotation, static_cast <int> (round(this->x)), static_cast <int> (round(this->y)));
 }
 
-bool Entity::PointIntersectsTexture(SDL_Point point)
-{
-	if (!this->tex->HasTexture())
-		return false;
-
-	SDL_Rect rect = this->tex->Rect();
-
-	if (this->tex->centerTextureOnDraw)
-	{
-		rect.x = this->x - (rect.w / 2);
-		rect.y = this->y - (rect.h / 2);
-
-		if (SDL_PointInRect(&point, &rect))
-			return true;
-	}
-	else
-	{
-		rect.x = this->x;
-		rect.y = this->y;
-
-		if (SDL_PointInRect(&point, &rect))
-			return true;
-	}
-
-	return false;
-}
-
 bool Player::Update()
 {
 	// Make sure player hasnt gone over max velocity.
@@ -105,6 +78,7 @@ bool Bullet::Update()
 	for (auto var : allAsteroids.allAsteroids)	
 		if (GetDistance(this->x, var->x, this->y, var->y) <= (var->size / 2))
 		{
+			var->Break();
 
 			debug.Log("Bullet", "Update", "Bullet collided with asteroid");
 			return false;
@@ -168,7 +142,19 @@ bool Asteroid::Update()
 
 void Asteroid::Break()
 {
+	if (size == 5)	
+		allAsteroids.DestroyAsteroid(this);	
+	else
+	{
+		Random random;
 
+		float velXDiv = this->velX / 5;
+		float velYDiv = this->velY / 5;
+
+		allAsteroids.CreateAsteroid(this->x, this->y, random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
+		allAsteroids.CreateAsteroid(this->x, this->y, random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
+		allAsteroids.DestroyAsteroid(this);		
+	}	
 }
 
 void Asteroids::CreateAsteroid(int x, int y, float velX, float velY, int size)
@@ -231,6 +217,12 @@ void Asteroids::CreateAsteroid()
 	}
 
 	CreateAsteroid(x, y, velX, velY, size);
+}
+
+void Asteroids::DestroyAsteroid(Asteroid* asteroid)
+{
+	allAsteroids.remove(asteroid);
+	delete asteroid;
 }
 
 void Asteroids::UpdateAll()

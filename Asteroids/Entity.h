@@ -8,7 +8,6 @@ class Entity
 public:
 	void Draw();
 	virtual bool Update() = 0;
-	bool PointIntersectsTexture(SDL_Point point);
 
 	Texture* tex;
 	float x, y;
@@ -66,6 +65,7 @@ class Asteroids
 public:
 	void CreateAsteroid();
 	void CreateAsteroid(int x, int y, float velX, float velY, int size);
+	void DestroyAsteroid(Asteroid* asteroid);
 	void UpdateAll();
 	void RenderAll();
 
