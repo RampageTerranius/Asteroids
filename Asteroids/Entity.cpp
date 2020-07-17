@@ -142,14 +142,11 @@ bool Asteroid::Update()
 
 void Asteroid::Break()
 {
-	if (size == 5)	
+	if (size == 10)	
 		allAsteroids.DestroyAsteroid(this);	
 	else
 	{
 		Random random;
-
-		float velXDiv = this->velX / 5;
-		float velYDiv = this->velY / 5;
 
 		allAsteroids.CreateAsteroid(this->x, this->y, random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
 		allAsteroids.CreateAsteroid(this->x, this->y, random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
@@ -192,7 +189,7 @@ void Asteroids::CreateAsteroid()
 
 	// Setup the asteroids size.
 	// Asteroid sizes are in multiples of 5.
-	int size = 5 * (random.RandomInt(0, 4) + 1);
+	int size = 5 * (random.RandomInt(2, 5));
 
 	randomNum = random.RandomInt(0, 4);
 	switch (randomNum)
