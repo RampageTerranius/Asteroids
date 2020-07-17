@@ -149,6 +149,8 @@ public:
 private:
 	Player player;
 
+	void CheckForCollisons();
+
 	TTF fps = TTF(nullptr);
 
 	Command* commandFire = new CommandFire();

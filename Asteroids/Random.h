@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <ctime>
 
+// Please keep in mind this class has some slight bias towards lower values.
 class Random
 {
 public:

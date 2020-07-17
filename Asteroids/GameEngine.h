@@ -36,7 +36,7 @@ public:
 	const float VEL_INC = 0.05f;
 	const float MAX_VEL = 5.0f;
 	const int BULLET_DISTANCE = 90;
-	const float BULLET_VELOCITY = 5;
+	const float BULLET_VELOCITY = 7.5;
 	const int FRAME_RATE = 60;
 	const int FRAME_TIME = 1000 / FRAME_RATE;
 	const int MAX_ASTEROID_VEL = 2;

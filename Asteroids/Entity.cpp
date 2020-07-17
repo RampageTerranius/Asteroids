@@ -75,19 +75,15 @@ bool Bullet::Update()
 	else if (this->y > game.SCREEN_HEIGHT)
 		this->y = 0 + (this->y - game.SCREEN_HEIGHT);
 
-	for (auto var : allAsteroids.allAsteroids)	
-		if (GetDistance(this->x, var->x, this->y, var->y) <= (var->size / 2))
-		{
-			var->Break();
-
-			debug.Log("Bullet", "Update", "Bullet collided with asteroid");
-			return false;
-		}
-
 	if (this->distanceLeft < 0)
 		return false;
 
 	return true;
+}
+
+void Bullet::Destroy()
+{
+	allBullets.DestroyBullet(this);
 }
 
 void Bullets::CreateBullet(Player* player, Texture* tex)
@@ -102,6 +98,12 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 	bullet->tex = tex;
 
 	this->allBullets.push_back(bullet);
+}
+
+void Bullets::DestroyBullet(Bullet* bullet)
+{
+	allBullets.remove(bullet);
+	delete bullet;
 }
 
 void Bullets::UpdateAll()

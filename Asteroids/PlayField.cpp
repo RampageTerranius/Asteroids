@@ -4,6 +4,7 @@
 #include "EventHandle.h"
 #include "GameEngine.h"
 #include "Misc Functions.h"
+#include "Debug.h"
 
 GameState_PlayField::GameState_PlayField()
 {
@@ -84,6 +85,28 @@ bool GameState_PlayField::HandleInput()
 	return true;
 }
 
+void GameState_PlayField::CheckForCollisons()
+{
+	for (auto asteroid : allAsteroids.allAsteroids)
+	{
+		for (auto bullet : allBullets.allBullets)
+			if (GetDistance(bullet->x, asteroid->x, bullet->y, asteroid->y) <= (asteroid->size / 2))
+			{
+				asteroid->Break();
+				bullet->Destroy();
+
+				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
+			}
+
+		if (GetDistance(this->player.x, asteroid->x, this->player.y, asteroid->y) <= (asteroid->size / 2))
+		{
+			// Kill player here.
+
+			debug.Log("Bullet", "Update", "Asteroid collided with player");
+		}
+	}		
+}
+
 void GameState_PlayField::HandleEvents()
 {
 	// Handle players events.
@@ -92,6 +115,8 @@ void GameState_PlayField::HandleEvents()
 	allBullets.UpdateAll();
 
 	allAsteroids.UpdateAll();
+
+	CheckForCollisons();
 }
 
 void GameState_PlayField::Render()

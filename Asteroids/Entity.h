@@ -32,6 +32,7 @@ class Bullet : public Entity
 {
 public:
 	bool Update();
+	void Destroy();
 
 	float distanceLeft;
 	float velX, velY;
@@ -42,10 +43,11 @@ class Bullets
 {
 public:
 	void CreateBullet(Player* player, Texture* tex);
+	void DestroyBullet(Bullet* bullet);
 	void UpdateAll();
 	void RenderAll();
 
-private:
+//private:
 	std::list<Bullet*> allBullets;
 };
 
