@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 		game.HandleEvents();
 		game.Render();
 
-		float timerFps = timer.GetTicks();
+		Uint32 timerFps = timer.GetTicks();
 
 		if (timerFps < 1000 / game.FRAME_RATE)
 			SDL_Delay( (1000 / game.FRAME_RATE) - timerFps);

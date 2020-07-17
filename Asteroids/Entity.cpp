@@ -8,6 +8,13 @@
 Bullets allBullets = Bullets();
 Asteroids allAsteroids = Asteroids();
 
+Entity::Entity()
+{
+	tex = nullptr;
+	x = y = 0.0f;
+	rotation = 0.0f;
+}
+
 void Entity::Draw()
 {
 	if (this->tex != nullptr)
@@ -47,6 +54,9 @@ bool Player::Update()
 	if (this->fireTimer > 0)
 		this->fireTimer--;
 
+	if (this->immunityTime > 0)
+		this->immunityTime--;
+
 	return true;
 }
 
@@ -59,11 +69,19 @@ void Player::FireWeapon()
 	}
 }
 
+void Player::Respawn()
+{
+	this->velX = this->velY = 0;
+	this->x = game.SCREEN_WIDTH / 2;
+	this->y = game.SCREEN_HEIGHT / 2;
+	this->immunityTime = 180;
+}
+
 bool Bullet::Update()
 {
 	this->x -= this->velX;
 	this->y -= this->velY;
-	this->distanceLeft--;	
+	this->distanceLeft--;
 
 	if (this->x < 0)
 		this->x = static_cast <float> (game.SCREEN_WIDTH - 1) + this->x;

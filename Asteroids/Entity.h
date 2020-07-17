@@ -6,6 +6,7 @@
 class Entity
 {
 public:
+	Entity();
 	void Draw();
 	virtual bool Update() = 0;
 
@@ -19,6 +20,7 @@ class Player : public Entity
 public:
 	bool Update();
 	void FireWeapon();
+	void Respawn();
 
 	float velX, velY;
 	float velocity;
@@ -26,6 +28,7 @@ public:
 	bool speedBoost;
 	int fireTimer;
 	int fireInterval;
+	int immunityTime;
 };
 
 class Bullet : public Entity

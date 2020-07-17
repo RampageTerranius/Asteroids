@@ -96,15 +96,22 @@ void GameState_PlayField::CheckForCollisons()
 				bullet->Destroy();
 
 				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
+
+				// If we broke an asteroid we need to start the function from scratch as data has been both added and removed from vectors.
+				// Without starting the function again we can only process oen asteroid being destroyed per tick, this should rarely be an issue but must be addressed.
+				CheckForCollisons();
+				return;
 			}
 
-		if (GetDistance(this->player.x, asteroid->x, this->player.y, asteroid->y) <= (asteroid->size / 2))
-		{
-			// Kill player here.
+		if (player.immunityTime == 0)
+			if (GetDistance(this->player.x, asteroid->x, this->player.y, asteroid->y) <= (asteroid->size / 2))
+			{
+				// Kill player here.
+				player.Respawn();
 
-			debug.Log("Bullet", "Update", "Asteroid collided with player");
-		}
-	}		
+				debug.Log("Bullet", "Update", "Asteroid collided with player");
+			}
+	}
 }
 
 void GameState_PlayField::HandleEvents()

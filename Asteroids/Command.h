@@ -5,5 +5,5 @@ class Command
 {
 public:
 	virtual bool Execute(Player* player) { return true; }
-	bool allowContinuousExecution;
+	bool allowContinuousExecution = true;
 };
