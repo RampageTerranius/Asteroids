@@ -52,6 +52,7 @@ void GameState_PlayField::Init()
 
 void GameState_PlayField::Cleanup()
 {
+
 	this->allTextures.Cleanup();
 
 	delete this->commandFire;
@@ -74,6 +75,9 @@ void GameState_PlayField::Cleanup()
 
 	delete this->commandEqualizeVelocity;
 	this->commandEqualizeVelocity = nullptr;
+
+	delete this->commandCreateAsteroid;
+	this->commandCreateAsteroid = nullptr;
 }
 
 bool GameState_PlayField::HandleInput()
