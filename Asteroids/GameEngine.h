@@ -9,6 +9,7 @@
 class GameEngine
 {
 public:
+	GameEngine();
 	// Startup and shutdown of engine.
 	void Init();
 	void Cleanup();
@@ -28,7 +29,7 @@ public:
 	
 	bool running = false;
 
-	float fps;
+	int fps;
 
 	const int SCREEN_WIDTH = 1024;
 	const int SCREEN_HEIGHT = 768;

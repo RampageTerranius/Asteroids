@@ -145,7 +145,20 @@ Texture* Textures::GetTexture(std::string name)
 
 Texture* Textures::CreateTexture(std::string fileLoc, std::string name)
 {
-	Texture* tex = new Texture();
+	Texture* tex = nullptr;
+
+	// First check if a texture under this name already exists.
+	tex = GetTexture(name);
+
+	if (tex != nullptr)
+	{			
+		debug.Log("Textures", "CreateTexture", "A texture with the name of " + name + " already exists. Returning existing texture instead.");
+		return tex;
+	}
+
+	// If it doesnt exist lets create it instead.
+	tex = new Texture();
+
 	if (!tex->Load(fileLoc, name))
 	{
 		delete tex;

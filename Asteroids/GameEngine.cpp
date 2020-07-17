@@ -9,7 +9,13 @@
 #include "GameEngine.h"
 #include "MainMenu.h"
 #include "PlayField.h"
+#include "Misc Functions.h"
 #include "Debug.h"
+
+GameEngine::GameEngine()
+{	
+	Init();	
+}
 
 void GameEngine::Init()
 {
@@ -62,7 +68,7 @@ void GameEngine::Init()
 	this->PushNewState(new GameState_MainMenu());
 	
 	debug.Log("GameEngine", "Init", "Completed setup");
-	this->running = true;
+	this->running = true;	
 }
 
 void GameEngine::Cleanup()

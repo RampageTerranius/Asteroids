@@ -21,6 +21,17 @@ void Entity::Draw()
 		this->tex->Draw(game.GetRenderer().renderer, this->rotation, static_cast <int> (round(this->x)), static_cast <int> (round(this->y)));
 }
 
+Player::Player()
+{
+	velX = velY = 0.0f;
+	velocity = 0.0f;
+	turnRate = 0.0f;
+	speedBoost = false;
+	fireTimer = 0;
+	fireInterval = 0;
+	immunityTime = 0;
+}
+
 bool Player::Update()
 {
 	// Make sure player hasnt gone over max velocity.
@@ -117,8 +128,8 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 
 	bullet->x = player->x;
 	bullet->y = player->y;
-	bullet->velX = static_cast<float> (cos((player->rotation + 90.0f)) * (M_PI / 180)) * ((player->velX * 0.25f) + game.BULLET_VELOCITY);
-	bullet->velY = static_cast<float> (sin((player->rotation + 90.0f)) * (M_PI / 180)) * ((player->velY * 0.25f) + game.BULLET_VELOCITY);
+	bullet->velX = static_cast <float> ( cos( (player->rotation + 90.0f) * (M_PI / 180) ) ) * ((player->velX * 0.25f) + game.BULLET_VELOCITY);
+	bullet->velY = static_cast <float> ( sin( (player->rotation + 90.0f) * (M_PI / 180) ) ) * ((player->velY * 0.25f) + game.BULLET_VELOCITY);
 	bullet->distanceLeft = game.BULLET_DISTANCE;
 	bullet->tex = tex;
 

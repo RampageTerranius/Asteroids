@@ -18,6 +18,7 @@ public:
 class Player : public Entity
 {
 public:
+	Player();
 	bool Update();
 	void FireWeapon();
 	void Respawn();
