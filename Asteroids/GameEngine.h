@@ -39,7 +39,7 @@ public:
 	const float BULLET_VELOCITY = 7.5;
 	const int FRAME_RATE = 60;
 	const int FRAME_TIME = 1000 / FRAME_RATE;
-	const int MAX_ASTEROID_VEL = 2;
+	const float MAX_ASTEROID_VEL = 2.0f;
 
 private:	
 	Renderer renderer = Renderer();

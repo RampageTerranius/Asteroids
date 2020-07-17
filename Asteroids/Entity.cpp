@@ -72,9 +72,16 @@ void Player::FireWeapon()
 void Player::Respawn()
 {
 	this->velX = this->velY = 0;
-	this->x = game.SCREEN_WIDTH / 2;
-	this->y = game.SCREEN_HEIGHT / 2;
+	this->x = static_cast<float> (game.SCREEN_WIDTH) / 2.0f;
+	this->y = static_cast<float> (game.SCREEN_HEIGHT) / 2.0f;
 	this->immunityTime = 180;
+}
+
+Bullet::Bullet()
+{
+	distanceLeft = 0;
+	velX = velY = 0.0f;
+	speed = 0.0f;
 }
 
 bool Bullet::Update()
@@ -110,8 +117,8 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 
 	bullet->x = player->x;
 	bullet->y = player->y;
-	bullet->velX = cos((player->rotation + 90.0f) * (M_PI / 180)) * ((player->velX * 0.25) + game.BULLET_VELOCITY);
-	bullet->velY = sin((player->rotation + 90.0f) * (M_PI / 180)) * ((player->velY * 0.25) + game.BULLET_VELOCITY);
+	bullet->velX = static_cast<float> (cos((player->rotation + 90.0f)) * (M_PI / 180)) * ((player->velX * 0.25f) + game.BULLET_VELOCITY);
+	bullet->velY = static_cast<float> (sin((player->rotation + 90.0f)) * (M_PI / 180)) * ((player->velY * 0.25f) + game.BULLET_VELOCITY);
 	bullet->distanceLeft = game.BULLET_DISTANCE;
 	bullet->tex = tex;
 
@@ -120,7 +127,7 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 
 void Bullets::DestroyBullet(Bullet* bullet)
 {
-	allBullets.remove(bullet);
+	this->allBullets.remove(bullet);
 	delete bullet;
 }
 
@@ -140,6 +147,21 @@ void Bullets::RenderAll()
 {
 	for (auto& var : this->allBullets)
 		var->Draw();
+}
+
+void Bullets::Clear()
+{
+	for (auto it = this->allBullets.begin(); it != this->allBullets.end();)
+		{
+			delete (*it);
+			it = this->allBullets.erase(it);
+		}
+}
+
+Asteroid::Asteroid()
+{
+	velX = velY = 0.0f;
+	size = 0;
 }
 
 bool Asteroid::Update()
@@ -168,8 +190,8 @@ void Asteroid::Break()
 	{
 		Random random;
 
-		allAsteroids.CreateAsteroid(this->x, this->y, random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
-		allAsteroids.CreateAsteroid(this->x, this->y, random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
+		allAsteroids.CreateAsteroid(static_cast <int> (round(this->x)), static_cast <int> (round(this->y)), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
+		allAsteroids.CreateAsteroid(static_cast <int> (round(this->x)), static_cast <int> (round(this->y)), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
 		allAsteroids.DestroyAsteroid(this);		
 	}	
 }
@@ -178,18 +200,14 @@ void Asteroids::CreateAsteroid(int x, int y, float velX, float velY, int size)
 {
 	Asteroid* asteroid = new Asteroid();
 
-	int randomNum;
-
-	Random random;
-
 	asteroid->velX = velX;
 	asteroid->velY = velY;
 
 	asteroid->size = size;
 	asteroid->tex = game.State()->allTextures.GetTexture("asteroid " + std::to_string(asteroid->size));
 
-	asteroid->y = y;
-	asteroid->x = x;
+	asteroid->y = static_cast <float> (y);
+	asteroid->x = static_cast <float> (x);
 
 	allAsteroids.push_back(asteroid);
 
@@ -252,4 +270,13 @@ void Asteroids::RenderAll()
 {
 	for (auto& var : this->allAsteroids)
 		var->Draw();
+}
+
+void Asteroids::Clear()
+{
+	for (auto it = this->allAsteroids.begin(); it != this->allAsteroids.end();)
+	{
+		delete (*it);
+		it = this->allAsteroids.erase(it);
+	}
 }

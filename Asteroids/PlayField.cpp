@@ -7,13 +7,17 @@
 #include "Debug.h"
 
 GameState_PlayField::GameState_PlayField()
-{
-	fps = TTF(game.GetRenderer().renderer);
+{	
 	Init();	
 }
 
 void GameState_PlayField::Init()
 {	
+	allAsteroids.Clear();
+	allBullets.Clear();
+
+	this->fps = TTF(game.GetRenderer().renderer);
+
 	// Load all the textures the playfield requires.
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");	
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 10x10.png", "asteroid 10");
@@ -98,7 +102,7 @@ void GameState_PlayField::CheckForCollisons()
 				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
 
 				// If we broke an asteroid we need to start the function from scratch as data has been both added and removed from vectors.
-				// Without starting the function again we can only process oen asteroid being destroyed per tick, this should rarely be an issue but must be addressed.
+				// Without starting the function again we can only process one asteroid being destroyed per tick, this should rarely be an issue but must be addressed.
 				CheckForCollisons();
 				return;
 			}

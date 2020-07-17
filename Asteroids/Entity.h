@@ -34,10 +34,11 @@ public:
 class Bullet : public Entity
 {
 public:
+	Bullet();
 	bool Update();
 	void Destroy();
 
-	float distanceLeft;
+	int distanceLeft;
 	float velX, velY;
 	float speed;	
 };
@@ -49,6 +50,7 @@ public:
 	void DestroyBullet(Bullet* bullet);
 	void UpdateAll();
 	void RenderAll();
+	void Clear();
 
 //private:
 	std::list<Bullet*> allBullets;
@@ -59,6 +61,7 @@ extern Bullets allBullets;
 class Asteroid : public Entity
 {
 public:
+	Asteroid();
 	bool Update();
 	void Break();
 	float velX, velY;
@@ -73,6 +76,7 @@ public:
 	void DestroyAsteroid(Asteroid* asteroid);
 	void UpdateAll();
 	void RenderAll();
+	void Clear();
 
 //private:
 	std::list<Asteroid*> allAsteroids;
