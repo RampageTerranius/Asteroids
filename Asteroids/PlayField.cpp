@@ -14,11 +14,11 @@ GameState_PlayField::GameState_PlayField()
 void GameState_PlayField::Init()
 {	
 	// Load all the textures the playfield requires.
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 5x5.png", "asteroid 5");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");	
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 10x10.png", "asteroid 10");
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 15x15.png", "asteroid 15");
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 20x20.png", "asteroid 20");
+	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 25x25.png", "asteroid 25");
 
 	// Setup player varaibles.
 	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
