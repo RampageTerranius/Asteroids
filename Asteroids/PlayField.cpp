@@ -28,8 +28,8 @@ void GameState_PlayField::Init()
 
 	// Setup player varaibles.
 	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
-	this->player.x = game.SCREEN_WIDTH / 2;
-	this->player.y = game.SCREEN_HEIGHT / 2;
+	this->player.x = static_cast <float> (game.SCREEN_WIDTH) / 2.0f;
+	this->player.y = static_cast <float> (game.SCREEN_HEIGHT) / 2.0f;
 	this->player.velocity = game.VEL_INC;
 	this->player.turnRate = game.TURN_RATE;
 	this->player.fireInterval = 60;

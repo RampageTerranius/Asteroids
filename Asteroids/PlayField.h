@@ -13,7 +13,7 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->rotation -= player->turnRate * i;
+		player->rotation -= player->turnRate * static_cast <float> (i);
 		return true;
 	}
 };
@@ -28,7 +28,7 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->rotation += player->turnRate * i;
+		player->rotation += player->turnRate * static_cast <float> (i);
 		return true;
 	}
 };
@@ -43,8 +43,8 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->velX -= (cos((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
-		player->velY -= (sin((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
+		player->velX -= ( static_cast <float> (cos((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
+		player->velY -= ( static_cast <float> (sin((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 
 		return true;
 	}
@@ -60,8 +60,8 @@ public:
 		if (player->speedBoost)
 			i = 2;
 
-		player->velX += (cos((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
-		player->velY += (sin((player->rotation + 90.0f) * (M_PI / 180)) * player->velocity) * i;
+		player->velX += (static_cast <float> (cos((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
+		player->velY += (static_cast <float> (sin((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 		return true;
 	}
 };

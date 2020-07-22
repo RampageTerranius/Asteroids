@@ -29,8 +29,8 @@ int main(int argc, char* argv[])
 		Uint32 timerFps = timer.GetTicks();
 		framesCounted++;
 
-		if (timerFps < 1000 / game.FRAME_RATE)
-			SDL_Delay( (1000 / game.FRAME_RATE) - timerFps);
+		if (timerFps < (1000u / game.FRAME_RATE))
+			SDL_Delay( (1000u / game.FRAME_RATE) - timerFps);
 
 		if (fTimer.GetTicks() - lastTickTime >= 1000)
 		{

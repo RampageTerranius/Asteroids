@@ -271,7 +271,7 @@ void Asteroids::CreateAsteroid(Player* player)
 			break;
 		}
 
-		float distance = GetDistance(x, player->x, y, player->y);
+		float distance = GetDistance(static_cast <float> (x), player->x, static_cast <float> (y), player->y);
 
 		if (distance >= game.AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER)
 			finished = true;
