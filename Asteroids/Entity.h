@@ -72,7 +72,7 @@ public:
 class Asteroids
 {
 public:
-	void CreateAsteroid();
+	void CreateAsteroid(Player* player);
 	void CreateAsteroid(int x, int y, float velX, float velY, int size);
 	void DestroyAsteroid(Asteroid* asteroid);
 	void UpdateAll();

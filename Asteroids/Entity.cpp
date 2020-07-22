@@ -225,42 +225,57 @@ void Asteroids::CreateAsteroid(int x, int y, float velX, float velY, int size)
 	debug.Log("Asteroids", "CreateAsteroid", "Created asteroid at " + std::to_string(asteroid->x) + " \\" + std::to_string(asteroid->y) + " with velocity " + std::to_string(asteroid->velX) + "\\" + std::to_string(asteroid->velY) + " at size of " + std::to_string(asteroid->size));
 }
 
-void Asteroids::CreateAsteroid()
+void Asteroids::CreateAsteroid(Player* player)
 {
 	int randomNum;
 
 	Random random;
 
-	int x = 0;
-	int y = 0;
-	float velX = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
-	float velY = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+	bool finished = false;
+	int x;
+	int y;
+	float velX;
+	float velY;
+	int size;
 
-	// Setup the asteroids size.
-	// Asteroid sizes are in multiples of 5.
-	int size = 5 * (random.RandomInt(2, 5));
-
-	randomNum = random.RandomInt(0, 4);
-	switch (randomNum)
+	while (!finished)
 	{
-	case 0: // spawn randomly at left of screen.
-		y = random.RandomInt(0, game.SCREEN_HEIGHT);
-		break;
+		x = 0;
+		y = 0;
+		velX = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+		velY = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
 
-	case 1:// spawn randomly at right of screen.
-		y = random.RandomInt(0, game.SCREEN_HEIGHT);
-		x = game.SCREEN_WIDTH - 1;
-		break;
+		// Setup the asteroids size.
+		// Asteroid sizes are in multiples of 5.
+		size = 5 * (random.RandomInt(2, 5));
 
-	case 2:// spawn randomly at top of screen;
-		x = random.RandomInt(0, game.SCREEN_WIDTH);
-		break;
+		randomNum = random.RandomInt(0, 4);
+		switch (randomNum)
+		{
+		case 0: // spawn randomly at left of screen.
+			y = random.RandomInt(0, game.SCREEN_HEIGHT);
+			break;
 
-	case 3:// spawn randomly at bottom of screen;
-		x = random.RandomInt(0, game.SCREEN_WIDTH);
-		y = game.SCREEN_HEIGHT - 1;
-		break;
-	}
+		case 1:// spawn randomly at right of screen.
+			y = random.RandomInt(0, game.SCREEN_HEIGHT);
+			x = game.SCREEN_WIDTH - 1;
+			break;
+
+		case 2:// spawn randomly at top of screen;
+			x = random.RandomInt(0, game.SCREEN_WIDTH);
+			break;
+
+		case 3:// spawn randomly at bottom of screen;
+			x = random.RandomInt(0, game.SCREEN_WIDTH);
+			y = game.SCREEN_HEIGHT - 1;
+			break;
+		}
+
+		float distance = GetDistance(x, player->x, y, player->y);
+
+		if (distance >= game.AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER)
+			finished = true;
+	}	
 
 	CreateAsteroid(x, y, velX, velY, size);
 }

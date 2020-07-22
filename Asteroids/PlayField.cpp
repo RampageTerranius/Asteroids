@@ -123,6 +123,26 @@ void GameState_PlayField::CheckForCollisons()
 	}
 }
 
+void GameState_PlayField::CheckForNewAsteroids()
+{
+	int totalSize = 0;
+	for (auto asteroid : allAsteroids.allAsteroids)
+		totalSize += asteroid->size;
+
+	if (totalSize < game.AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX)
+	{
+		this->asteroidAutoSpawnTimer--;
+
+		if (this->asteroidAutoSpawnTimer <= 0)
+		{
+			allAsteroids.CreateAsteroid(&this->player);
+			this->asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
+		}
+	}
+	else
+		this->asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
+}
+
 void GameState_PlayField::HandleEvents()
 {
 	// Handle players events.
@@ -133,6 +153,8 @@ void GameState_PlayField::HandleEvents()
 	allAsteroids.UpdateAll();
 
 	CheckForCollisons();
+
+	CheckForNewAsteroids();
 }
 
 void GameState_PlayField::Render()

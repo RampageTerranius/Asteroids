@@ -129,7 +129,7 @@ public:
 	CommandCreateAsteroid() { this->allowContinuousExecution = false; }
 	bool Execute(Player* player)
 	{
-		allAsteroids.CreateAsteroid();
+		allAsteroids.CreateAsteroid(player);
 		return true;
 	}
 };
@@ -146,10 +146,13 @@ public:
 	void HandleEvents();
 	void Render();
 
+	int asteroidAutoSpawnTimer;
+
 private:
 	Player player;
 
 	void CheckForCollisons();
+	void CheckForNewAsteroids();
 
 	TTF fps = TTF(nullptr);
 

@@ -41,6 +41,9 @@ public:
 	const int FRAME_RATE = 60;
 	const int FRAME_TIME = 1000 / FRAME_RATE;
 	const float MAX_ASTEROID_VEL = 2.0f;
+	const int AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = 200;
+	const int AUTO_SPAWN_ASTEROIDS_TIMER = 300;
+	const float AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = 25;
 
 private:	
 	Renderer renderer = Renderer();
