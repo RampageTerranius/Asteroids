@@ -253,7 +253,7 @@ void Asteroids::CreateAsteroid(int x, int y, float velX, float velY, int size)
 
 	allAsteroids.push_back(asteroid);
 
-	debug.Log("Asteroids", "CreateAsteroid", "Created asteroid at " + std::to_string(asteroid->x) + " \\" + std::to_string(asteroid->y) + " with velocity " + std::to_string(asteroid->velX) + "\\" + std::to_string(asteroid->velY) + " at size of " + std::to_string(asteroid->size));
+	debug.Log("Asteroids", "CreateAsteroid", "Created asteroid at " + std::to_string(asteroid->x) + "\\" + std::to_string(asteroid->y) + " with velocity " + std::to_string(asteroid->velX) + "\\" + std::to_string(asteroid->velY) + " at size of " + std::to_string(asteroid->size));
 }
 
 void Asteroids::CreateAsteroid(Player* player)
@@ -313,7 +313,7 @@ void Asteroids::CreateAsteroid(Player* player)
 
 void Asteroids::DestroyAsteroid(Asteroid* asteroid)
 {
-	allAsteroids.remove(asteroid);
+	this->allAsteroids.remove(asteroid);
 	delete asteroid;
 }
 

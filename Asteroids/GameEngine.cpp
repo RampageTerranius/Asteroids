@@ -91,16 +91,19 @@ void GameEngine::Cleanup()
 	debug.Log("GameEngine", "Cleanup", "Cleanup complete");
 }
 
+// Ask the current GameState to run its HandleInput code.
 void GameEngine::HandleInput()
 {	
 	this->running = this->State()->HandleInput();
 }
 
+// Ask the current GameState to run its HandleEvents code.
 void GameEngine::HandleEvents()
 {
 	this->State()->HandleEvents();
 }
 
+// Ask the current GameState to run its Render code.
 void GameEngine::Render()
 {
 	this->State()->Render();
@@ -111,6 +114,7 @@ void GameEngine::PushNewState(GameState* state)
 	states.push_back(state);
 	debug.Log("GameEngine", "PushNewState", "Pushed new state as active.");
 }
+
 void GameEngine::PopLastState()
 {
 	if (this->states.size() > 0)

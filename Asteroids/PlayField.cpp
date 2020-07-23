@@ -55,28 +55,13 @@ void GameState_PlayField::Cleanup()
 	this->allTextures.Cleanup();
 
 	delete this->commandFire;
-	this->commandFire = nullptr;
-
 	delete this->commandForwards;
-	this->commandForwards = nullptr;
-
 	delete this->commandBackwards;
-	this->commandBackwards = nullptr;
-
 	delete this->commandRotateLeft;
-	this->commandRotateLeft = nullptr;
-
 	delete this->commandRotateRight;
-	this->commandRotateRight = nullptr;
-
 	delete this->commandBoost;
-	this->commandBoost = nullptr;
-
 	delete this->commandEqualizeVelocity;
-	this->commandEqualizeVelocity = nullptr;
-
 	delete this->commandCreateAsteroid;
-	this->commandCreateAsteroid = nullptr;
 }
 
 bool GameState_PlayField::HandleInput()

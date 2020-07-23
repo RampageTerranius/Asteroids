@@ -180,13 +180,13 @@ Texture* Textures::CreateTexture(std::string fileLoc, std::string name)
 
 bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 {
-	Texture* tex = new Texture();
-
 	if (texture == nullptr)
 	{
 		debug.Log("Textures", "AddTexture", "given texture was nullptr, can not add a blank texture");
 		return false;
 	}
+
+	Texture* tex = new Texture();
 
 	tex->SetTexture(texture, name);
 
@@ -198,10 +198,12 @@ bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 void Textures::DeleteTexture(std::string name)
 {
 	int i = 0;
+
 	for (auto& tex : textureList)
 		if (tex->Name() == name)
 		{
-			textureList.erase(textureList.begin() + i);			
+			delete textureList[i];
+			textureList.erase(textureList.begin() + i);	
 			break;
 		}
 		else
