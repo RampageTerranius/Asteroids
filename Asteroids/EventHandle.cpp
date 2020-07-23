@@ -12,13 +12,6 @@ InputManager::InputManager()
 	mouse = SDL_Point{ 0,0 };	
 }
 
-// Delete all command pointers on deconstruction.
-InputManager::~InputManager()
-{
-	for (std::map<int, Command*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
-		delete iter->second;
-}
-
 // Generates all input and processes commands.
 // Used if Commands are required.
 bool InputManager::GenerateInputAndDispatchCommands(std::vector<Command*>& CommandVector)

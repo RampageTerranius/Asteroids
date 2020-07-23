@@ -49,10 +49,10 @@ void GameState_MainMenu::Cleanup()
 
 bool GameState_MainMenu::HandleInput()
 {
-	bool running = iManager->GenerateInput();
+	bool running = iManager.GenerateInput();
 
 	// Player has asked to goto next state.
-	if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDLK_SPACE))
+	if (iManager.JustPressed(SDL_BUTTON_LEFT) || iManager.JustPressed(SDLK_SPACE))
 		switch (menuOption)
 		{
 		case MenuOption::options:
@@ -68,7 +68,7 @@ bool GameState_MainMenu::HandleInput()
 		}
 
 	// On pressing down go to next menu option.
-	if (iManager->JustPressed(SDLK_s) || iManager->JustPressed(SDLK_DOWN))
+	if (iManager.JustPressed(SDLK_s) || iManager.JustPressed(SDLK_DOWN))
 	{
 		int i = static_cast <int> (menuOption);
 		i++;
@@ -78,7 +78,7 @@ bool GameState_MainMenu::HandleInput()
 	}
 
 	// On pressing up go to the previous menu option.
-	if (iManager->JustPressed(SDLK_w) || iManager->JustPressed(SDLK_UP))
+	if (iManager.JustPressed(SDLK_w) || iManager.JustPressed(SDLK_UP))
 	{
 		int i = static_cast <int> (menuOption);
 		i--;
@@ -93,7 +93,7 @@ bool GameState_MainMenu::HandleInput()
 
 void GameState_MainMenu::HandleEvents()
 {
-	SDL_Point point = iManager->GetMouseLocation();	
+	SDL_Point point = iManager.GetMouseLocation();	
 
 	if (menuOptionOptions.PointIntersectsTexture(point))	
 		menuOption = MenuOption::options;

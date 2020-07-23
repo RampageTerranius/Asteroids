@@ -27,5 +27,5 @@ private:
 	TTF menuOptionOptions = TTF(nullptr);
 	TTF menuOptionQuit = TTF(nullptr);
 
-	MenuOption menuOption;
+	MenuOption menuOption;	
 };

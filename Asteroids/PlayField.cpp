@@ -34,14 +34,14 @@ void GameState_PlayField::Init()
 	player.fireInterval = 60;
 
 	// Setup key bindings.
-	iManager->Bind(SDLK_SPACE, commandFire);	
-	iManager->Bind(SDLK_w, commandForwards);
-	iManager->Bind(SDLK_s, commandBackwards);
-	iManager->Bind(SDLK_a, commandRotateLeft);
-	iManager->Bind(SDLK_d, commandRotateRight);
-	iManager->Bind(SDLK_LSHIFT, commandBoost);
-	iManager->Bind(SDLK_c, commandEqualizeVelocity);
-	iManager->Bind(SDLK_f, commandCreateAsteroid);
+	iManager.Bind(SDLK_SPACE, commandFire);	
+	iManager.Bind(SDLK_w, commandForwards);
+	iManager.Bind(SDLK_s, commandBackwards);
+	iManager.Bind(SDLK_a, commandRotateLeft);
+	iManager.Bind(SDLK_d, commandRotateRight);
+	iManager.Bind(SDLK_LSHIFT, commandBoost);
+	iManager.Bind(SDLK_c, commandEqualizeVelocity);
+	iManager.Bind(SDLK_f, commandCreateAsteroid);
 
 	fps.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 	fps.CenterImage(false);
@@ -65,22 +65,22 @@ void GameState_PlayField::Cleanup()
 
 bool GameState_PlayField::HandleInput()
 {
-	bool running = iManager->GenerateInputAndDispatchCommands();
+	bool running = iManager.GenerateInputAndDispatchCommands();
 
 	// Process the command list as necessary.
-	if (!iManager->ProcessCommandList(&player))
+	if (!iManager.ProcessCommandList(&player))
 		running = false;
 	else
 	{
 		// Check for other input.
-		if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDL_BUTTON_RIGHT))
+		if (iManager.JustPressed(SDL_BUTTON_LEFT) || iManager.JustPressed(SDL_BUTTON_RIGHT))
 		{
-			SDL_Point mouseLoc = iManager->GetMouseLocation();
+			SDL_Point mouseLoc = iManager.GetMouseLocation();
 
 			for (auto asteroid : allAsteroids.allAsteroids)
 				if (GetDistance(asteroid->x, asteroid->y, mouseLoc.x, mouseLoc.y) <= (asteroid->size / 2))
 				{
-					if (iManager->JustPressed(SDL_BUTTON_LEFT))
+					if (iManager.JustPressed(SDL_BUTTON_LEFT))
 						asteroid->Break(nullptr);
 					else
 					{
@@ -107,12 +107,12 @@ void GameState_PlayField::CheckForCollisons()
 {
 	for (auto asteroid : allAsteroids.allAsteroids)
 	{
+		// TODO: check for a better way to handle this, recalling CheckForCollisions cant be the optimal way to do this...
 		for (auto bullet : allBullets.allBullets)
 			if (GetDistance(bullet->x, bullet->y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
 				asteroid->Break(bullet);
 				bullet->Destroy();
-
 				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
 
 				// If we broke an asteroid we need to start the function from scratch as data has been both added and removed from vectors.
@@ -124,9 +124,7 @@ void GameState_PlayField::CheckForCollisons()
 		if (player.immunityTime == 0)
 			if (GetDistance(player.x, player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
-				// Kill player here.
 				player.Respawn();
-
 				debug.Log("Bullet", "Update", "Asteroid collided with player");
 			}
 	}

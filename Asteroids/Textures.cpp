@@ -24,7 +24,7 @@ void Texture::Clear()
 	rect.x = 0;
 	rect.y = 0;
 	rect.h = 0;
-	rect.w = 0;
+	rect.w = 0;	
 }
 
 bool Texture::Load(std::string fileLoc, std::string newName)
@@ -129,13 +129,13 @@ bool Texture::SetTexture(SDL_Texture* texture, std::string newName)
 
 void Textures::Cleanup()
 {
-	for (auto it = textureList.begin(); it != textureList.end();)
-		{
-			(*it)->Clear();
-			delete (*it);
-			(*it) = nullptr;
-			it = textureList.erase(it);
-		}	
+	for (int i = 0; i < textureList.size(); i++)
+	{
+		textureList.at(i)->Clear();
+		delete textureList.at(i);
+	}
+
+	textureList.clear();
 
 	debug.Log("Textures", "Cleanup", "Destroyed all textures");
 }

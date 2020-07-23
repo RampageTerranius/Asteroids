@@ -120,8 +120,9 @@ void GameEngine::PopLastState()
 	if (states.size() > 0)
 	{
 		states.back()->Cleanup();
-		delete states[states.size() - 1];
-		states.pop_back();
+		delete states.back();
+		states.pop_back();		
+
 		debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
 	}
 }

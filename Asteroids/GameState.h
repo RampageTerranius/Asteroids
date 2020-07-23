@@ -16,7 +16,5 @@ public:
 	virtual void Render() = 0;
 
 	Textures allTextures;
-
-protected:	
-	InputManager* iManager = new InputManager();
+	InputManager iManager;
 };

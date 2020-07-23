@@ -24,7 +24,6 @@ enum class KeyState
 class InputManager
 {
 public:
-	~InputManager();
 	InputManager();
 	bool GenerateInputAndDispatchCommands();
 	bool GenerateInputAndDispatchCommands(std::vector<Command*>& commandVector);
