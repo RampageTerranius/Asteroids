@@ -10,5 +10,5 @@ public:
 	int RandomInt(int min, int max);
 private:
 	void Seed();
-	bool seeded;
+	static bool seeded;
 };

@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include "Random.h"
 #include "Misc Functions.h"
+#include "Vector2D.h"
 #include <math.h>
 
 Bullets allBullets = Bullets();
@@ -128,10 +129,12 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 
 	bullet->x = player->x;
 	bullet->y = player->y;
+	bullet->startX = bullet->x;
+	bullet->startY = bullet->y;
 	bullet->velX = static_cast <float> ( cos( (player->rotation + 90.0f) * (M_PI / 180) ) ) * ((player->velX * 0.25f) + game.BULLET_VELOCITY);
 	bullet->velY = static_cast <float> ( sin( (player->rotation + 90.0f) * (M_PI / 180) ) ) * ((player->velY * 0.25f) + game.BULLET_VELOCITY);
 	bullet->distanceLeft = game.BULLET_DISTANCE;
-	bullet->tex = tex;
+	bullet->tex = tex;	
 
 	this->allBullets.push_back(bullet);
 }
@@ -193,17 +196,45 @@ bool Asteroid::Update()
 	return true;
 }
 
-void Asteroid::Break()
+void Asteroid::Break(Bullet* bullet)
 {
 	if (size == 10)	
-		allAsteroids.DestroyAsteroid(this);	
+		allAsteroids.DestroyAsteroid(this);
 	else
 	{
 		Random random;
+		
+		int splits = 2;
 
-		allAsteroids.CreateAsteroid(static_cast <int> (round(this->x)), static_cast <int> (round(this->y)), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
-		allAsteroids.CreateAsteroid(static_cast <int> (round(this->x)), static_cast <int> (round(this->y)), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL), this->size - 5);
-		allAsteroids.DestroyAsteroid(this);		
+		while (splits > 0)
+		{
+			float calcualtedVelX;
+			float calcualtedVelY;
+
+			// Check if we have a bullet or not.
+			// If we do calculate using its trajectory.
+			// Otherwise just randomise the split direction.
+			if (bullet != nullptr)
+			{
+				// Use a mathimatical 2D vector to determine what velocity the asteroid will be moving at.
+				Vector2D diffVec(this->x - bullet->startX, this->y - bullet->startY);
+				diffVec.Normalize();
+				diffVec.Multiply(game.MAX_ASTEROID_VEL);
+
+				calcualtedVelX = -(diffVec.x * (random.RandomFloat(0, 1)));
+				calcualtedVelY = -(diffVec.y * (random.RandomFloat(0, 1)));
+			}
+			else
+			{
+				calcualtedVelX = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+				calcualtedVelY = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
+			}
+
+			allAsteroids.CreateAsteroid(static_cast <int> (round(this->x)), static_cast <int> (round(this->y)), calcualtedVelX, calcualtedVelY, this->size - 5);
+			splits--;
+		}
+
+		allAsteroids.DestroyAsteroid(this);
 	}	
 }
 
@@ -271,7 +302,7 @@ void Asteroids::CreateAsteroid(Player* player)
 			break;
 		}
 
-		float distance = GetDistance(static_cast <float> (x), player->x, static_cast <float> (y), player->y);
+		float distance = GetDistance(static_cast <float> (x), static_cast <float> (y), player->x, player->y);
 
 		if (distance >= game.AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER)
 			finished = true;

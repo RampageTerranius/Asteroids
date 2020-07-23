@@ -161,6 +161,7 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TTF.h" />
+    <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Debug.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TTF.cpp" />
+    <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

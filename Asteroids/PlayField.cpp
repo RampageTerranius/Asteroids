@@ -52,7 +52,6 @@ void GameState_PlayField::Init()
 
 void GameState_PlayField::Cleanup()
 {
-
 	this->allTextures.Cleanup();
 
 	delete this->commandFire;
@@ -84,8 +83,34 @@ bool GameState_PlayField::HandleInput()
 {
 	bool running = this->iManager->GenerateInputAndDispatchCommands();
 
+	// Process the command list as necessary.
 	if (!this->iManager->ProcessCommandList(&this->player))
 		running = false;
+	else
+	{
+		// Check for other input.
+		if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDL_BUTTON_RIGHT))
+		{
+			SDL_Point mouseLoc = this->iManager->GetMouseLocation();
+
+			for (auto asteroid : allAsteroids.allAsteroids)
+				if (GetDistance(asteroid->x, asteroid->y, mouseLoc.x, mouseLoc.y) <= (asteroid->size / 2))
+				{
+					if (iManager->JustPressed(SDL_BUTTON_LEFT))
+						asteroid->Break(nullptr);
+					else
+					{
+						Bullet b;
+						b.x = player.x;
+						b.y = player.y;
+						b.startX = player.x;
+						b.startY = player.y;
+						asteroid->Break(&b);
+					}
+					break;
+				}
+		}
+	}
 
 	// If the user has signaled to exit we instead want to pop the current state and revert to the last state (generally this means going back to the menu)
 	if (!running)
@@ -99,9 +124,9 @@ void GameState_PlayField::CheckForCollisons()
 	for (auto asteroid : allAsteroids.allAsteroids)
 	{
 		for (auto bullet : allBullets.allBullets)
-			if (GetDistance(bullet->x, asteroid->x, bullet->y, asteroid->y) <= (asteroid->size / 2))
+			if (GetDistance(bullet->x, bullet->y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
-				asteroid->Break();
+				asteroid->Break(bullet);
 				bullet->Destroy();
 
 				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
@@ -113,7 +138,7 @@ void GameState_PlayField::CheckForCollisons()
 			}
 
 		if (player.immunityTime == 0)
-			if (GetDistance(this->player.x, asteroid->x, this->player.y, asteroid->y) <= (asteroid->size / 2))
+			if (GetDistance(this->player.x, this->player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
 				// Kill player here.
 				player.Respawn();
@@ -125,10 +150,15 @@ void GameState_PlayField::CheckForCollisons()
 
 void GameState_PlayField::CheckForNewAsteroids()
 {
+	// Check if we are allowed to potentially create new asteroids.
+	if (!game.AUTO_SPAWN_ASTEROIDS)
+		return;
+
 	int totalSize = 0;
 	for (auto asteroid : allAsteroids.allAsteroids)
 		totalSize += asteroid->size;
 
+	// Check if we are below the total size limit of asteroids and if so count down a timer to spawn a new one.
 	if (totalSize < game.AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX)
 	{
 		this->asteroidAutoSpawnTimer--;

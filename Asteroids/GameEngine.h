@@ -45,6 +45,7 @@ public:
 	const float MAX_VEL = 5.0f;
 	const int BULLET_DISTANCE = 90;
 
+	const bool AUTO_SPAWN_ASTEROIDS = true;
 	const float MAX_ASTEROID_VEL = 2.0f;
 	const int AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = 200;
 	const int AUTO_SPAWN_ASTEROIDS_TIMER = 300;

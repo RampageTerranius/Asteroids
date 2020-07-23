@@ -41,7 +41,8 @@ public:
 
 	int distanceLeft;
 	float velX, velY;
-	float speed;	
+	float startX, startY;
+	float speed;
 };
 
 class Bullets
@@ -64,7 +65,7 @@ class Asteroid : public Entity
 public:
 	Asteroid();
 	bool Update();
-	void Break();
+	void Break(Bullet* bullet);
 	float velX, velY;
 	int size;
 };

@@ -1,5 +1,7 @@
 #include "Random.h"
 
+bool Random::seeded = false;
+
 float Random::RandomFloat(float min, float max)
 {
 	if (min >= max)
@@ -7,7 +9,9 @@ float Random::RandomFloat(float min, float max)
 
 	this->Seed();
 
-	return ( ( static_cast<float> (rand()) / static_cast<float> (RAND_MAX) ) * (max - min) ) + min;
+	float f = ((static_cast<float> (rand()) / static_cast<float> (RAND_MAX)) * (max - min)) + min;
+
+	return f;
 }
 
 int Random::RandomInt(int min, int max)
@@ -17,7 +21,9 @@ int Random::RandomInt(int min, int max)
 
 	this->Seed();
 
-	return rand() % (max - min + 1) + min;
+	int i = rand() % (max - min + 1) + min;
+
+	return i;
 }
 
 void Random::Seed()
