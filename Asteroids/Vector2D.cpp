@@ -4,39 +4,39 @@
 
 Vector2D::Vector2D(float newX, float newY)
 {
-	this->x = newX;
-	this->y = newY;
+	x = newX;
+	y = newY;
 }
 
 void Vector2D::Add(float vec)
 {
-	this->x += vec;
-	this->y += vec;
+	x += vec;
+	y += vec;
 }
 
 void Vector2D::Subtract(float vec)
 {
-	this->x -= vec;
-	this->y -= vec;
+	x -= vec;
+	y -= vec;
 }
 
 void Vector2D::Multiply(float vec)
 {
-	this->x *= vec;
-	this->y *= vec;
+	x *= vec;
+	y *= vec;
 }
 
 void Vector2D::Divide(float vec)
 {
-	this->x /= vec;
-	this->y /= vec;
+	x /= vec;
+	y /= vec;
 }
 
 void Vector2D::Normalize()
 {
 	float len = Length();
-	this->x /= len;
-	this->y /= len;
+	x /= len;
+	y /= len;
 };
 
 float Vector2D::Length()
@@ -46,5 +46,5 @@ float Vector2D::Length()
 
 std::string Vector2D::ToString()
 {
-	return std::to_string(this->x) + "/" + std::to_string(this->y);
+	return std::to_string(x) + "/" + std::to_string(y);
 }

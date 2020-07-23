@@ -6,7 +6,7 @@
 class CommandMoveLeft : public Command
 {
 public:
-	CommandMoveLeft() { this->allowContinuousExecution = true; }
+	CommandMoveLeft() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
 		double i = 1;
@@ -21,7 +21,7 @@ public:
 class CommandMoveRight : public Command
 {
 public:
-	CommandMoveRight() { this->allowContinuousExecution = true; }
+	CommandMoveRight() { allowContinuousExecution = true; }
 	bool Execute(Player* player) 
 	{ 
 		double i = 1;
@@ -36,7 +36,7 @@ public:
 class CommandMoveForward : public Command
 {
 public:
-	CommandMoveForward() { this->allowContinuousExecution = true; }
+	CommandMoveForward() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
 		double i = 1;
@@ -53,7 +53,7 @@ public:
 class CommandMoveBackwards : public Command
 {
 public:
-	CommandMoveBackwards() { this->allowContinuousExecution = true; }
+	CommandMoveBackwards() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
 		double i = 1;
@@ -69,7 +69,7 @@ public:
 class CommandFire : public Command
 {
 public:
-	CommandFire() { this->allowContinuousExecution = true; }
+	CommandFire() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
 		player->FireWeapon();
@@ -80,7 +80,7 @@ public:
 class CommandBoost : public Command
 {
 public:
-	CommandBoost() { this->allowContinuousExecution = true; }
+	CommandBoost() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
 		player->speedBoost = true;
@@ -91,7 +91,7 @@ public:
 class CommandEqualizeVelocity : public Command
 {
 public:
-	CommandEqualizeVelocity() { this->allowContinuousExecution = true; }
+	CommandEqualizeVelocity() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{		
 		if (player->velX > 0)
@@ -126,7 +126,7 @@ public:
 class CommandCreateAsteroid : public Command
 {
 public:
-	CommandCreateAsteroid() { this->allowContinuousExecution = false; }
+	CommandCreateAsteroid() { allowContinuousExecution = false; }
 	bool Execute(Player* player)
 	{
 		allAsteroids.CreateAsteroid(player);

@@ -49,11 +49,11 @@ void GameState_MainMenu::Cleanup()
 
 bool GameState_MainMenu::HandleInput()
 {
-	bool running = this->iManager->GenerateInput();
+	bool running = iManager->GenerateInput();
 
 	// Player has asked to goto next state.
 	if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDLK_SPACE))
-		switch (this->menuOption)
+		switch (menuOption)
 		{
 		case MenuOption::options:
 			break;
@@ -70,22 +70,22 @@ bool GameState_MainMenu::HandleInput()
 	// On pressing down go to next menu option.
 	if (iManager->JustPressed(SDLK_s) || iManager->JustPressed(SDLK_DOWN))
 	{
-		int i = static_cast <int> (this->menuOption);
+		int i = static_cast <int> (menuOption);
 		i++;
 		if (i >= static_cast <int> (MenuOption::totalCount))
 			i = 1;
-		this->menuOption = static_cast <MenuOption> (i);
+		menuOption = static_cast <MenuOption> (i);
 	}
 
 	// On pressing up go to the previous menu option.
 	if (iManager->JustPressed(SDLK_w) || iManager->JustPressed(SDLK_UP))
 	{
-		int i = static_cast <int> (this->menuOption);
+		int i = static_cast <int> (menuOption);
 		i--;
 		if (i < 1)
 			i = static_cast <int> (MenuOption::totalCount) - 1;
 
-		this->menuOption = static_cast <MenuOption> (i);
+		menuOption = static_cast <MenuOption> (i);
 	}
 
 	return running;
@@ -96,13 +96,13 @@ void GameState_MainMenu::HandleEvents()
 	SDL_Point point = iManager->GetMouseLocation();	
 
 	if (menuOptionOptions.PointIntersectsTexture(point))	
-		this->menuOption = MenuOption::options;
+		menuOption = MenuOption::options;
 
 	if (menuOptionQuit.PointIntersectsTexture(point))	
-		this->menuOption = MenuOption::quit;	
+		menuOption = MenuOption::quit;	
 
 	if (menuOptionStart.PointIntersectsTexture(point))	
-		this->menuOption = MenuOption::start;
+		menuOption = MenuOption::start;
 }
 
 void GameState_MainMenu::Render()
@@ -113,7 +113,7 @@ void GameState_MainMenu::Render()
 	menuOptionQuit.SetColor(255, 255, 255);
 	menuOptionStart.SetColor(255, 255, 255);
 
-	switch (this->menuOption)
+	switch (menuOption)
 	{
 	case MenuOption::options:
 		menuOptionOptions.SetColor(0, 0, 200);

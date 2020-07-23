@@ -16,10 +16,9 @@ void GameState_PlayField::Init()
 	allAsteroids.Clear();
 	allBullets.Clear();
 
-	this->fps = TTF(game.GetRenderer().renderer);
+	fps = TTF(game.GetRenderer().renderer);
 
 	// Load all the textures the playfield requires.
-	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 10x10.png", "asteroid 10");
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 15x15.png", "asteroid 15");
@@ -27,22 +26,22 @@ void GameState_PlayField::Init()
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 25x25.png", "asteroid 25");
 
 	// Setup player varaibles.
-	this->player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
-	this->player.x = static_cast <float> (game.SCREEN_WIDTH) / 2.0f;
-	this->player.y = static_cast <float> (game.SCREEN_HEIGHT) / 2.0f;
-	this->player.velocity = game.VEL_INC;
-	this->player.turnRate = game.TURN_RATE;
-	this->player.fireInterval = 60;
+	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
+	player.x = static_cast <float> (game.SCREEN_WIDTH) / 2.0f;
+	player.y = static_cast <float> (game.SCREEN_HEIGHT) / 2.0f;
+	player.velocity = game.VEL_INC;
+	player.turnRate = game.TURN_RATE;
+	player.fireInterval = 60;
 
 	// Setup key bindings.
-	this->iManager->Bind(SDLK_SPACE, this->commandFire);	
-	this->iManager->Bind(SDLK_w, this->commandForwards);
-	this->iManager->Bind(SDLK_s, this->commandBackwards);
-	this->iManager->Bind(SDLK_a, this->commandRotateLeft);
-	this->iManager->Bind(SDLK_d, this->commandRotateRight);
-	this->iManager->Bind(SDLK_LSHIFT, this->commandBoost);
-	this->iManager->Bind(SDLK_c, this->commandEqualizeVelocity);
-	this->iManager->Bind(SDLK_f, this->commandCreateAsteroid);
+	iManager->Bind(SDLK_SPACE, commandFire);	
+	iManager->Bind(SDLK_w, commandForwards);
+	iManager->Bind(SDLK_s, commandBackwards);
+	iManager->Bind(SDLK_a, commandRotateLeft);
+	iManager->Bind(SDLK_d, commandRotateRight);
+	iManager->Bind(SDLK_LSHIFT, commandBoost);
+	iManager->Bind(SDLK_c, commandEqualizeVelocity);
+	iManager->Bind(SDLK_f, commandCreateAsteroid);
 
 	fps.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 	fps.CenterImage(false);
@@ -52,31 +51,31 @@ void GameState_PlayField::Init()
 
 void GameState_PlayField::Cleanup()
 {
-	this->allTextures.Cleanup();
+	allTextures.Cleanup();
 
-	delete this->commandFire;
-	delete this->commandForwards;
-	delete this->commandBackwards;
-	delete this->commandRotateLeft;
-	delete this->commandRotateRight;
-	delete this->commandBoost;
-	delete this->commandEqualizeVelocity;
-	delete this->commandCreateAsteroid;
+	delete commandFire;
+	delete commandForwards;
+	delete commandBackwards;
+	delete commandRotateLeft;
+	delete commandRotateRight;
+	delete commandBoost;
+	delete commandEqualizeVelocity;
+	delete commandCreateAsteroid;
 }
 
 bool GameState_PlayField::HandleInput()
 {
-	bool running = this->iManager->GenerateInputAndDispatchCommands();
+	bool running = iManager->GenerateInputAndDispatchCommands();
 
 	// Process the command list as necessary.
-	if (!this->iManager->ProcessCommandList(&this->player))
+	if (!iManager->ProcessCommandList(&player))
 		running = false;
 	else
 	{
 		// Check for other input.
 		if (iManager->JustPressed(SDL_BUTTON_LEFT) || iManager->JustPressed(SDL_BUTTON_RIGHT))
 		{
-			SDL_Point mouseLoc = this->iManager->GetMouseLocation();
+			SDL_Point mouseLoc = iManager->GetMouseLocation();
 
 			for (auto asteroid : allAsteroids.allAsteroids)
 				if (GetDistance(asteroid->x, asteroid->y, mouseLoc.x, mouseLoc.y) <= (asteroid->size / 2))
@@ -123,7 +122,7 @@ void GameState_PlayField::CheckForCollisons()
 			}
 
 		if (player.immunityTime == 0)
-			if (GetDistance(this->player.x, this->player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
+			if (GetDistance(player.x, player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
 				// Kill player here.
 				player.Respawn();
@@ -146,16 +145,16 @@ void GameState_PlayField::CheckForNewAsteroids()
 	// Check if we are below the total size limit of asteroids and if so count down a timer to spawn a new one.
 	if (totalSize < game.AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX)
 	{
-		this->asteroidAutoSpawnTimer--;
+		asteroidAutoSpawnTimer--;
 
-		if (this->asteroidAutoSpawnTimer <= 0)
+		if (asteroidAutoSpawnTimer <= 0)
 		{
-			allAsteroids.CreateAsteroid(&this->player);
-			this->asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
+			allAsteroids.CreateAsteroid(&player);
+			asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
 		}
 	}
 	else
-		this->asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
+		asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
 }
 
 void GameState_PlayField::HandleEvents()

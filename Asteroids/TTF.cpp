@@ -8,11 +8,11 @@
 
 TTF::TTF(SDL_Renderer* givenRenderer)
 {
-	this->text = "";
-	this->font = nullptr;
-	this->color = { 255, 255 ,255, 0 };
-	this->texture = Texture();
-	this->renderer = givenRenderer;
+	text = "";
+	font = nullptr;
+	color = { 255, 255 ,255, 0 };
+	texture = Texture();
+	renderer = givenRenderer;
 }
 
 // Cleans up any in use fonts and surfaces, should be called on closing program.
@@ -27,12 +27,12 @@ void TTF::Clear()
 
 void TTF::CenterImage(bool center)
 {
-	this->texture.centerTextureOnDraw = center;
+	texture.centerTextureOnDraw = center;
 }
 
 bool TTF::IsImageCentered()
 {
-	return this->texture.centerTextureOnDraw;
+	return texture.centerTextureOnDraw;
 }
 
 // Set the currently in use font.
@@ -77,9 +77,9 @@ void TTF::Update()
 		texture.Clear();
 
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
-	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);	
+	SDL_Texture* newTexture = SDL_CreateTextureFromSurface(renderer, surface);	
 
-	this->texture.SetTexture(texture, this->text);
+	texture.SetTexture(newTexture, text);
 
 	SDL_FreeSurface(surface);
 }
@@ -103,7 +103,7 @@ void TTF::SetText(std::string newText)
 void TTF::Draw()
 {
 	// Make sure we have data to work with.
-	if (!this->texture.Draw(this->renderer, this->x, this->y))
+	if (!texture.Draw(renderer, x, y))
 		debug.Log("TTF", "Draw", "Failed to draw TTF surface with text :" + text);
 }
 
@@ -112,20 +112,20 @@ bool TTF::PointIntersectsTexture(SDL_Point point)
 	if (!texture.HasTexture())
 		return false;
 
-	SDL_Rect rect = this->texture.Rect();
+	SDL_Rect rect = texture.Rect();
 
 	if (centerImage)
 	{
-		rect.x = this->x - (rect.w / 2);
-		rect.y = this->y - (rect.h / 2);
+		rect.x = x - (rect.w / 2);
+		rect.y = y - (rect.h / 2);
 
 		if (SDL_PointInRect(&point, &rect))
 			return true;
 	}
 	else
 	{
-		rect.x = this->x;
-		rect.y = this->y;
+		rect.x = x;
+		rect.y = y;
 
 		if (SDL_PointInRect(&point, &rect))
 			return true;

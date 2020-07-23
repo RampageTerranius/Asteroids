@@ -19,7 +19,7 @@ GameEngine::GameEngine()
 
 void GameEngine::Init()
 {
-	if (this->running)
+	if (running)
 	{ 
 		debug.Log("GameEngine", "Init", "Failed to initialize engine, Engine is already running");
 		return;
@@ -61,14 +61,14 @@ void GameEngine::Init()
 	Mix_AllocateChannels(32);
 
 	// Prepare the renderer
-	this->renderer = Renderer();
-	this->renderer.Init("Test", this->SCREEN_WIDTH, this->SCREEN_HEIGHT, false, false);
+	renderer = Renderer();
+	renderer.Init("Test", SCREEN_WIDTH, SCREEN_HEIGHT, false, false);
 
 	// Prepare the game state.
-	this->PushNewState(new GameState_MainMenu());
+	PushNewState(new GameState_MainMenu());
 	
 	debug.Log("GameEngine", "Init", "Completed setup");
-	this->running = true;	
+	running = true;	
 }
 
 void GameEngine::Cleanup()
@@ -76,10 +76,10 @@ void GameEngine::Cleanup()
 	debug.Log("GameEngine", "Cleanup", "Cleaning up engine...");
 
 	debug.Log("GameEngine", "Cleanup", "Cleaning up states...");
-	for (auto var : this->states)
+	for (auto var : states)
 		var->Cleanup();
 
-	for (auto var : this->states)
+	for (auto var : states)
 		delete var;
 
 	debug.Log("GameEngine", "Cleanup", "Cleaning up sub-routines...");
@@ -94,19 +94,19 @@ void GameEngine::Cleanup()
 // Ask the current GameState to run its HandleInput code.
 void GameEngine::HandleInput()
 {	
-	this->running = this->State()->HandleInput();
+	running = State()->HandleInput();
 }
 
 // Ask the current GameState to run its HandleEvents code.
 void GameEngine::HandleEvents()
 {
-	this->State()->HandleEvents();
+	State()->HandleEvents();
 }
 
 // Ask the current GameState to run its Render code.
 void GameEngine::Render()
 {
-	this->State()->Render();
+	State()->Render();
 }
 
 void GameEngine::PushNewState(GameState* state)
@@ -117,18 +117,18 @@ void GameEngine::PushNewState(GameState* state)
 
 void GameEngine::PopLastState()
 {
-	if (this->states.size() > 0)
+	if (states.size() > 0)
 	{
-		this->states.back()->Cleanup();
-		delete this->states.at(this->states.size() - 1);
-		this->states.pop_back();
+		states.back()->Cleanup();
+		delete states[states.size() - 1];
+		states.pop_back();
 		debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
 	}
 }
 
 bool GameEngine::HasActiveState()
 {
-	if (this->State() == nullptr)
+	if (State() == nullptr)
 		return false;
 	else 
 		return true;

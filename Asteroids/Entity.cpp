@@ -18,8 +18,8 @@ Entity::Entity()
 
 void Entity::Draw()
 {
-	if (this->tex != nullptr)
-		this->tex->Draw(game.GetRenderer().renderer, this->rotation, static_cast <int> (round(this->x)), static_cast <int> (round(this->y)));
+	if (tex != nullptr)
+		tex->Draw(game.GetRenderer().renderer, rotation, static_cast <int> (round(x)), static_cast <int> (round(y)));
 }
 
 Player::Player()
@@ -36,57 +36,57 @@ Player::Player()
 bool Player::Update()
 {
 	// Make sure player hasnt gone over max velocity.
-	if (this->velX > game.MAX_VEL)
-		this->velX = game.MAX_VEL;
-	if (this->velX < -game.MAX_VEL)
-		this->velX = -game.MAX_VEL;
+	if (velX > game.MAX_VEL)
+		velX = game.MAX_VEL;
+	if (velX < -game.MAX_VEL)
+		velX = -game.MAX_VEL;
 
-	if (this->velY > game.MAX_VEL)
-		this->velY = game.MAX_VEL;
-	if (this->velY < -game.MAX_VEL)
-		this->velY = -game.MAX_VEL;
+	if (velY > game.MAX_VEL)
+		velY = game.MAX_VEL;
+	if (velY < -game.MAX_VEL)
+		velY = -game.MAX_VEL;
 
 	// Add the velocity to its respective axis.
-	this->x += this->velX;
-	this->y += this->velY;
+	x += velX;
+	y += velY;
 
-	if (this->x < 0)
-		this->x = static_cast <float> (game.SCREEN_WIDTH - 1);
-	else if (this->x > game.SCREEN_WIDTH)
-		this->x = 0;
+	if (x < 0)
+		x = static_cast <float> (game.SCREEN_WIDTH - 1);
+	else if (x > game.SCREEN_WIDTH)
+		x = 0;
 
-	if (this->y < 0)
-		this->y = static_cast <float> (game.SCREEN_HEIGHT - 1);
-	else if (this->y > game.SCREEN_HEIGHT)
-		this->y = 0;
+	if (y < 0)
+		y = static_cast <float> (game.SCREEN_HEIGHT - 1);
+	else if (y > game.SCREEN_HEIGHT)
+		y = 0;
 
 	// Reset the speed boost back to false, otherwise the player will permanently be boosted.
-	this->speedBoost = false;
+	speedBoost = false;
 
-	if (this->fireTimer > 0)
-		this->fireTimer--;
+	if (fireTimer > 0)
+		fireTimer--;
 
-	if (this->immunityTime > 0)
-		this->immunityTime--;
+	if (immunityTime > 0)
+		immunityTime--;
 
 	return true;
 }
 
 void Player::FireWeapon()
 {
-	if (this->fireTimer <= 0)
+	if (fireTimer <= 0)
 	{
-		this->fireTimer = this->fireInterval;
+		fireTimer = fireInterval;
 		allBullets.CreateBullet(this, game.State()->allTextures.GetTexture("bullet"));
 	}
 }
 
 void Player::Respawn()
 {
-	this->velX = this->velY = 0;
-	this->x = static_cast<float> (game.SCREEN_WIDTH) / 2.0f;
-	this->y = static_cast<float> (game.SCREEN_HEIGHT) / 2.0f;
-	this->immunityTime = 180;
+	velX = velY = 0;
+	x = static_cast<float> (game.SCREEN_WIDTH) / 2.0f;
+	y = static_cast<float> (game.SCREEN_HEIGHT) / 2.0f;
+	immunityTime = 180;
 }
 
 Bullet::Bullet()
@@ -98,21 +98,21 @@ Bullet::Bullet()
 
 bool Bullet::Update()
 {
-	this->x -= this->velX;
-	this->y -= this->velY;
-	this->distanceLeft--;
+	x -= velX;
+	y -= velY;
+	distanceLeft--;
 
-	if (this->x < 0)
-		this->x = static_cast <float> (game.SCREEN_WIDTH - 1) + this->x;
-	else if (this->x > game.SCREEN_WIDTH)
-		this->x = 0 + (this->x - game.SCREEN_WIDTH);
+	if (x < 0)
+		x = static_cast <float> (game.SCREEN_WIDTH - 1) + x;
+	else if (x > game.SCREEN_WIDTH)
+		x = 0 + (x - game.SCREEN_WIDTH);
 
-	if (this->y < 0)
-		this->y = static_cast <float> (game.SCREEN_HEIGHT - 1) + this->y;
-	else if (this->y > game.SCREEN_HEIGHT)
-		this->y = 0 + (this->y - game.SCREEN_HEIGHT);
+	if (y < 0)
+		y = static_cast <float> (game.SCREEN_HEIGHT - 1) + y;
+	else if (y > game.SCREEN_HEIGHT)
+		y = 0 + (y - game.SCREEN_HEIGHT);
 
-	if (this->distanceLeft < 0)
+	if (distanceLeft < 0)
 		return false;
 
 	return true;
@@ -136,22 +136,25 @@ void Bullets::CreateBullet(Player* player, Texture* tex)
 	bullet->distanceLeft = game.BULLET_DISTANCE;
 	bullet->tex = tex;	
 
-	this->allBullets.push_back(bullet);
+	allBullets.push_back(bullet);
+
+	debug.Log("Bullets", "CreateBullet", "Bullet was created at " + std::to_string(bullet->x) + "\\" + std::to_string(bullet->y) + " going to " + std::to_string(bullet->velX) + "\\" + std::to_string(bullet->velY));
 }
 
 void Bullets::DestroyBullet(Bullet* bullet)
 {
-	this->allBullets.remove(bullet);
+	allBullets.remove(bullet);
 	delete bullet;
 }
 
 void Bullets::UpdateAll()
 {
-	for (auto it = this->allBullets.begin(); it != this->allBullets.end();)
+	for (auto it = allBullets.begin(); it != allBullets.end();)
 		if (!(*it)->Update())
 		{
 			delete (*it);
-			it = this->allBullets.erase(it);
+			it = allBullets.erase(it);
+			debug.Log("Bullets", "UpdateAll", "Bullet ran out of distance and was deleted.");
 		}
 		else
 			++it;
@@ -159,16 +162,16 @@ void Bullets::UpdateAll()
 
 void Bullets::RenderAll()
 {
-	for (auto& var : this->allBullets)
+	for (auto& var : allBullets)
 		var->Draw();
 }
 
 void Bullets::Clear()
 {
-	for (auto it = this->allBullets.begin(); it != this->allBullets.end();)
+	for (auto it = allBullets.begin(); it != allBullets.end();)
 		{
 			delete (*it);
-			it = this->allBullets.erase(it);
+			it = allBullets.erase(it);
 		}
 }
 
@@ -180,18 +183,18 @@ Asteroid::Asteroid()
 
 bool Asteroid::Update()
 {
-	this->x -= this->velX;
-	this->y -= this->velY;
+	x -= velX;
+	y -= velY;
 
-	if (this->x < 0)
-		this->x = static_cast <float> (game.SCREEN_WIDTH - 1);
-	else if (this->x > game.SCREEN_WIDTH)
-		this->x = 0;
+	if (x < 0)
+		x = static_cast <float> (game.SCREEN_WIDTH - 1);
+	else if (x > game.SCREEN_WIDTH)
+		x = 0;
 
-	if (this->y < 0)
-		this->y = static_cast <float> (game.SCREEN_HEIGHT - 1);
-	else if (this->y > game.SCREEN_HEIGHT)
-		this->y = 0;
+	if (y < 0)
+		y = static_cast <float> (game.SCREEN_HEIGHT - 1);
+	else if (y > game.SCREEN_HEIGHT)
+		y = 0;
 
 	return true;
 }
@@ -217,7 +220,7 @@ void Asteroid::Break(Bullet* bullet)
 			if (bullet != nullptr)
 			{
 				// Use a mathimatical 2D vector to determine what velocity the asteroid will be moving at.
-				Vector2D diffVec(this->x - bullet->startX, this->y - bullet->startY);
+				Vector2D diffVec(x - bullet->startX, y - bullet->startY);
 				diffVec.Normalize();
 				diffVec.Multiply(game.MAX_ASTEROID_VEL);
 
@@ -230,7 +233,7 @@ void Asteroid::Break(Bullet* bullet)
 				calcualtedVelY = random.RandomFloat(-game.MAX_ASTEROID_VEL, game.MAX_ASTEROID_VEL);
 			}
 
-			allAsteroids.CreateAsteroid(static_cast <int> (round(this->x)), static_cast <int> (round(this->y)), calcualtedVelX, calcualtedVelY, this->size - 5);
+			allAsteroids.CreateAsteroid(static_cast <int> (round(x)), static_cast <int> (round(y)), calcualtedVelX, calcualtedVelY, size - 5);
 			splits--;
 		}
 
@@ -313,27 +316,27 @@ void Asteroids::CreateAsteroid(Player* player)
 
 void Asteroids::DestroyAsteroid(Asteroid* asteroid)
 {
-	this->allAsteroids.remove(asteroid);
+	allAsteroids.remove(asteroid);
 	delete asteroid;
 }
 
 void Asteroids::UpdateAll()
 {
-	for (auto& var : this->allAsteroids)
+	for (auto& var : allAsteroids)
 		var->Update();
 }
 
 void Asteroids::RenderAll()
 {
-	for (auto& var : this->allAsteroids)
+	for (auto& var : allAsteroids)
 		var->Draw();
 }
 
 void Asteroids::Clear()
 {
-	for (auto it = this->allAsteroids.begin(); it != this->allAsteroids.end();)
+	for (auto it = allAsteroids.begin(); it != allAsteroids.end();)
 	{
 		delete (*it);
-		it = this->allAsteroids.erase(it);
+		it = allAsteroids.erase(it);
 	}
 }

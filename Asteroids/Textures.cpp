@@ -27,10 +27,8 @@ void Texture::Clear()
 	rect.w = 0;
 }
 
-bool Texture::Load(std::string fileLoc, std::string name)
+bool Texture::Load(std::string fileLoc, std::string newName)
 {
-	debug.Log("Texture", "Load", "Attempting to load texture at location : " + fileLoc);
-
 	if (tex != nullptr)
 	{
 		debug.Log("Texture", "Load", "A texture is already loaded in this object");
@@ -71,7 +69,7 @@ bool Texture::Load(std::string fileLoc, std::string name)
 		return false;
 	}
 
-	this->name = name;
+	name = newName;
 
 	debug.Log("Texture", "Load", "Success loading texture at location : " + fileLoc);
 
@@ -91,7 +89,7 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 		rect.x = x;
 		rect.y = y;
 
-		if (this->centerTextureOnDraw)
+		if (centerTextureOnDraw)
 		{
 			rect.x -= rect.w / 2;
 			rect.y -= rect.h / 2;
@@ -107,36 +105,36 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 
 bool Texture::HasTexture()
 {
-	if (this->tex != nullptr)
+	if (tex != nullptr)
 		return true;
 	else
 		return false;
 }
 
-bool Texture::SetTexture(SDL_Texture* texture, std::string name)
+bool Texture::SetTexture(SDL_Texture* texture, std::string newName)
 {
 	if (texture == nullptr)
 		return false;
 
-	if (name.empty())
+	if (newName.empty())
 		return false;
 
-	this->name = name;
-	this->tex = texture;
+	name = newName;
+	tex = texture;
 
-	SDL_QueryTexture(texture, nullptr, nullptr, &this->rect.w, &this->rect.h);
+	SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
 
 	return true;
 }
 
 void Textures::Cleanup()
 {
-	for (auto it = this->textureList.begin(); it != this->textureList.end();)
+	for (auto it = textureList.begin(); it != textureList.end();)
 		{
 			(*it)->Clear();
 			delete (*it);
 			(*it) = nullptr;
-			it = this->textureList.erase(it);
+			it = textureList.erase(it);
 		}	
 
 	debug.Log("Textures", "Cleanup", "Destroyed all textures");
@@ -144,7 +142,7 @@ void Textures::Cleanup()
 
 Texture* Textures::GetTexture(std::string name)
 {
-	for (auto& tex : this->textureList)
+	for (auto& tex : textureList)
 		if (tex->Name() == name)
 			return tex;
 

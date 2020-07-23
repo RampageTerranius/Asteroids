@@ -4,9 +4,9 @@ Debug debug = Debug();
 
 DebugMessage::DebugMessage(std::string fileName, std::string functionName, std::string coderMessage)
 {
-	this->fileName = fileName;
-	this->functionName = functionName;
-	this->coderMessage = coderMessage;
+	fileName = fileName;
+	functionName = functionName;
+	coderMessage = coderMessage;
 }
 
 Debug::Debug()

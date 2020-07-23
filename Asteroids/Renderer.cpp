@@ -16,23 +16,23 @@ bool Renderer::Init(const char* name, int width, int height, bool fullScreen, bo
 	else
 		windowFlags = SDL_WINDOW_OPENGL;
 
-	this->window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, windowFlags);
-	this->renderer = SDL_CreateRenderer(this->window, -1, renderFlags);
+	window = SDL_CreateWindow(name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, windowFlags);
+	renderer = SDL_CreateRenderer(window, -1, renderFlags);
 
-	if (this->window == nullptr)
+	if (window == nullptr)
 	{
 		debug.Log("Renderer", "CreateWindow", "Failed to create SDL Window");
 		return false;
 	}
 
-	if (this->renderer == nullptr)
+	if (renderer == nullptr)
 	{
 		debug.Log("Renderer", "CreateWindow", "Failed to create SDL Renderer");
 		return false;
 	}
 
-	this->windowWidth = width;
-	this->windowHeight = height;
+	windowWidth = width;
+	windowHeight = height;
 
 	return true;
 }

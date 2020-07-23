@@ -34,7 +34,7 @@ bool InputManager::GenerateInputAndDispatchCommands(std::vector<Command*>& Comma
 
 bool InputManager::GenerateInputAndDispatchCommands()
 {
-	return GenerateInputAndDispatchCommands(this->commandList);
+	return GenerateInputAndDispatchCommands(commandList);
 }
 
 // Gather the users input and maps it as required.
@@ -82,11 +82,11 @@ void InputManager::DispatchCommands(std::vector<Command*>& commandVector)
 	{
 		if (iter->second->allowContinuousExecution)
 		{
-			if (this->IsHeld(iter->first))
+			if (IsHeld(iter->first))
 				commandVector.push_back(iter->second);
 		}
 		else
-			if (this->JustPressed(iter->first))
+			if (JustPressed(iter->first))
 				commandVector.push_back(iter->second);
 	}
 }
@@ -95,15 +95,15 @@ void InputManager::DispatchCommands(std::vector<Command*>& commandVector)
 // Relys on DispatchCommadns to have been run beforehand.
 bool InputManager::ProcessCommandList(Player* player)
 {
-	while (!this->commandList.empty())
+	while (!commandList.empty())
 	{
-		if (!this->commandList.back()->Execute(player))
+		if (!commandList.back()->Execute(player))
 		{
 			return false;
 			break;
 		}
-		if (this->commandList.size() > 0)
-			this->commandList.pop_back();
+		if (commandList.size() > 0)
+			commandList.pop_back();
 	}
 
 	return true;
@@ -166,7 +166,7 @@ bool InputManager::JustPressed(int key)
 
 void InputManager::ClearInput()
 {
-	this->commandList.clear();
+	commandList.clear();
 
 	for (std::map<int, KeyState>::iterator iter = state.begin(); iter != state.end(); iter++)
 		iter->second = KeyState::released;

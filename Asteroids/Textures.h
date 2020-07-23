@@ -14,8 +14,8 @@ public:
 	void Clear();
 	bool Draw(SDL_Renderer* renderer, float rotation, int x, int y);
 	bool Draw(SDL_Renderer* renderer, int x, int y);
-	bool Load(std::string fileLoc, std::string name);
-	bool SetTexture(SDL_Texture* texture, std::string name);
+	bool Load(std::string fileLoc, std::string newName);
+	bool SetTexture(SDL_Texture* texture, std::string newName);
 	bool HasTexture();
 
 	std::string Name() { return name; };
