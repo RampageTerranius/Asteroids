@@ -64,11 +64,7 @@ bool GameState_MainMenu::HandleInput()
 			break;
 
 		case MenuOption::start:
-			while (true)
-			{
-				game.PushNewState(new GameState_PlayField());
-				game.PopLastState();
-			}
+			game.PushNewState(new GameState_PlayField());
 			break;
 		}
 
