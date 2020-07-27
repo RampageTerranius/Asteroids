@@ -10,6 +10,8 @@ class TTF
 {
 public:
 	TTF(SDL_Renderer* givenRenderer);
+	~TTF();
+
 	void Clear();
 	bool SetFont(std::string fontLocation, int size);
 	void SetColor(int r, int g, int b);

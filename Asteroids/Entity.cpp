@@ -168,11 +168,10 @@ void Bullets::RenderAll()
 
 void Bullets::Clear()
 {
-	for (auto it = allBullets.begin(); it != allBullets.end();)
-		{
-			delete (*it);
-			it = allBullets.erase(it);
-		}
+	for (auto bullet : allBullets)	
+		delete bullet;
+	
+	allBullets.clear();
 }
 
 Asteroid::Asteroid()
@@ -334,9 +333,8 @@ void Asteroids::RenderAll()
 
 void Asteroids::Clear()
 {
-	for (auto it = allAsteroids.begin(); it != allAsteroids.end();)
-	{
-		delete (*it);
-		it = allAsteroids.erase(it);
-	}
+	for (auto asteroid : allAsteroids)
+		delete asteroid;
+
+	allAsteroids.clear();
 }

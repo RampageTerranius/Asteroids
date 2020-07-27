@@ -41,6 +41,7 @@ void GameState_MainMenu::Init()
 void GameState_MainMenu::Cleanup()
 {
 	allTextures.Cleanup();
+	iManager.ClearAll();
 
 	menuOptionOptions.Clear();
 	menuOptionStart.Clear();
@@ -63,7 +64,11 @@ bool GameState_MainMenu::HandleInput()
 			break;
 
 		case MenuOption::start:
-			game.PushNewState(new GameState_PlayField());
+			while (true)
+			{
+				game.PushNewState(new GameState_PlayField());
+				game.PopLastState();
+			}
 			break;
 		}
 

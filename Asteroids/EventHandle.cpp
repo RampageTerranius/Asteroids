@@ -12,6 +12,15 @@ InputManager::InputManager()
 	mouse = SDL_Point{ 0,0 };	
 }
 
+void InputManager::ClearAll()
+{
+	ClearInput();
+	commandList.clear();
+	commands.clear();
+	state.clear();
+	firstPress.clear();	
+}
+
 // Generates all input and processes commands.
 // Used if Commands are required.
 bool InputManager::GenerateInputAndDispatchCommands(std::vector<Command*>& CommandVector)

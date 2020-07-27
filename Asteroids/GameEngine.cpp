@@ -65,6 +65,7 @@ void GameEngine::Init()
 	renderer.Init("Test", SCREEN_WIDTH, SCREEN_HEIGHT, false, false);
 
 	// Prepare the game state.
+	
 	PushNewState(new GameState_MainMenu());
 	
 	debug.Log("GameEngine", "Init", "Completed setup");

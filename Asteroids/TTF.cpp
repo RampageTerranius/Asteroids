@@ -15,6 +15,11 @@ TTF::TTF(SDL_Renderer* givenRenderer)
 	renderer = givenRenderer;
 }
 
+TTF::~TTF()
+{
+	Clear();
+}
+
 // Cleans up any in use fonts and surfaces, should be called on closing program.
 void TTF::Clear()
 {

@@ -34,6 +34,7 @@ public:
 	
 	std::vector<Command*> commandList;
 	void ClearInput();
+	void ClearAll();
 
 	// Functions for determining key presses.
 	// These functions are used by DispatchCommands to determine if keys are in use and to run their corresponding commands if needed.

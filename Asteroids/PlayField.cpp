@@ -52,6 +52,9 @@ void GameState_PlayField::Init()
 void GameState_PlayField::Cleanup()
 {
 	allTextures.Cleanup();
+	iManager.ClearAll();
+
+	fps.Clear();
 
 	delete commandFire;
 	delete commandForwards;
