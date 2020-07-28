@@ -53,6 +53,7 @@ void TTF::Clear()
 void TTF::CenterImage(bool center)
 {
 	texture.centerTextureOnDraw = center;
+	centerImage = center;
 }
 
 bool TTF::IsImageCentered()
