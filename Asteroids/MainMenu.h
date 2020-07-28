@@ -23,9 +23,10 @@ public:
 	void Render();
 
 private:
-	TTF menuOptionStart = TTF(nullptr);
-	TTF menuOptionOptions = TTF(nullptr);
-	TTF menuOptionQuit = TTF(nullptr);
-
+	TTFs allTTF;
 	MenuOption menuOption;	
+
+	TTF* menuOptionOptions;
+	TTF* menuOptionQuit;
+	TTF* menuOptionStart;
 };

@@ -94,6 +94,7 @@ Bullet::Bullet()
 	distanceLeft = 0;
 	velX = velY = 0.0f;
 	speed = 0.0f;
+	startX = startY = 0.0f;
 }
 
 bool Bullet::Update()

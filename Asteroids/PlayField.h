@@ -150,11 +150,12 @@ public:
 
 private:
 	Player player;
+	TTFs allTTF;
 
 	void CheckForCollisons();
 	void CheckForNewAsteroids();
 
-	TTF fps = TTF(nullptr);
+	TTF* fps;
 
 	Command* commandFire = new CommandFire();
 	Command* commandForwards = new CommandMoveForward();

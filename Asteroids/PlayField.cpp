@@ -16,7 +16,7 @@ void GameState_PlayField::Init()
 	allAsteroids.Clear();
 	allBullets.Clear();
 
-	fps = TTF(game.GetRenderer().renderer);
+	fps = allTTF.CreateTTF(game.GetRenderer().renderer, "fps");
 
 	// Load all the textures the playfield requires.
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
@@ -43,18 +43,17 @@ void GameState_PlayField::Init()
 	iManager.Bind(SDLK_c, commandEqualizeVelocity);
 	iManager.Bind(SDLK_f, commandCreateAsteroid);
 
-	fps.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
-	fps.CenterImage(false);
-	fps.x = 10;
-	fps.y = 10;
+	fps->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	fps->CenterImage(false);
+	fps->x = 10;
+	fps->y = 10;
 }
 
 void GameState_PlayField::Cleanup()
 {
 	allTextures.Cleanup();
 	iManager.ClearAll();
-
-	fps.Clear();
+	allTTF.ClearAll();
 
 	delete commandFire;
 	delete commandForwards;
@@ -81,7 +80,7 @@ bool GameState_PlayField::HandleInput()
 			SDL_Point mouseLoc = iManager.GetMouseLocation();
 
 			for (auto asteroid : allAsteroids.allAsteroids)
-				if (GetDistance(asteroid->x, asteroid->y, mouseLoc.x, mouseLoc.y) <= (asteroid->size / 2))
+				if (GetDistance(asteroid->x, asteroid->y, static_cast <float> (mouseLoc.x), static_cast <float> (mouseLoc.y)) <= (asteroid->size / 2))
 				{
 					if (iManager.JustPressed(SDL_BUTTON_LEFT))
 						asteroid->Break(nullptr);
@@ -176,14 +175,12 @@ void GameState_PlayField::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
 
+	fps->SetText(std::to_string(game.fps));
+
 	player.Draw();
-
 	allBullets.RenderAll();
-
 	allAsteroids.RenderAll();
-
-	fps.SetText(std::to_string(game.fps));
-	fps.Draw();
+	allTTF.RenderAll();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }

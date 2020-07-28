@@ -6,13 +6,30 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-TTF::TTF(SDL_Renderer* givenRenderer)
+TTF::TTF(SDL_Renderer* givenRenderer, std::string newName)
 {
+	name = newName;
+	active = true;
 	text = "";
 	font = nullptr;
 	color = { 255, 255 ,255, 0 };
 	texture = Texture();
 	renderer = givenRenderer;
+	centerImage = texture.centerTextureOnDraw;
+}
+
+TTF::TTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocation, int size)
+{
+	name = newName;
+	active = true;
+	text = "";
+	color = { 255, 255 ,255, 0 };
+	texture = Texture();
+	renderer = givenRenderer;
+	centerImage = texture.centerTextureOnDraw;
+
+	if (!SetFont(fontLocation, size))
+		font = nullptr;
 }
 
 TTF::~TTF()
@@ -23,11 +40,14 @@ TTF::~TTF()
 // Cleans up any in use fonts and surfaces, should be called on closing program.
 void TTF::Clear()
 {
-	if (texture.HasTexture())
-		texture.Clear();
+	if (texture.HasTexture())	
+		texture.Clear();	
 
 	if (font != nullptr)
+	{
 		TTF_CloseFont(font);
+		font = nullptr;
+	}
 }
 
 void TTF::CenterImage(bool center)
@@ -50,7 +70,7 @@ bool TTF::SetFont(std::string fontLocation, int size)
 	if (font != nullptr)
 	{
 		debug.Log("TTF", "SetFont", "TTF object loaded font into memory at : " + fontLocation + " at font size : " + std::to_string(size));
-		Update();
+		Update();		
 		return true;
 	}
 	else
@@ -137,4 +157,72 @@ bool TTF::PointIntersectsTexture(SDL_Point point)
 	}
 
 	return false;
+}
+
+
+TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName)
+{
+	TTF* newTTF = new TTF(givenRenderer, newName);
+	ttfList.push_back(newTTF);
+
+	return newTTF;
+}
+
+TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocation, int size)
+{
+	TTF* newTTF = new TTF(givenRenderer, newName, fontLocation, size);
+	ttfList.push_back(newTTF);
+
+	return newTTF;
+}
+
+void TTFs::DestroyTTF(TTF* destroyTTF)
+{
+	for (auto ttf : ttfList)
+		if (ttf == destroyTTF)
+		{
+			ttfList.remove(destroyTTF);
+			destroyTTF->Clear();
+			delete destroyTTF;
+			return;
+		}
+}
+
+void TTFs::DestroyTTF(std::string destroyName)
+{
+	for (auto ttf : ttfList)
+		if (destroyName == ttf->Name())
+		{
+			ttfList.remove(ttf);
+			ttf->Clear();
+			delete ttf;
+			return;
+		}
+}
+
+TTF* TTFs::GetTTF(std::string findName)
+{
+	for (auto ttf : ttfList)
+		if (findName == ttf->Name())
+			return ttf;
+
+	return nullptr;
+}
+
+void TTFs::RenderAll()
+{
+	for (auto ttf : ttfList)
+		if (ttf->active)
+			ttf->Draw();
+}
+
+void TTFs::ClearAll()
+{
+	for (auto ttf : ttfList)
+	{
+		ttf->Clear();
+		delete ttf;
+	}
+
+	ttfList.clear();
 }

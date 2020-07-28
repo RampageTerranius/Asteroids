@@ -7,6 +7,7 @@ Texture::Texture()
 	name = "";
 	tex = nullptr;
 	rect = SDL_Rect();
+	centerTextureOnDraw = true;
 }
 
 Texture::~Texture()

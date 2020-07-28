@@ -10,42 +10,40 @@
 
 GameState_MainMenu::GameState_MainMenu()
 {
-	menuOptionStart = TTF(game.GetRenderer().renderer);
-	menuOptionOptions = TTF(game.GetRenderer().renderer);
-	menuOptionQuit = TTF(game.GetRenderer().renderer);
 	Init();
 }
 
 void GameState_MainMenu::Init()
 {
-	menuOptionStart.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
-	menuOptionOptions.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);	
-	menuOptionQuit.SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	menuOptionStart = allTTF.CreateTTF(game.GetRenderer().renderer, "start");
+	menuOptionOptions = allTTF.CreateTTF(game.GetRenderer().renderer, "options");
+	menuOptionQuit = allTTF.CreateTTF(game.GetRenderer().renderer, "quit");
 
-	menuOptionStart.x = game.GetRenderer().WindowWidth() / 2;
-	menuOptionStart.y = (game.GetRenderer().WindowHeight() / 5) * 2;
-	menuOptionOptions.x = game.GetRenderer().WindowWidth() / 2;
-	menuOptionOptions.y = (game.GetRenderer().WindowHeight() / 5) * 3;
-	menuOptionQuit.x = game.GetRenderer().WindowWidth() / 2;
-	menuOptionQuit.y = (game.GetRenderer().WindowHeight() / 5) * 4;
+	menuOptionStart->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	menuOptionOptions->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	menuOptionQuit->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 
-	menuOptionStart.SetText("Start");
-	menuOptionOptions.SetText("Options");
-	menuOptionQuit.SetText("Quit");
+	menuOptionStart->x = game.GetRenderer().WindowWidth() / 2;
+	menuOptionStart->y = (game.GetRenderer().WindowHeight() / 5) * 2;
+	menuOptionOptions->x = game.GetRenderer().WindowWidth() / 2;
+	menuOptionOptions->y = (game.GetRenderer().WindowHeight() / 5) * 3;
+	menuOptionQuit->x = game.GetRenderer().WindowWidth() / 2;
+	menuOptionQuit->y = (game.GetRenderer().WindowHeight() / 5) * 4;
 
-	menuOptionStart.CenterImage(true);
-	menuOptionOptions.CenterImage(true);
-	menuOptionQuit.CenterImage(true);	
+	menuOptionStart->SetText("Start");
+	menuOptionOptions->SetText("Options");
+	menuOptionQuit->SetText("Quit");
+
+	menuOptionStart->CenterImage(true);
+	menuOptionOptions->CenterImage(true);
+	menuOptionQuit->CenterImage(true);
 }
 
 void GameState_MainMenu::Cleanup()
 {
 	allTextures.Cleanup();
+	allTTF.ClearAll();
 	iManager.ClearAll();
-
-	menuOptionOptions.Clear();
-	menuOptionStart.Clear();
-	menuOptionQuit.Clear();
 }
 
 bool GameState_MainMenu::HandleInput()
@@ -96,13 +94,13 @@ void GameState_MainMenu::HandleEvents()
 {
 	SDL_Point point = iManager.GetMouseLocation();	
 
-	if (menuOptionOptions.PointIntersectsTexture(point))	
+	if (allTTF.GetTTF("options")->PointIntersectsTexture(point))	
 		menuOption = MenuOption::options;
 
-	if (menuOptionQuit.PointIntersectsTexture(point))	
+	if (allTTF.GetTTF("quit")->PointIntersectsTexture(point))
 		menuOption = MenuOption::quit;	
 
-	if (menuOptionStart.PointIntersectsTexture(point))	
+	if (allTTF.GetTTF("start")->PointIntersectsTexture(point))
 		menuOption = MenuOption::start;
 }
 
@@ -110,28 +108,26 @@ void GameState_MainMenu::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
 
-	menuOptionOptions.SetColor(255, 255, 255);
-	menuOptionQuit.SetColor(255, 255, 255);
-	menuOptionStart.SetColor(255, 255, 255);
+	menuOptionOptions->SetColor(255, 255, 255);
+	menuOptionQuit->SetColor(255, 255, 255);
+	menuOptionStart->SetColor(255, 255, 255);
 
 	switch (menuOption)
 	{
 	case MenuOption::options:
-		menuOptionOptions.SetColor(0, 0, 200);
+		menuOptionOptions->SetColor(0, 0, 200);
 		break;
 
 	case MenuOption::quit:
-		menuOptionQuit.SetColor(0, 0, 200);
+		menuOptionQuit->SetColor(0, 0, 200);
 		break;
 
 	case MenuOption::start:
-		menuOptionStart.SetColor(0, 0, 200);
+		menuOptionStart->SetColor(0, 0, 200);
 		break;
 	}
 
-	menuOptionStart.Draw();
-	menuOptionOptions.Draw();
-	menuOptionQuit.Draw();
+	allTTF.RenderAll();
 
 	SDL_RenderPresent(game.GetRenderer().renderer);
 }
