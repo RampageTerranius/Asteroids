@@ -146,6 +146,8 @@ void Bullets::DestroyBullet(Bullet* bullet)
 {
 	allBullets.remove(bullet);
 	delete bullet;
+
+	debug.Log("Bullets", "DestroyBullet", "Removed and destroyed bullet from list");
 }
 
 void Bullets::UpdateAll()
@@ -173,6 +175,8 @@ void Bullets::Clear()
 		delete bullet;
 	
 	allBullets.clear();
+
+	debug.Log("Bullets", "Clear", "Removed and destroyed ALL bullets from list");
 }
 
 Asteroid::Asteroid()
@@ -318,6 +322,8 @@ void Asteroids::DestroyAsteroid(Asteroid* asteroid)
 {
 	allAsteroids.remove(asteroid);
 	delete asteroid;
+
+	debug.Log("Asteroids", "DestroyAsteroid", "Removed and destroyed asteroid from list");
 }
 
 void Asteroids::UpdateAll()
@@ -338,4 +344,6 @@ void Asteroids::Clear()
 		delete asteroid;
 
 	allAsteroids.clear();
+
+	debug.Log("Asteroids", "Clear", "Removed and destroyed ALL asteroids from list");
 }

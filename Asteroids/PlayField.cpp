@@ -75,14 +75,17 @@ bool GameState_PlayField::HandleInput()
 	else
 	{
 		// Check for other input.
-		if (iManager.JustPressed(SDL_BUTTON_LEFT) || iManager.JustPressed(SDL_BUTTON_RIGHT))
+		bool justPressedLeft = iManager.JustPressed(SDL_BUTTON_LEFT);
+		bool justPressedRight = iManager.JustPressed(SDL_BUTTON_RIGHT);
+
+		if (justPressedLeft || justPressedRight)
 		{
 			SDL_Point mouseLoc = iManager.GetMouseLocation();
 
 			for (auto asteroid : allAsteroids.allAsteroids)
 				if (GetDistance(asteroid->x, asteroid->y, static_cast <float> (mouseLoc.x), static_cast <float> (mouseLoc.y)) <= (asteroid->size / 2))
 				{
-					if (iManager.JustPressed(SDL_BUTTON_LEFT))
+					if (justPressedLeft)
 						asteroid->Break(nullptr);
 					else
 					{
@@ -127,7 +130,10 @@ void GameState_PlayField::CheckForCollisons()
 			if (GetDistance(player.x, player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
 				player.Respawn();
+				asteroid->Break(nullptr);
 				debug.Log("Bullet", "Update", "Asteroid collided with player");
+				CheckForCollisons();
+				return;
 			}
 	}
 }

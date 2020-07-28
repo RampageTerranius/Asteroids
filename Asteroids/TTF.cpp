@@ -165,6 +165,8 @@ TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName)
 	TTF* newTTF = new TTF(givenRenderer, newName);
 	ttfList.push_back(newTTF);
 
+	debug.Log("TTFs", "CreateTTF", "Pushed new TTF into list.");
+
 	return newTTF;
 }
 
@@ -172,6 +174,8 @@ TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName, std::stri
 {
 	TTF* newTTF = new TTF(givenRenderer, newName, fontLocation, size);
 	ttfList.push_back(newTTF);
+
+	debug.Log("TTFs", "CreateTTF", "Pushed new TTF into list.");
 
 	return newTTF;
 }
@@ -184,6 +188,7 @@ void TTFs::DestroyTTF(TTF* destroyTTF)
 			ttfList.remove(destroyTTF);
 			destroyTTF->Clear();
 			delete destroyTTF;
+			debug.Log("TTFs", "DestroyTTF", "Removed and destroyed TTF from list");
 			return;
 		}
 }
@@ -196,6 +201,7 @@ void TTFs::DestroyTTF(std::string destroyName)
 			ttfList.remove(ttf);
 			ttf->Clear();
 			delete ttf;
+			debug.Log("TTFs", "DestroyTTF", "Removed and destroyed TTF from list");
 			return;
 		}
 }
@@ -225,4 +231,6 @@ void TTFs::ClearAll()
 	}
 
 	ttfList.clear();
+
+	debug.Log("TTFs", "ClearAll", "Removed and destroyed ALL TTF from list");
 }
