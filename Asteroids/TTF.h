@@ -22,7 +22,7 @@ public:
 	bool PointIntersectsTexture(SDL_Point point);
 	int x, y;
 	void CenterImage(bool center);
-	bool IsImageCentered();
+	bool IsImageCentered() { return texture.centerTextureOnDraw; };
 	bool active;
 	std::string Name() { return name; }
 
@@ -30,7 +30,6 @@ private:
 	void Update();
 	
 	std::string name;
-	bool centerImage;
 	SDL_Renderer* renderer;
 	std::string text;
 	TTF_Font* font;

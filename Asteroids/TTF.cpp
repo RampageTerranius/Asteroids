@@ -15,7 +15,6 @@ TTF::TTF(SDL_Renderer* givenRenderer, std::string newName)
 	color = { 255, 255 ,255, 0 };
 	texture = Texture();
 	renderer = givenRenderer;
-	centerImage = texture.centerTextureOnDraw;
 }
 
 TTF::TTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocation, int size)
@@ -26,7 +25,6 @@ TTF::TTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocat
 	color = { 255, 255 ,255, 0 };
 	texture = Texture();
 	renderer = givenRenderer;
-	centerImage = texture.centerTextureOnDraw;
 
 	if (!SetFont(fontLocation, size))
 		font = nullptr;
@@ -53,12 +51,6 @@ void TTF::Clear()
 void TTF::CenterImage(bool center)
 {
 	texture.centerTextureOnDraw = center;
-	centerImage = center;
-}
-
-bool TTF::IsImageCentered()
-{
-	return texture.centerTextureOnDraw;
 }
 
 // Set the currently in use font.
@@ -140,7 +132,7 @@ bool TTF::PointIntersectsTexture(SDL_Point point)
 
 	SDL_Rect rect = texture.Rect();
 
-	if (centerImage)
+	if (texture.centerTextureOnDraw)
 	{
 		rect.x = x - (rect.w / 2);
 		rect.y = y - (rect.h / 2);

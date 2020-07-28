@@ -34,9 +34,9 @@ void GameState_MainMenu::Init()
 	menuOptionOptions->SetText("Options");
 	menuOptionQuit->SetText("Quit");
 
-	menuOptionStart->CenterImage(false);
-	menuOptionOptions->CenterImage(false);
-	menuOptionQuit->CenterImage(false);
+	menuOptionStart->CenterImage(true);
+	menuOptionOptions->CenterImage(true);
+	menuOptionQuit->CenterImage(true);
 }
 
 void GameState_MainMenu::Cleanup()
