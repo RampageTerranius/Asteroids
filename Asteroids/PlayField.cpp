@@ -25,6 +25,10 @@ void GameState_PlayField::Init()
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 20x20.png", "asteroid 20");
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 25x25.png", "asteroid 25");
 
+	background = allTextures.CreateTexture(GetEXEPath() + "\\Images\\background.jpg", "background");
+	background->centerTextureOnDraw = false;
+	background->SetWidthHeight(game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
+
 	// Setup player varaibles.
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
 	player.x = static_cast <float> (game.SCREEN_WIDTH) / 2.0f;
@@ -182,6 +186,8 @@ void GameState_PlayField::Render()
 	SDL_RenderClear(game.GetRenderer().renderer);
 
 	fps->SetText(std::to_string(game.fps));
+
+	background->Draw(game.GetRenderer().renderer, 0, 0);
 
 	player.Draw();
 	allBullets.RenderAll();

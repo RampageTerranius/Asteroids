@@ -20,14 +20,18 @@ public:
 
 	std::string Name() { return name; };
 	SDL_Rect Rect() { return rect; };
+	void SetWidthHeight(int w, int h);
+	void SetScale(float newScale);
+	void ResetImageDimensions();
 	SDL_Point Center() { SDL_Point centerPoint; centerPoint.y = static_cast<int> (round(static_cast<float> (rect.h / 2))); centerPoint.x = static_cast<int> (round(static_cast<float> (rect.w / 2))); return centerPoint; }
 
-	bool centerTextureOnDraw = true;
+	bool centerTextureOnDraw = true;	
 
 private:
+	float scale = 1.0;
 	std::string name;
 	SDL_Texture* tex;
-	SDL_Rect rect;
+	SDL_Rect rect;	
 };
 
 class Textures

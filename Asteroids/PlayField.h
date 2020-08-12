@@ -155,6 +155,8 @@ private:
 	void CheckForCollisons();
 	void CheckForNewAsteroids();
 
+	Texture* background;
+
 	TTF* fps;
 
 	Command* commandFire = new CommandFire();

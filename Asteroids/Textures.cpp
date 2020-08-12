@@ -86,18 +86,27 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 {
 	if (renderer != nullptr && HasTexture())
 	{
-		// Prepare the render zones ahead of time.
-		rect.x = x;
-		rect.y = y;
+		SDL_Rect tempRect = rect;
 
+		// Prepare the render zones ahead of time.
+		tempRect.x = x;
+		tempRect.y = y;
+		
 		if (centerTextureOnDraw)
 		{
-			rect.x -= rect.w / 2;
-			rect.y -= rect.h / 2;
+			tempRect.x -= tempRect.w / 2;
+			tempRect.y -= tempRect.h / 2;
+		}
+
+		// TODO: rework this, surely we dont need to calculate this each time we draw? we shoudl calculate this WHEN we choose to change scale.
+		if (scale != 1.0)
+		{
+			tempRect.w *= scale;
+			tempRect.h *= scale;
 		}
 
 		// Render the texture to the given renderer.
-		if (SDL_RenderCopyEx(renderer, tex, NULL, &rect, rotation, nullptr, SDL_FLIP_NONE) >= 0)
+		if (SDL_RenderCopyEx(renderer, tex, NULL, &tempRect, rotation, nullptr, SDL_FLIP_NONE) >= 0)
 			return true;
 	}
 
@@ -126,6 +135,23 @@ bool Texture::SetTexture(SDL_Texture* texture, std::string newName)
 	SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
 
 	return true;
+}
+
+void Texture::ResetImageDimensions()
+{
+	SDL_QueryTexture(tex, nullptr, nullptr, &rect.w, &rect.h);
+}
+
+void Texture::SetWidthHeight(int w, int h)
+{
+	rect.w = w;
+	rect.h = h;
+}
+
+void Texture::SetScale(float newScale)
+{
+	if (newScale > 0.0)
+		scale = newScale;
 }
 
 void Textures::Cleanup()
