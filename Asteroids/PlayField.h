@@ -72,7 +72,7 @@ public:
 	CommandFire() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{
-		player->FireWeapon();
+		player->FireWeapon();		
 		return true;
 	}
 };

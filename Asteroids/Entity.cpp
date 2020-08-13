@@ -78,6 +78,7 @@ void Player::FireWeapon()
 	{
 		fireTimer = fireInterval;
 		allBullets.CreateBullet(this, game.State()->allTextures.GetTexture("bullet"));
+		game.State()->allSounds.GetSound("shot")->Play();
 	}
 }
 

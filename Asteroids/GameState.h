@@ -4,6 +4,7 @@
 #include "EventHandle.h"
 #include "Textures.h"
 #include "TTF.h"
+#include "Audio.h"
 
 class GameState
 {
@@ -16,5 +17,6 @@ public:
 	virtual void Render() = 0;
 
 	Textures allTextures;
+	Sounds allSounds;
 	InputManager iManager;
 };
