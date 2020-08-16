@@ -7,18 +7,13 @@
 // Gets the full path of the EXE file (minus the exe name).
 std::string GetEXEPath()
 {
-	char exePath[MAX_PATH];
+	char* exePath;
 
-	GetModuleFileNameA(NULL, exePath, sizeof(exePath));
+	exePath = SDL_GetBasePath();
+	std::string str = exePath;
+	SDL_free(exePath);
 
-	std::string tempStr = exePath;
-
-	size_t pos = tempStr.find_last_of("\\");
-
-	if (pos != std::string::npos)
-		return tempStr.substr(0, pos + 1);
-
-	return "";
+	return exePath;
 }
 
 float GetDistance(float x1, float y1, float x2, float y2)
