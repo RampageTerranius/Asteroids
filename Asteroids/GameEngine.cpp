@@ -47,6 +47,15 @@ void GameEngine::LoadSettings()
 		ini.SetValue("Asteroid", "AutoSpawnAsteroidsTimer", std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER).c_str());
 		ini.SetDoubleValue("Asteroid", "AutoSpawnAsteroidsDistanceFromPlayer", AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER);
 
+		ini.SetValue("Controls", "Fire", std::to_string(SDLK_SPACE).c_str());
+		ini.SetValue("Controls", "Forwards", std::to_string(SDLK_w).c_str());
+		ini.SetValue("Controls", "Backwards", std::to_string(SDLK_s).c_str());
+		ini.SetValue("Controls", "RotateLeft", std::to_string(SDLK_a).c_str());
+		ini.SetValue("Controls", "RotateRight", std::to_string(SDLK_d).c_str());
+		ini.SetValue("Controls", "Boost", std::to_string(SDLK_LSHIFT).c_str());
+		ini.SetValue("Controls", "Equalize", std::to_string(SDLK_c).c_str());
+		ini.SetValue("Controls", "CreateAsteroid", std::to_string(SDLK_f).c_str());
+
 		ini.SaveFile((GetEXEPath() + "Settings.ini").c_str());
 	}
 	else
@@ -126,6 +135,79 @@ void GameEngine::LoadSettings()
 		}
 
 		AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = static_cast <float> (ini.GetDoubleValue("Asteroid", "AutoSpawnAsteroidsDistanceFromPlayer", AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER));
+
+		// Controls.		
+		try
+		{
+			controls.fire = std::stoi(ini.GetValue("Controls", "Fire", std::to_string(SDLK_SPACE).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value Fire, defaulting to " + std::to_string(SDLK_SPACE));
+		}
+
+		try
+		{
+			controls.forwards = std::stoi(ini.GetValue("Controls", "Forwards", std::to_string(SDLK_w).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value Forwards, defaulting to " + std::to_string(SDLK_w));
+		}
+
+		try
+		{
+			controls.backwards = std::stoi(ini.GetValue("Controls", "Backwards", std::to_string(SDLK_s).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value Backwards, defaulting to " + std::to_string(SDLK_s));
+		}
+
+		try
+		{
+			controls.rotateLeft = std::stoi(ini.GetValue("Controls", "RotateLeft", std::to_string(SDLK_a).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value RotateLeft, defaulting to " + std::to_string(SDLK_a));
+		}
+
+		try
+		{
+			controls.rotateRight = std::stoi(ini.GetValue("Controls", "RotateRight", std::to_string(SDLK_d).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value RotateRight, defaulting to " + std::to_string(SDLK_d));
+		}
+
+		try
+		{
+			controls.boost = std::stoi(ini.GetValue("Controls", "Boost", std::to_string(SDLK_LSHIFT).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value Boost, defaulting to " + std::to_string(SDLK_LSHIFT));
+		}
+
+		try
+		{
+			controls.equalize = std::stoi(ini.GetValue("Controls", "Equalize", std::to_string(SDLK_c).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value Equalize, defaulting to " + std::to_string(SDLK_c));
+		}
+
+		try
+		{
+			controls.createAsteroid = std::stoi(ini.GetValue("Controls", "CreateAsteroid", std::to_string(SDLK_f).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value CreateAsteroid, defaulting to " + std::to_string(SDLK_f));
+		}
 	}
 }
 
@@ -172,15 +254,19 @@ void GameEngine::Init()
 	}
 
 	// Load settings.
+	debug.Log("GameEngine", "Init", "Loading settings...");
 	LoadSettings();
 		
+	debug.Log("GameEngine", "Init", "Allocating mixer channels...");
 	Mix_AllocateChannels(32);
 
 	// Prepare the renderer.
+	debug.Log("GameEngine", "Init", "Preparing renderer...");
 	renderer = Renderer();	
 	renderer.Init(SCREEN_NAME.c_str(), SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN, VSYNC);
 
-	// Prepare the game state.	
+	// Prepare the game state.
+	debug.Log("GameEngine", "Init", "Moving to main menu state...");
 	PushNewState(new GameState_MainMenu());
 	
 	debug.Log("GameEngine", "Init", "Completed setup");

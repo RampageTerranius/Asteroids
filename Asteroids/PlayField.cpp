@@ -42,14 +42,14 @@ void GameState_PlayField::Init()
 	player.fireInterval = 60;
 
 	// Setup key bindings.
-	iManager.Bind(SDLK_SPACE, commandFire);	
-	iManager.Bind(SDLK_w, commandForwards);
-	iManager.Bind(SDLK_s, commandBackwards);
-	iManager.Bind(SDLK_a, commandRotateLeft);
-	iManager.Bind(SDLK_d, commandRotateRight);
-	iManager.Bind(SDLK_LSHIFT, commandBoost);
-	iManager.Bind(SDLK_c, commandEqualizeVelocity);
-	iManager.Bind(SDLK_f, commandCreateAsteroid);
+	iManager.Bind(game.controls.fire, commandFire);	
+	iManager.Bind(game.controls.forwards, commandForwards);
+	iManager.Bind(game.controls.backwards, commandBackwards);
+	iManager.Bind(game.controls.rotateLeft, commandRotateLeft);
+	iManager.Bind(game.controls.rotateRight, commandRotateRight);
+	iManager.Bind(game.controls.boost, commandBoost);
+	iManager.Bind(game.controls.equalize, commandEqualizeVelocity);
+	iManager.Bind(game.controls.createAsteroid, commandCreateAsteroid);
 
 	fps->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 	fps->CenterImage(false);

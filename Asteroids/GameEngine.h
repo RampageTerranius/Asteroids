@@ -50,6 +50,19 @@ public:
 	int AUTO_SPAWN_ASTEROIDS_TIMER = 300;
 	float AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = 50;
 
+	class Controls
+	{
+	public:
+		int fire = SDLK_SPACE;
+		int forwards = SDLK_w;
+		int backwards = SDLK_s;
+		int rotateLeft = SDLK_a;
+		int rotateRight = SDLK_d;
+		int boost = SDLK_LSHIFT;
+		int equalize = SDLK_c;
+		int createAsteroid = SDLK_f;
+	}controls;
+
 private:	
 	void LoadSettings();
 	bool FULLSCREEN = false;
