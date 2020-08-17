@@ -4,7 +4,7 @@
 #include <SDL_ttf.h>
 
 #include <string>
-#include <iostream>
+#include <fstream>
 
 #include "GameEngine.h"
 #include "MainMenu.h"
@@ -12,9 +12,121 @@
 #include "Misc Functions.h"
 #include "Debug.h"
 
+#include "SimpleINI/SimpleINI.h"
+
 GameEngine::GameEngine()
 {	
 	Init();	
+}
+
+void GameEngine::LoadSettings()
+{
+	CSimpleIniA ini;
+	ini.SetUnicode();
+
+	SI_Error error = ini.LoadFile((GetEXEPath() + "Settings.ini").c_str());
+	if (error < 0)
+	{
+		ini.SetValue("Video", "ScreenName", SCREEN_NAME.c_str());
+		ini.SetValue("Video", "ScreenWidth", std::to_string(SCREEN_WIDTH).c_str());
+		ini.SetValue("Video", "ScreenHeight", std::to_string(SCREEN_HEIGHT).c_str());
+		ini.SetValue("Video", "FrameRate", std::to_string(FRAME_RATE).c_str());
+		ini.SetBoolValue("Video", "FullScreen", false);
+		ini.SetBoolValue("Video", "vSync", false);
+
+		ini.SetDoubleValue("Ship", "TurnRate", TURN_RATE);
+		ini.SetDoubleValue("Ship", "VelocityIncreasePerTick", VEL_INC);
+		ini.SetDoubleValue("Ship", "MaxVelocity", MAX_VEL);
+
+		ini.SetValue("Bullet", "BulletDistance", std::to_string(BULLET_DISTANCE).c_str());
+		ini.SetDoubleValue("Bullet", "BulletVolocity", BULLET_VELOCITY);
+
+		ini.SetBoolValue("Asteroid", "AutoSpawnAsteroids", true);
+		ini.SetDoubleValue("Asteroid", "MaxAsteroidVelocity", MAX_ASTEROID_VEL);
+		ini.SetValue("Asteroid", "AutoSpawnAsteroidsTotalSizeMax", std::to_string(AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX).c_str());
+		ini.SetValue("Asteroid", "AutoSpawnAsteroidsTimer", std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER).c_str());
+		ini.SetDoubleValue("Asteroid", "AutoSpawnAsteroidsDistanceFromPlayer", AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER);
+
+		ini.SaveFile((GetEXEPath() + "Settings.ini").c_str());
+	}
+	else
+	{
+		// Load each variable.
+		// Video.
+		SCREEN_NAME = ini.GetValue("Video", "ScreenName", SCREEN_NAME.c_str());
+
+		try
+		{
+			SCREEN_WIDTH = std::stoi(ini.GetValue("Video", "ScreenWidth", std::to_string(SCREEN_WIDTH).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value ScreenWidth, defaulting to " + std::to_string(SCREEN_WIDTH));
+		}
+
+		try
+		{
+			SCREEN_HEIGHT = std::stoi(ini.GetValue("Video", "ScreenHeight", std::to_string(SCREEN_HEIGHT).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value ScreenHeight, defaulting to " + std::to_string(SCREEN_HEIGHT));
+		}
+
+		try
+		{
+			FRAME_RATE = std::stoi(ini.GetValue("Video", "FrameRate", std::to_string(FRAME_RATE).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value FrameRate, defaulting to " + std::to_string(FRAME_RATE));
+		}
+
+		FULLSCREEN = ini.GetBoolValue("Video", "FullScreen", false);
+		VSYNC = ini.GetBoolValue("Video", "vSync", false);
+
+		// Player.
+		TURN_RATE = static_cast <float> (ini.GetDoubleValue("Ship", "TurnRate", TURN_RATE));
+		VEL_INC = static_cast <float> (ini.GetDoubleValue("Ship", "VelocityIncreasePerTick", VEL_INC));
+		MAX_VEL = static_cast <float> (ini.GetDoubleValue("Ship", "MaxVelocity", MAX_VEL));
+
+		// Bullets.
+		try
+		{
+			BULLET_DISTANCE = std::stoi(ini.GetValue("Bullet", "BulletDistance", std::to_string(BULLET_DISTANCE).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value BulletDistance, defaulting to " + std::to_string(BULLET_DISTANCE));
+		}
+
+		BULLET_VELOCITY = static_cast <float> (ini.GetDoubleValue("Bullet", "BulletVolocity", BULLET_VELOCITY));
+
+		// Asteroids.
+		AUTO_SPAWN_ASTEROIDS = ini.GetBoolValue("Asteroid", "AutoSpawnAsteroids", true);
+
+		MAX_ASTEROID_VEL = static_cast <float> (ini.GetDoubleValue("Asteroid", "MaxAsteroidVelocity", MAX_ASTEROID_VEL));
+
+		try
+		{
+			AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = std::stoi(ini.GetValue("Asteroid", "AutoSpawnAsteroidsTotalSizeMax", std::to_string(AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value AutoSpawnAsteroidsTotalSizeMax, defaulting to " + std::to_string(AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX));
+		}
+
+		try
+		{
+			AUTO_SPAWN_ASTEROIDS_TIMER = std::stoi(ini.GetValue("Asteroid", "AutoSpawnAsteroidsTimer", std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER).c_str()));
+		}
+		catch (const std::exception&)
+		{
+			debug.Log("GameEngine", "Init", "Failed to convert value AutoSpawnAsteroidsTimer, defaulting to " + std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER));
+		}
+
+		AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = static_cast <float> (ini.GetDoubleValue("Asteroid", "AutoSpawnAsteroidsDistanceFromPlayer", AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER));
+	}
 }
 
 void GameEngine::Init()
@@ -31,6 +143,7 @@ void GameEngine::Init()
 
 	debug.Log("GameEngine", "Init", "Initializing SDL sub-routines...");
 
+	// Initialize SDL.
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
 		std::string str = SDL_GetError();
@@ -58,14 +171,16 @@ void GameEngine::Init()
 		return;
 	}
 
+	// Load settings.
+	LoadSettings();
+		
 	Mix_AllocateChannels(32);
 
-	// Prepare the renderer
-	renderer = Renderer();
-	renderer.Init("Test", SCREEN_WIDTH, SCREEN_HEIGHT, false, false);
+	// Prepare the renderer.
+	renderer = Renderer();	
+	renderer.Init(SCREEN_NAME.c_str(), SCREEN_WIDTH, SCREEN_HEIGHT, FULLSCREEN, VSYNC);
 
-	// Prepare the game state.
-	
+	// Prepare the game state.	
 	PushNewState(new GameState_MainMenu());
 	
 	debug.Log("GameEngine", "Init", "Completed setup");

@@ -159,6 +159,7 @@
     <ClInclude Include="PlayField.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SimpleINI\SimpleINI.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TTF.h" />
@@ -176,7 +177,6 @@
     <ClCompile Include="PlayField.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TTF.cpp" />

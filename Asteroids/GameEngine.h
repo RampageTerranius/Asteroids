@@ -33,25 +33,28 @@ public:
 	int fps;
 
 	// Game related variables.
+	std::string SCREEN_NAME = "Asteroids";
+	int SCREEN_WIDTH = 1024;
+	int SCREEN_HEIGHT = 768;
+	float BULLET_VELOCITY = 7.5;
+	Uint32 FRAME_RATE = 60;
 
-	const int SCREEN_WIDTH = 1024;
-	const int SCREEN_HEIGHT = 768;
-	const float BULLET_VELOCITY = 7.5;
-	const Uint32 FRAME_RATE = 60;
-	const int FRAME_TIME = 1000 / FRAME_RATE;
+	float TURN_RATE = 2.0f;
+	float VEL_INC = 0.05f;
+	float MAX_VEL = 5.0f;
+	int BULLET_DISTANCE = 90;
 
-	const float TURN_RATE = 2.0f;
-	const float VEL_INC = 0.05f;
-	const float MAX_VEL = 5.0f;
-	const int BULLET_DISTANCE = 90;
-
-	const bool AUTO_SPAWN_ASTEROIDS = true;
-	const float MAX_ASTEROID_VEL = 2.0f;
-	const int AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = 200;
-	const int AUTO_SPAWN_ASTEROIDS_TIMER = 300;
-	const float AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = 50;
+	bool AUTO_SPAWN_ASTEROIDS = true;
+	float MAX_ASTEROID_VEL = 2.0f;
+	int AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = 200;
+	int AUTO_SPAWN_ASTEROIDS_TIMER = 300;
+	float AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = 50;
 
 private:	
+	void LoadSettings();
+	bool FULLSCREEN = false;
+	bool VSYNC = false;
+
 	Renderer renderer = Renderer();
 	std::vector<GameState*> states;
 };
