@@ -46,6 +46,11 @@ public:
 		player->velX -= ( static_cast <float> (cos((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 		player->velY -= ( static_cast <float> (sin((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 
+		if (!player->speedBoost)
+			player->moveSound->Play();
+		else
+			player->moveBoostSound->Play();
+
 		return true;
 	}
 };
@@ -62,6 +67,12 @@ public:
 
 		player->velX += (static_cast <float> (cos((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 		player->velY += (static_cast <float> (sin((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
+
+		if (!player->speedBoost)
+			player->moveSound->Play();
+		else
+			player->moveBoostSound->Play();
+
 		return true;
 	}
 };

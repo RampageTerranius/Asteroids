@@ -2,6 +2,7 @@
 #include <list>
 
 #include "Textures.h"
+#include "Audio.h"
 
 class Entity
 {
@@ -30,6 +31,9 @@ public:
 	int fireTimer;
 	int fireInterval;
 	int immunityTime;
+
+	Sound* moveSound;
+	Sound* moveBoostSound;
 };
 
 class Bullet : public Entity

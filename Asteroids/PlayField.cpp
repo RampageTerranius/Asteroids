@@ -29,11 +29,26 @@ void GameState_PlayField::Init()
 	background->centerTextureOnDraw = false;
 	background->SetWidthHeight(game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 
-	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\170144__timgormly__8-bit-explosion2.aiff", "explosion");
-	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\277213__thedweebman__8-bit-hit.wav", "hit");
-	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\507017__mrthenoronha__gun-shot-2-8-bit.wav", "shot");
+	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-explosion2.aiff", "explosion");
+	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-bump.aiff", "hit");
+	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-laser1.aiff", "shot");	
 
 	// Setup player varaibles.
+	{
+		Chunk* s;
+		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static.wav", "move");
+		s->SetVolume(20);
+		s->allowOverlayingSound = true;
+		player.moveSound = s;
+	}
+	{
+		Chunk* s;
+		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static.wav", "moveBoost");
+		s->SetVolume(50);
+		s->allowOverlayingSound = true;
+		player.moveBoostSound = s;
+	}
+
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");
 	player.x = static_cast <float> (game.SCREEN_WIDTH) / 2.0f;
 	player.y = static_cast <float> (game.SCREEN_HEIGHT) / 2.0f;

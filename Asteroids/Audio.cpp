@@ -40,6 +40,11 @@ void Sound::Stop()
 
 }
 
+void Sound::SetVolume(int newVol)
+{
+
+}
+
 Music::Music()
 {
 	Clear();
@@ -97,6 +102,11 @@ void Music::Unpause()
 void Music::Stop()
 {
 	Mix_HaltMusic();
+}
+
+void Music::SetVolume(int newVol)
+{
+	Mix_VolumeMusic(newVol);
 }
 
 Chunk::Chunk()
@@ -173,6 +183,11 @@ void Chunk::Stop()
 	if (this->channel >= 0)
 		if (channelList[this->channel] != nullptr)
 			Mix_HaltChannel(this->channel);
+}
+
+void Chunk::SetVolume(int newVol)
+{
+	Mix_VolumeChunk(sound, newVol);
 }
 
 Sounds::Sounds()

@@ -19,8 +19,12 @@ public:
 
 	std::string Name() { return name; }
 
+	int Volume() { return volume; };
+	virtual void SetVolume(int newVol);
+
 protected:
 	std::string name;
+	int volume;
 };
 
 class Music : public Sound
@@ -35,6 +39,8 @@ public:
 	void Pause();
 	void Unpause();
 	void Stop();
+
+	void SetVolume(int newVol);
 
 private:
 	Mix_Music* sound;
@@ -52,6 +58,8 @@ public:
 	void Pause();
 	void Unpause();
 	void Stop();
+
+	void SetVolume(int newVol);
 
 	int channel;
 	bool allowOverlayingSound;
