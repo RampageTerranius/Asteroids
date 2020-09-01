@@ -37,14 +37,14 @@ void GameState_PlayField::Init()
 	{
 		Chunk* s;
 		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static.wav", "move");
-		s->SetVolume(20);
+		s->volume = 20;
 		s->allowOverlayingSound = true;
 		player.moveSound = s;
 	}
 	{
 		Chunk* s;
 		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static.wav", "moveBoost");
-		s->SetVolume(50);
+		s->volume = 50;
 		s->allowOverlayingSound = true;
 		player.moveBoostSound = s;
 	}

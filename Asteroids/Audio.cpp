@@ -11,7 +11,7 @@ Sound::Sound()
 
 void Sound::Clear()
 {
-	this->name = "";
+	name = "";
 }
 
 bool Sound::Load(std::string fileLoc, std::string name)
@@ -40,11 +40,6 @@ void Sound::Stop()
 
 }
 
-void Sound::SetVolume(int newVol)
-{
-
-}
-
 Music::Music()
 {
 	Clear();
@@ -57,20 +52,21 @@ Music::~Music()
 
 void Music::Clear()
 {
-	this->name = "";
-	if (this->sound != nullptr)
+	name = "";
+	volume = 128;
+	if (sound != nullptr)
 	{
-		Mix_FreeMusic(this->sound);
-		this->sound = nullptr;
+		Mix_FreeMusic(sound);
+		sound = nullptr;
 	}
 }
 
-bool Music::Load(std::string fileLoc, std::string name)
+bool Music::Load(std::string fileLoc, std::string newName)
 {
-	this->sound = Mix_LoadMUS(fileLoc.c_str());
-	if (this->sound != nullptr)
+	sound = Mix_LoadMUS(fileLoc.c_str());
+	if (sound != nullptr)
 	{
-		this->name = name;
+		name = newName;
 		return true;
 	}
 
@@ -82,7 +78,10 @@ bool Music::Load(std::string fileLoc, std::string name)
 void Music::Play()
 {
 	if (Mix_PlayingMusic() == 0)
-		Mix_PlayMusic(this->sound, -1);
+	{
+		Mix_PlayMusic(sound, -1);
+		Mix_VolumeMusic(volume);
+	}
 	else if (Mix_PausedMusic() == 1)
 		Unpause();
 	else
@@ -104,11 +103,6 @@ void Music::Stop()
 	Mix_HaltMusic();
 }
 
-void Music::SetVolume(int newVol)
-{
-	Mix_VolumeMusic(newVol);
-}
-
 Chunk::Chunk()
 {
 	Clear();
@@ -123,28 +117,30 @@ void OnChannelFinish(int channel)
 {
 	channelList[channel]->channel = -1;
 	channelList[channel] = nullptr;
+	Mix_Volume(channel, 128);
 }
 
 void Chunk::Clear()
 {
-	this->name = "";
-	this->channel = -1;
-	this->allowOverlayingSound = true;
-	if (this->sound != nullptr)
+	name = "";
+	channel = -1;
+	allowOverlayingSound = true;
+	volume = 128;
+	if (sound != nullptr)
 	{
-		Mix_FreeChunk(this->sound);
-		this->sound = nullptr;
+		Mix_FreeChunk(sound);
+		sound = nullptr;
 	}
 
 	Mix_ChannelFinished(OnChannelFinish);
 }
 
-bool Chunk::Load(std::string fileLoc, std::string name)
+bool Chunk::Load(std::string fileLoc, std::string newName)
 {
 	sound = Mix_LoadWAV(fileLoc.c_str());
 	if (sound != nullptr)
 	{
-		this->name = name;
+		name = newName;
 		return true;
 	}
 
@@ -155,39 +151,37 @@ bool Chunk::Load(std::string fileLoc, std::string name)
 
 void Chunk::Play()
 {
-	if (!this->allowOverlayingSound)
-		if (this->channel == -1)
+	if (!allowOverlayingSound)
+		if (channel == -1)
 			return;
 
-	this->channel = Mix_PlayChannel(-1, this->sound, 0);
-	if (this->channel >= 0 && this->channel < CHANNEL_LIMIT)
-		channelList[this->channel] = this;
+	channel = Mix_PlayChannel(-1, sound, 0);
+	if (channel >= 0 && channel < CHANNEL_LIMIT)
+	{
+		Mix_Volume(channel, volume);
+		channelList[channel] = this;
+	}
 }
 
 void Chunk::Pause()
 {
-	if (this->channel >= 0)
-		if (channelList[this->channel] != nullptr)
-			Mix_Pause(this->channel);
+	if (channel >= 0)
+		if (channelList[channel] != nullptr)
+			Mix_Pause(channel);
 }
 
 void Chunk::Unpause()
 {
-	if (this->channel >= 0)
-		if (channelList[this->channel] != nullptr)
-			Mix_Resume(this->channel);
+	if (channel >= 0)
+		if (channelList[channel] != nullptr)
+			Mix_Resume(channel);
 }
 
 void Chunk::Stop()
 {
-	if (this->channel >= 0)
-		if (channelList[this->channel] != nullptr)
-			Mix_HaltChannel(this->channel);
-}
-
-void Chunk::SetVolume(int newVol)
-{
-	Mix_VolumeChunk(sound, newVol);
+	if (channel >= 0)
+		if (channelList[channel] != nullptr)
+			Mix_HaltChannel(channel);
 }
 
 Sounds::Sounds()

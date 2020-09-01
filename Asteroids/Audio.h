@@ -11,7 +11,7 @@ public:
 	Sound();
 
 	virtual void Clear();
-	virtual bool Load(std::string fileLoc, std::string name);
+	virtual bool Load(std::string fileLoc, std::string newName);
 	virtual void Play();
 	virtual void Pause();
 	virtual void Unpause();
@@ -19,12 +19,10 @@ public:
 
 	std::string Name() { return name; }
 
-	int Volume() { return volume; };
-	virtual void SetVolume(int newVol);
+	int volume;
 
 protected:
-	std::string name;
-	int volume;
+	std::string name;	
 };
 
 class Music : public Sound
@@ -34,13 +32,11 @@ public:
 	~Music();
 
 	void Clear();
-	bool Load(std::string fileLoc, std::string name);
+	bool Load(std::string fileLoc, std::string newName);
 	void Play();
 	void Pause();
 	void Unpause();
 	void Stop();
-
-	void SetVolume(int newVol);
 
 private:
 	Mix_Music* sound;
@@ -53,13 +49,11 @@ public:
 	~Chunk();
 
 	void Clear();
-	bool Load(std::string fileLoc, std::string name);
+	bool Load(std::string fileLoc, std::string newName);
 	void Play();
 	void Pause();
 	void Unpause();
 	void Stop();
-
-	void SetVolume(int newVol);
 
 	int channel;
 	bool allowOverlayingSound;
@@ -74,12 +68,12 @@ public:
 	Sounds();
 	void Cleanup();
 	Sound* GetSound(std::string name);
-	Sound* CreateChunk(std::string fileLoc, std::string name);
-	Sound* CreateMusic(std::string fileLoc, std::string name);
+	Sound* CreateChunk(std::string fileLoc, std::string newName);
+	Sound* CreateMusic(std::string fileLoc, std::string newName);
 	void DeleteSound(std::string name);
 
 private:
-	Sound* CreateSound(std::string fileLoc, std::string name, bool isChunk);
+	Sound* CreateSound(std::string fileLoc, std::string newName, bool isChunk);
 	std::vector<Sound*> soundList;
 };
 
