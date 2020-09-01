@@ -47,9 +47,9 @@ public:
 		player->velY -= ( static_cast <float> (sin((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 
 		if (!player->speedBoost)
-			player->moveSound->Play();
+			player->moveForwardsSound->Play();
 		else
-			player->moveBoostSound->Play();
+			player->moveForwardsBoostSound->Play();
 
 		return true;
 	}
@@ -69,9 +69,9 @@ public:
 		player->velY += (static_cast <float> (sin((player->rotation + 90.0f) * (M_PI / 180.0f)) * player->velocity)) * static_cast <float> (i);
 
 		if (!player->speedBoost)
-			player->moveSound->Play();
+			player->moveBackwardsSound->Play();
 		else
-			player->moveBoostSound->Play();
+			player->moveBackwardsBoostSound->Play();
 
 		return true;
 	}
@@ -105,17 +105,21 @@ public:
 	CommandEqualizeVelocity() { allowContinuousExecution = true; }
 	bool Execute(Player* player)
 	{		
+		bool hasEqualized = false;
+
 		if (player->velX > 0)
 		{
 			player->velX -= (player->velocity / 2);
 			if (player->velX < 0)
 				player->velX = 0;
+			hasEqualized = true;
 		}
 		else if (player->velX < 0)
 		{
 			player->velX += (player->velocity / 2);
 			if (player->velX > 0)
 				player->velX = 0;
+			hasEqualized = true;
 		}
 
 		if (player->velY > 0)
@@ -123,13 +127,19 @@ public:
 			player->velY -= (player->velocity / 2);
 			if (player->velY < 0)
 				player->velY = 0;
+			hasEqualized = true;
 		}
 		else if (player->velY < 0)
 		{
 			player->velY += (player->velocity / 2);
 			if (player->velY > 0)
 				player->velY = 0;
+			hasEqualized = true;
 		}
+
+		if (hasEqualized = true)
+			player->equalizeSound->Play();
+
 		return true;
 	}
 };

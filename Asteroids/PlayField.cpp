@@ -39,14 +39,35 @@ void GameState_PlayField::Init()
 		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static.wav", "move");
 		s->volume = 20;
 		s->allowOverlayingSound = false;
-		player.moveSound = s;
+		player.moveForwardsSound = s;
 	}
 	{
 		Chunk* s;
 		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static.wav", "moveBoost");
 		s->volume = 50;
 		s->allowOverlayingSound = false;
-		player.moveBoostSound = s;
+		player.moveForwardsBoostSound = s;
+	}
+	{
+		Chunk* s;
+		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static2.wav", "moveBack");
+		s->volume = 40;
+		s->allowOverlayingSound = false;
+		player.moveBackwardsSound = s;
+	}
+	{
+		Chunk* s;
+		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static2.wav", "moveBackBoost");
+		s->volume = 70;
+		s->allowOverlayingSound = false;
+		player.moveBackwardsBoostSound = s;
+	}
+	{
+		Chunk* s;
+		s = (Chunk*)allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\static3.wav", "equalize");
+		s->volume = 25;
+		s->allowOverlayingSound = false;
+		player.equalizeSound = s;
 	}
 
 	player.tex = allTextures.CreateTexture(GetEXEPath() + "\\images\\player.png", "player");

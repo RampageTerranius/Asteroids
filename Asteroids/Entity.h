@@ -32,8 +32,11 @@ public:
 	int fireInterval;
 	int immunityTime;
 
-	Sound* moveSound;
-	Sound* moveBoostSound;
+	Sound* moveForwardsSound;
+	Sound* moveForwardsBoostSound;
+	Sound* moveBackwardsSound;
+	Sound* moveBackwardsBoostSound;
+	Sound* equalizeSound;
 };
 
 class Bullet : public Entity

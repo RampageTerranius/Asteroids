@@ -31,6 +31,12 @@ Player::Player()
 	fireTimer = 0;
 	fireInterval = 0;
 	immunityTime = 0;
+
+	moveForwardsSound = nullptr;
+	moveForwardsBoostSound = nullptr;
+	moveBackwardsSound = nullptr;
+	moveBackwardsBoostSound = nullptr;
+	equalizeSound = nullptr;
 }
 
 bool Player::Update()
