@@ -152,7 +152,7 @@ bool Chunk::Load(std::string fileLoc, std::string newName)
 void Chunk::Play()
 {
 	if (!allowOverlayingSound)
-		if (channel == -1)
+		if (channel != -1)
 			return;
 
 	channel = Mix_PlayChannel(-1, sound, 0);
