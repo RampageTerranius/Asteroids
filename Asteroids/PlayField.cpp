@@ -96,9 +96,10 @@ void GameState_PlayField::Init()
 void GameState_PlayField::Cleanup()
 {
 	allTextures.Cleanup();
-	iManager.ClearAll();
-	allTTF.ClearAll();
+	iManager.ClearAll();	
 	allSounds.Cleanup();
+
+	allTTF.ClearAll();
 
 	delete commandFire;
 	delete commandForwards;

@@ -41,9 +41,11 @@ void GameState_MainMenu::Init()
 
 void GameState_MainMenu::Cleanup()
 {
-	allTextures.Cleanup();
-	allTTF.ClearAll();
+	allTextures.Cleanup();	
 	iManager.ClearAll();
+	allSounds.Cleanup();
+
+	allTTF.ClearAll();
 }
 
 bool GameState_MainMenu::HandleInput()
