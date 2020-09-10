@@ -169,6 +169,8 @@ public:
 
 	int asteroidAutoSpawnTimer;
 
+	int currentScore;
+
 private:
 	Player player;
 	TTFs allTTF;
@@ -179,6 +181,7 @@ private:
 	Texture* background;
 
 	TTF* fps;
+	TTF* score;
 
 	Command* commandFire = new CommandFire();
 	Command* commandForwards = new CommandMoveForward();

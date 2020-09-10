@@ -23,8 +23,12 @@ public:
 	int x, y;
 	void CenterImage(bool center);
 	bool IsImageCentered() { return texture.centerTextureOnDraw; };
+	
 	bool active;
-	std::string Name() { return name; }
+	std::string Name() { return name; }	
+
+	int TexWidth() { return texture.Rect().w; };
+	int TexHeight() { return texture.Rect().h; };
 
 private:
 	void Update();

@@ -16,7 +16,8 @@ void GameState_PlayField::Init()
 	allAsteroids.Clear();
 	allBullets.Clear();
 
-	fps = allTTF.CreateTTF(game.GetRenderer().renderer, "fps");
+	score = 0;
+	asteroidAutoSpawnTimer = 0;
 
 	// Load all the textures the playfield requires.
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\Bullet.png", "bullet");
@@ -87,10 +88,16 @@ void GameState_PlayField::Init()
 	iManager.Bind(game.controls.equalize, commandEqualizeVelocity);
 	iManager.Bind(game.controls.createAsteroid, commandCreateAsteroid);
 
+	fps = allTTF.CreateTTF(game.GetRenderer().renderer, "fps");
 	fps->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
 	fps->CenterImage(false);
 	fps->x = 10;
 	fps->y = 10;
+	
+	score = allTTF.CreateTTF(game.GetRenderer().renderer, "score");
+	score->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
+	score->CenterImage(false);
+	score->y = 10;
 }
 
 void GameState_PlayField::Cleanup()
@@ -162,10 +169,11 @@ void GameState_PlayField::CheckForCollisons()
 		for (auto bullet : allBullets.allBullets)
 			if (GetDistance(bullet->x, bullet->y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
 			{
+				currentScore += game.BULLET_DISTANCE - bullet->distanceLeft;
 				asteroid->Break(bullet);
 				bullet->Destroy();
 				allSounds.GetSound("hit")->Play();
-				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
+				debug.Log("Bullet", "Update", "Bullet collided with asteroid");				
 
 				// If we broke an asteroid we need to start the function from scratch as data has been both added and removed from vectors.
 				// Without starting the function again we can only process one asteroid being destroyed per tick, this should rarely be an issue but must be addressed.
@@ -230,6 +238,8 @@ void GameState_PlayField::Render()
 	SDL_RenderClear(game.GetRenderer().renderer);
 
 	fps->SetText(std::to_string(game.fps));
+	score->SetText(std::to_string(currentScore));
+	score->x = (game.SCREEN_WIDTH - 10) - score->TexWidth();
 
 	background->Draw(game.GetRenderer().renderer, 0, 0);
 

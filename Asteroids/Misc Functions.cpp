@@ -13,7 +13,7 @@ std::string GetEXEPath()
 	std::string str = exePath;
 	SDL_free(exePath);
 
-	return exePath;
+	return str;
 }
 
 float GetDistance(float x1, float y1, float x2, float y2)
