@@ -13,6 +13,8 @@ public:
 	int WindowWidth() { return windowWidth; }
 	int WindowHeight() { return windowHeight; }
 
+	SDL_Color renderColor = {0, 0, 0, 255};
+
 private:
 	int windowWidth;
 	int windowHeight;

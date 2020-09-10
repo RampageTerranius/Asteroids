@@ -7,7 +7,7 @@ Texture::Texture()
 	name = "";
 	tex = nullptr;
 	rect = SDL_Rect();
-	centerTextureOnDraw = true;
+	anchor = Anchor::Center;
 }
 
 Texture::~Texture()
@@ -92,10 +92,48 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 		tempRect.x = x;
 		tempRect.y = y;
 		
-		if (centerTextureOnDraw)
+		// Determine where we are anchoring the texture to from the given X/Y coordinates.
+		switch (anchor)
 		{
-			tempRect.x -= tempRect.w / 2;
-			tempRect.y -= tempRect.h / 2;
+			case Anchor::TopRight:
+				tempRect.x -= tempRect.w;
+				break;
+
+			case Anchor::Top:
+				tempRect.x -= tempRect.w / 2;				
+				break;
+
+			case Anchor::TopLeft:
+				// Do nothing.
+				break;
+
+			case Anchor::Right:
+				tempRect.x -= tempRect.w;
+				tempRect.y -= tempRect.h / 2;
+				break;
+
+			case Anchor::Center:
+				tempRect.x -= tempRect.w / 2;
+				tempRect.y -= tempRect.h / 2;
+			break;
+
+			case Anchor::Left:
+				tempRect.y -= tempRect.h / 2;
+				break;
+
+			case Anchor::BottomRight:
+				tempRect.x -= tempRect.w;
+				tempRect.y -= tempRect.h;
+				break;
+
+			case Anchor::Bottom:
+				tempRect.x -= tempRect.w / 2;
+				tempRect.y -= tempRect.h;
+				break;
+
+			case Anchor::BottomLeft:				
+				tempRect.y -= tempRect.h;
+				break;
 		}
 
 		// TODO: rework this, surely we dont need to calculate this each time we draw? we shoudl calculate this WHEN we choose to change scale.
@@ -107,7 +145,16 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 
 		// Render the texture to the given renderer.
 		if (SDL_RenderCopyEx(renderer, tex, NULL, &tempRect, rotation, nullptr, SDL_FLIP_NONE) >= 0)
+		{
+			if (drawGivenCoordinates)
+			{
+				SDL_SetRenderDrawColor(game.GetRenderer().renderer, 255, 0, 0, 0);
+				SDL_RenderDrawPoint(game.GetRenderer().renderer, x, y);
+				SDL_SetRenderDrawColor(game.GetRenderer().renderer, game.GetRenderer().renderColor.r, game.GetRenderer().renderColor.g, game.GetRenderer().renderColor.b, game.GetRenderer().renderColor.a);
+			}
+				
 			return true;
+		}
 	}
 
 	return false;

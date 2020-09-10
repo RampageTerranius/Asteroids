@@ -27,7 +27,7 @@ void GameState_PlayField::Init()
 	allTextures.CreateTexture(GetEXEPath() + "\\Images\\asteroid 25x25.png", "asteroid 25");
 
 	background = allTextures.CreateTexture(GetEXEPath() + "\\Images\\background.jpg", "background");
-	background->centerTextureOnDraw = false;
+	background->anchor = Anchor::TopLeft;
 	background->SetWidthHeight(game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 
 	allSounds.CreateChunk(GetEXEPath() + "\\Sounds\\8-bit-explosion2.aiff", "explosion");
@@ -90,14 +90,15 @@ void GameState_PlayField::Init()
 
 	fps = allTTF.CreateTTF(game.GetRenderer().renderer, "fps");
 	fps->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
-	fps->CenterImage(false);
+	fps->SetAnchor(Anchor::TopLeft);
 	fps->x = 10;
 	fps->y = 10;
 	
 	score = allTTF.CreateTTF(game.GetRenderer().renderer, "score");
 	score->SetFont(GetEXEPath() + "\\Fonts\\pxl.ttf", 30);
-	score->CenterImage(false);
+	score->SetAnchor(Anchor::TopRight);
 	score->y = 10;
+	score->x = game.SCREEN_WIDTH - 10;
 }
 
 void GameState_PlayField::Cleanup()
@@ -239,7 +240,6 @@ void GameState_PlayField::Render()
 
 	fps->SetText(std::to_string(game.fps));
 	score->SetText(std::to_string(currentScore));
-	score->x = (game.SCREEN_WIDTH - 10) - score->TexWidth();
 
 	background->Draw(game.GetRenderer().renderer, 0, 0);
 

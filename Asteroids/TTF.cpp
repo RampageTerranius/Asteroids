@@ -48,11 +48,10 @@ void TTF::Clear()
 	}
 }
 
-void TTF::CenterImage(bool center)
+void TTF::SetAnchor(Anchor newAnchor)
 {
-	texture.centerTextureOnDraw = center;
+	texture.anchor = newAnchor;
 }
-
 // Set the currently in use font.
 bool TTF::SetFont(std::string fontLocation, int size)
 {
@@ -132,24 +131,58 @@ bool TTF::PointIntersectsTexture(SDL_Point point)
 
 	SDL_Rect rect = texture.Rect();
 
-	if (texture.centerTextureOnDraw)
+	switch (texture.anchor)
 	{
-		rect.x = x - (rect.w / 2);
-		rect.y = y - (rect.h / 2);
+	case Anchor::TopRight:
+		rect.x = x - rect.w;
+		rect.y = y;
+		break;
 
-		if (SDL_PointInRect(&point, &rect))
-			return true;
-	}
-	else
-	{
+	case Anchor::Top:
+		rect.x = x - (rect.w / 2);
+		rect.y = y;
+		break;
+
+	case Anchor::TopLeft:
 		rect.x = x;
 		rect.y = y;
+		break;
 
-		if (SDL_PointInRect(&point, &rect))
-			return true;
+	case Anchor::Right:
+		rect.x = x - rect.w;
+		rect.y = y - (rect.h / 2);
+		break;
+
+	case Anchor::Center:
+		rect.x = x - (rect.w / 2);
+		rect.y = y - (rect.h / 2);
+		break;
+
+	case Anchor::Left:
+		rect.x = x;
+		rect.y = y - (rect.h / 2);
+		break;
+
+	case Anchor::BottomRight:
+		rect.x = x - rect.w;
+		rect.y = y - rect.h;		
+		break;
+
+	case Anchor::Bottom:
+		rect.x = x - (rect.w / 2);		
+		rect.y = y - rect.h;
+		break;
+
+	case Anchor::BottomLeft:
+		rect.x = x;		
+		rect.y = y - rect.h;
+		break;
 	}
 
-	return false;
+	if (SDL_PointInRect(&point, &rect))
+		return true;
+	else
+		return false;
 }
 
 

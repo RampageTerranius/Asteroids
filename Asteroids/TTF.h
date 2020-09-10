@@ -21,8 +21,8 @@ public:
 	void Draw();
 	bool PointIntersectsTexture(SDL_Point point);
 	int x, y;
-	void CenterImage(bool center);
-	bool IsImageCentered() { return texture.centerTextureOnDraw; };
+	void SetAnchor(Anchor newAnchor);
+	Anchor GetAnchor() { return texture.anchor; };
 	
 	bool active;
 	std::string Name() { return name; }	

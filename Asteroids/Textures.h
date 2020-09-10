@@ -5,6 +5,19 @@
 #include <string>
 #include <vector>
 
+enum class Anchor
+{
+	TopRight,
+	Top,
+	TopLeft,
+	Right,
+	Center,
+	Left,
+	BottomRight,
+	Bottom,
+	BottomLeft
+};
+
 class Texture
 {
 public:
@@ -25,7 +38,8 @@ public:
 	void ResetImageDimensions();
 	SDL_Point Center() { SDL_Point centerPoint; centerPoint.y = static_cast<int> (round(static_cast<float> (rect.h / 2))); centerPoint.x = static_cast<int> (round(static_cast<float> (rect.w / 2))); return centerPoint; }
 
-	bool centerTextureOnDraw = true;	
+	Anchor anchor = Anchor::Center;
+	bool drawGivenCoordinates = false;
 
 private:
 	float scale = 1.0;
