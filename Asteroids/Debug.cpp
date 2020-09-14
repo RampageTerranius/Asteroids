@@ -14,10 +14,10 @@ Debug::Debug()
 	showMessagesOnConsole = false;
 }
 
-void Debug::Log(std::string fileName, std::string functionName, std::string coderMessage)
+void Debug::Log(std::string className, std::string functionName, std::string coderMessage)
 {
-	DebugMessage newMessage(fileName, functionName, coderMessage);
+	DebugMessage newMessage(className, functionName, coderMessage);
 
 	if (showMessagesOnConsole)
-		std::cout << fileName + ":" + functionName + " | " + coderMessage + "\n";
+		std::cout << className + ":" + functionName + " | " + coderMessage + "\n";
 }

@@ -136,7 +136,7 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 				break;
 		}
 
-		// TODO: rework this, surely we dont need to calculate this each time we draw? we shoudl calculate this WHEN we choose to change scale.
+		// TODO: rework this, surely we dont need to calculate this each time we draw? we should calculate this WHEN we choose to change scale.
 		if (scale != 1.0)
 		{
 			tempRect.w *= scale;
