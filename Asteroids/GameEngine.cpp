@@ -19,6 +19,7 @@ GameEngine::GameEngine()
 	Init();	
 }
 
+// Loads the settings for the program.
 void GameEngine::LoadSettings()
 {
 	CSimpleIniA ini;
@@ -211,6 +212,7 @@ void GameEngine::LoadSettings()
 	}
 }
 
+// Starts up the SDL engine, loads settings and prepares windows/renderers.
 void GameEngine::Init()
 {
 	if (running)
@@ -273,6 +275,7 @@ void GameEngine::Init()
 	running = true;	
 }
 
+// Cleans up and deletes all active states and shuts down the SDL engine.
 void GameEngine::Cleanup()
 {
 	debug.Log("GameEngine", "Cleanup", "Cleaning up engine...");
@@ -311,12 +314,14 @@ void GameEngine::Render()
 	State()->Render();
 }
 
+// Puts the given state onto the top of the state que. (DOES NOT CHECK FOR IDENTICAL STATES)
 void GameEngine::PushNewState(GameState* state)
 {
 	states.push_back(state);
 	debug.Log("GameEngine", "PushNewState", "Pushed new state as active.");
 }
 
+// Pops the top state from the que.
 void GameEngine::PopLastState()
 {
 	if (states.size() > 0)
@@ -329,6 +334,7 @@ void GameEngine::PopLastState()
 	}
 }
 
+// Checks if we currently have an active state.
 bool GameEngine::HasActiveState()
 {
 	if (State() == nullptr)

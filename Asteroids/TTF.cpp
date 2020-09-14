@@ -48,15 +48,20 @@ void TTF::Clear()
 	}
 }
 
+// Set the anchor point for placign the texture.
 void TTF::SetAnchor(Anchor newAnchor)
 {
 	texture.anchor = newAnchor;
 }
+
 // Set the currently in use font.
 bool TTF::SetFont(std::string fontLocation, int size)
 {
 	if (font != nullptr)
+	{
+		debug.Log("TTF", "SetFont", "TTF object already had a font, closing font...");
 		TTF_CloseFont(font);
+	}
 
 	font = TTF_OpenFont(fontLocation.c_str(), size);
 	if (font != nullptr)
@@ -72,22 +77,31 @@ bool TTF::SetFont(std::string fontLocation, int size)
 	}
 }
 
+// Set the RBG color for this TTF with no alpha.
 void TTF::SetColor(int r, int g, int b)
 {
-	if (color.r == r || color.g == g || color.b == b) // Make sure to check if we need to do any updates to begin with.
-		return;
-	
+	SetColor(r, g, b, 255);
+};
+
+// Set the RGBA color for this TTF.
+void TTF::SetColor(int r, int g, int b, int a)
+{
 	color.r = r;
 	color.g = g;
-	color.b = b;	
+	color.b = b;
+	color.a = a;
 
 	Update();
 };
 
+// Forces the TTF to update its texture.
 void TTF::Update()
 {
 	if (font == nullptr || text == "")
+	{
+		debug.Log("TTF", "Update", "Attempt to update TTF that is not initialized or has no name");
 		return;
+	}
 
 	// Delete the old texture if it exists.
 	if (texture.HasTexture())

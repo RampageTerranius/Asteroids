@@ -17,6 +17,7 @@ public:
 	void Clear();
 	bool SetFont(std::string fontLocation, int size);
 	void SetColor(int r, int g, int b);
+	void SetColor(int r, int g, int b, int a);
 	void SetText(std::string newText);
 	void Draw();
 	bool PointIntersectsTexture(SDL_Point point);
