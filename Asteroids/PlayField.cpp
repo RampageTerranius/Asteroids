@@ -182,9 +182,10 @@ bool GameState_PlayField::HandleInput()
 // Check if there has been any collisons between player/asteroid or asteroid/bullet.
 void GameState_PlayField::CheckForCollisons()
 {
+	// Check every asteroid and look for collisions.
 	for (auto asteroid : allAsteroids.allAsteroids)
 	{
-		// TODO: check for a better way to handle this, recalling CheckForCollisions cant be the optimal way to do this...
+		// Looking for collisons with bullets...
 		for (auto bullet : allBullets.allBullets)
 		{
 			if (GetDistance(bullet->x, bullet->y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
@@ -195,17 +196,20 @@ void GameState_PlayField::CheckForCollisons()
 				allSounds.GetSound("hit")->Play();
 				debug.Log("Bullet", "Update", "Bullet collided with asteroid");
 				return;
-			}
+			}			
+		}
 
-			if (player.immunityTime == 0)
-				if (GetDistance(player.x, player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
-				{
-					player.Respawn();
-					asteroid->Break(nullptr);
-					allSounds.GetSound("explosion")->Play();
-					debug.Log("Bullet", "Update", "Asteroid collided with player");
-					return;
-				}
+		// Looking for collisons with players...
+		if (player.immunityTime == 0)
+		{
+			if (GetDistance(player.x, player.y, asteroid->x, asteroid->y) <= (asteroid->size / 2))
+			{
+				player.Respawn();
+				asteroid->Break(nullptr);
+				allSounds.GetSound("explosion")->Play();
+				debug.Log("Bullet", "Update", "Asteroid collided with player");
+				return;
+			}
 		}
 	}
 }

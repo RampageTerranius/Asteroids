@@ -136,28 +136,32 @@ void InputManager::Bind(int key, Command* command)
 	commands[key] = command;
 }
 
-// Functions used as part of InputToActions()
+// Update stored mouse location. 
 void InputManager::OnMouseMotion(SDL_Event& event)
 {
 	SDL_GetMouseState(&mouse.x, &mouse.y);
 }
 
+// Update current state of a key to pressed.
 void InputManager::OnKeyDownInput(SDL_Event& event)
 {
 	state[event.key.keysym.sym] = KeyState::pressed;
 }
 
+// Update current state of a key to released.
 void InputManager::OnKeyUpInput(SDL_Event& event)
 {
 	firstPress[event.key.keysym.sym] = false;
 	state[event.key.keysym.sym] = KeyState::released;
 }
 
+// Update current state of mouse button to pressed.
 void InputManager::OnMouseDownInput(SDL_Event& event)
 {
 	state[event.button.button] = KeyState::pressed;
 }
 
+// Update current state of mouse button to released.
 void InputManager::OnMouseUpInput(SDL_Event& event)
 {
 	firstPress[event.button.button] = false;
@@ -165,6 +169,7 @@ void InputManager::OnMouseUpInput(SDL_Event& event)
 }
 
 // Checks if the key is currently being held.
+// Held means it has been reported as pressed down for 2 or more input cycles.
 bool InputManager::IsHeld(int key)
 {
 	if (state[key] == KeyState::pressed)
@@ -191,6 +196,8 @@ bool InputManager::JustPressed(int key)
 	}
 }
 
+// Clear all commands from the list and reset all keys to their default state.
+// Should only be used for cleanup operations.
 void InputManager::ClearInput()
 {
 	commandList.clear();
@@ -206,6 +213,7 @@ void InputManager::ClearInput()
 	}
 }
 
+// Return the currently reported location of the mouse.
 SDL_Point InputManager::GetMouseLocation()
 {
 	return SDL_Point{ mouse.x, mouse.y };
