@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "TTF.h"
 
 // Enum for the currently selected option in the menu.
 enum class MenuOption

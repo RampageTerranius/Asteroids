@@ -1,8 +1,4 @@
 #include "EventHandle.h"
-#include "Entity.h"
-#include "Debug.h"
-
-#include <SDL.h>
 
 std::map <int, KeyState> InputManager::state = std::map <int, KeyState>();
 std::map <int, bool> InputManager::firstPress = std::map <int, bool>();
@@ -91,18 +87,20 @@ bool InputManager::GenerateInput()
 // Add all commands to a list for processing.
 void InputManager::DispatchCommands(std::list<Command*>& commandVector)
 {
-	for (std::map<int, Command*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
-	{
-		if (iter->second->allowContinuousExecution)
+	// Iterate over all commands and add them to the commandVector as needed.
+	for (std::map<int, Command*>::iterator it = commands.begin(); it != commands.end(); it++)
+	{		
+		if (it->second->allowContinuousExecution)
 		{
-			if (IsHeld(iter->first))
+			// If the command is allowed to be continuous and is being held down then add it to the list of commands to process.
+			if (IsHeld(it->first))
 			{
-				commandVector.push_back(iter->second);
+				commandVector.push_back(it->second);
 			}
 		}
-		else if (JustPressed(iter->first))
+		else if (JustPressed(it->first))
 		{
-			commandVector.push_back(iter->second);
+			commandVector.push_back(it->second);
 		}
 	}
 }
@@ -130,10 +128,14 @@ bool InputManager::ProcessCommandList(Player* player)
 	return true;
 }
 
-// Assigns the given command to the given key.
-void InputManager::Bind(int key, Command* command)
+// Assigns the given command to the given keycode.
+// keycode is the decimal value of the button being pressed (in SDL_keycode)
+// Command is a pointer to a given command.
+// For a list of keycodes please see the following:
+// https://wiki.libsdl.org/SDL2/SDLKeycodeLookup
+void InputManager::Bind(int keycode, Command* command)
 {
-	commands[key] = command;
+	commands[keycode] = command;
 }
 
 // Update stored mouse location. 

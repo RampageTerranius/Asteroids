@@ -1,10 +1,10 @@
+#include "PlayField.h"
+
 #include <SDL.h>
 
-#include "PlayField.h"
-#include "EventHandle.h"
 #include "GameEngine.h"
-#include "Misc Functions.h"
 #include "Debug.h"
+#include "Misc Functions.h"
 
 // Constructor.
 GameState_PlayField::GameState_PlayField()
@@ -214,27 +214,26 @@ void GameState_PlayField::CheckForCollisons()
 	}
 }
 
+// Check if the timelimit for a new asteroid is up and attempt to spawn a new asteroid if so.
 void GameState_PlayField::CheckForNewAsteroids()
 {
-	// Check if we are allowed to potentially create new asteroids.
+	// Check if we are allowed to create new asteroids automatically.
 	if (!game.AUTO_SPAWN_ASTEROIDS)
 	{
 		return;
 	}
 
-	int totalSize = 0;
-	for (auto asteroid : allAsteroids.allAsteroids)
-	{
-		totalSize += asteroid->size;
-	}
+
+	int totalAsteroids = allAsteroids.allAsteroids.size();
 
 	// Check if we are below the total size limit of asteroids and if so count down a timer to spawn a new one.
-	if (totalSize < game.AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX)
+	if (totalAsteroids < game.AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX)
 	{
 		asteroidAutoSpawnTimer--;
 
 		if (asteroidAutoSpawnTimer <= 0)
 		{
+			// Create a new asteroid and give it a reference to the palyer so it knows where to NOT spawn the asteroid.
 			allAsteroids.CreateAsteroid(&player);
 			asteroidAutoSpawnTimer = game.AUTO_SPAWN_ASTEROIDS_TIMER;
 		}
@@ -245,29 +244,32 @@ void GameState_PlayField::CheckForNewAsteroids()
 	}
 }
 
+// Handle all events for the game state.
 void GameState_PlayField::HandleEvents()
 {
-	// Handle players events.
+	// Let list handlers look after their own events.
 	player.Update();
-
 	allBullets.UpdateAll();
-
 	allAsteroids.UpdateAll();
 
+	// Check for collisons and check for spawning asteroids.
 	CheckForCollisons();
-
 	CheckForNewAsteroids();
 }
 
+// Render the current gamestate to the screen.
 void GameState_PlayField::Render()
 {
 	SDL_RenderClear(game.GetRenderer().renderer);
 
+	// Set the text for our fps and score.
 	fps->SetText(std::to_string(game.fps));
 	score->SetText(std::to_string(currentScore));
 
+	// Push all elements to the renderer.
+	// Drawing in this order:
+	// background -> player -> bullet -> asteroid -> UI.
 	background->Draw(game.GetRenderer().renderer, 0, 0);
-
 	player.Draw();
 	allBullets.RenderAll();
 	allAsteroids.RenderAll();

@@ -60,8 +60,6 @@ public:
 	void UpdateAll();
 	void RenderAll();
 	void Clear();
-
-//private:
 	std::list<Bullet*> allBullets;
 };
 
@@ -86,8 +84,6 @@ public:
 	void UpdateAll();
 	void RenderAll();
 	void Clear();
-
-//private:
 	std::list<Asteroid*> allAsteroids;
 };
 

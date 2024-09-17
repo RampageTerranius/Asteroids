@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "TTF.h"
 
 // Game state for the options menu.
 // NOT CURRENTLY IMPLEMENTED.

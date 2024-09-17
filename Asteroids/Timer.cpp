@@ -71,13 +71,19 @@ Uint32 Timer::GetTicks()
 
     //If the timer is running
     if (started)
+    {
         //If the timer is paused
         if (paused)
+        {
             //Return the number of ticks when the timer was paused
             time = pausedTicks;
+        }
         else
+        {
             //Return the current time minus the start time
             time = SDL_GetTicks() - startTicks;
+        }
+    }
 
     return time;
 }
@@ -91,5 +97,5 @@ bool Timer::IsStarted()
 bool Timer::IsPaused()
 {
     //Timer is running and paused
-    return paused && started;
+    return paused || started;
 }

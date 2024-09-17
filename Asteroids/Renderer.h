@@ -1,5 +1,4 @@
 #pragma once
-
 #include <SDL.h>
 
 class Renderer
@@ -7,8 +6,8 @@ class Renderer
 public:
 	bool Init(const char* name, int width, int height, bool fullScreen, bool VSync);
 
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
 
 	int WindowWidth() { return windowWidth; }
 	int WindowHeight() { return windowHeight; }
@@ -16,6 +15,6 @@ public:
 	SDL_Color renderColor = {0, 0, 0, 255};
 
 private:
-	int windowWidth;
-	int windowHeight;
+	int windowWidth = 640;
+	int windowHeight = 480;
 };

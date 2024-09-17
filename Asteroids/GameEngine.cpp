@@ -1,18 +1,16 @@
+#include "GameEngine.h"
+
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include <string>
-#include <fstream>
+#include "SimpleINI/SimpleINI.h"
 
-#include "GameEngine.h"
+#include "Debug.h"
+#include "Misc Functions.h"
 #include "MainMenu.h"
 #include "PlayField.h"
-#include "Misc Functions.h"
-#include "Debug.h"
-
-#include "SimpleINI/SimpleINI.h"
 
 GameEngine::GameEngine()
 {	
@@ -22,10 +20,13 @@ GameEngine::GameEngine()
 // Loads the settings for the program.
 void GameEngine::LoadSettings()
 {
+	// Prepare our variables for handing the settigns file.
 	CSimpleIniA ini;
 	ini.SetUnicode();
 
 	SI_Error error = ini.LoadFile((GetEXEPath() + "Settings.ini").c_str());
+
+	// In the situation we fail to load the settigns file return to defaults and create a new file.
 	if (error < 0)
 	{
 		ini.SetValue("Video", "ScreenName", SCREEN_NAME.c_str());
@@ -61,6 +62,8 @@ void GameEngine::LoadSettings()
 	}
 	else
 	{
+		// Otherwise, a settigns file exists and we will laod it.
+
 		// Load each variable.
 		// Video.
 		SCREEN_NAME = ini.GetValue("Video", "ScreenName", SCREEN_NAME.c_str());
@@ -237,6 +240,7 @@ void GameEngine::Init()
 
 	debug.Log("GameEngine", "Init", "Initializing SDL_TTF sub-routines...");
 
+	// Initialize SDL subroutine TTF.
 	if (TTF_Init() != 0)
 	{
 		std::string str = SDL_GetError();
@@ -247,6 +251,7 @@ void GameEngine::Init()
 
 	debug.Log("GameEngine", "Init", "Initializing SDL_MIXER sub-routines...");
 
+	// Initialize SDL subroutine Audio.
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 	{
 		std::string str = Mix_GetError();
@@ -281,11 +286,15 @@ void GameEngine::Cleanup()
 	debug.Log("GameEngine", "Cleanup", "Cleaning up engine...");
 
 	debug.Log("GameEngine", "Cleanup", "Cleaning up states...");
-	for (auto var : states)
-		var->Cleanup();
+	for (auto temp : states)
+	{
+		temp->Cleanup();
+	}
 
-	for (auto var : states)
-		delete var;
+	for (auto temp : states)
+	{
+		delete temp;
+	}
 
 	debug.Log("GameEngine", "Cleanup", "Cleaning up sub-routines...");
 	Mix_Quit();
@@ -328,7 +337,7 @@ void GameEngine::PopLastState()
 	{
 		states.back()->Cleanup();
 		delete states.back();
-		states.pop_back();		
+		states.pop_back();
 
 		debug.Log("GameEngine", "PopLastState", "Revereted to previous state.");
 	}

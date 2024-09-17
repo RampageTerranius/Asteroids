@@ -1,10 +1,13 @@
 #pragma once
-
 #include <SDL.h>
 #include <SDL_mixer.h>
+
 #include <string>
 #include <vector>
 
+// Base sound class.
+// Chunks and Music use this as the parent.
+// When calling upon sounds in engine this type is called.
 class Sound
 {
 public:
@@ -12,10 +15,10 @@ public:
 
 	virtual void Clear();
 	virtual bool Load(std::string fileLoc, std::string newName);
-	virtual void Play();
-	virtual void Pause();
-	virtual void Unpause();
-	virtual void Stop();
+	virtual void Play() = 0;
+	virtual void Pause() = 0;
+	virtual void Unpause() = 0;
+	virtual void Stop() = 0;
 
 	std::string Name() { return name; }
 
@@ -25,6 +28,8 @@ protected:
 	std::string name;	
 };
 
+// Used for looping audio tracks.
+// Best used for music or long sounds.
 class Music : public Sound
 {
 public:
@@ -42,6 +47,8 @@ private:
 	Mix_Music* sound;
 };
 
+// Used for simple short sounds.
+// Best used with few second long sounds (gun shots, steps etc...)
 class Chunk : public Sound
 {
 public:
@@ -62,6 +69,8 @@ private:
 	Mix_Chunk* sound;
 };
 
+// Sound list class.
+// Used to store a list of all sounds currently loaded into a state.
 class Sounds
 {
 public:
@@ -73,7 +82,7 @@ public:
 	void DeleteSound(std::string name);
 
 private:
-	Sound* CreateSound(std::string fileLoc, std::string newName, bool isChunk);
+	Sound* CreateSound(std::string fileLoc, std::string name, bool isChunk);
 	std::vector<Sound*> soundList;
 };
 

@@ -1,11 +1,13 @@
 #include "TTF.h"
-#include "Debug.h"
-
-#include <string>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+#include <string>
+
+#include "Debug.h"
+
+// Constructor, set no font and default size.
 TTF::TTF(SDL_Renderer* givenRenderer, std::string newName)
 {
 	name = newName;
@@ -17,6 +19,7 @@ TTF::TTF(SDL_Renderer* givenRenderer, std::string newName)
 	renderer = givenRenderer;
 }
 
+// Constructor, set font and size.
 TTF::TTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocation, int size)
 {
 	name = newName;
@@ -27,9 +30,12 @@ TTF::TTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocat
 	renderer = givenRenderer;
 
 	if (!SetFont(fontLocation, size))
+	{
 		font = nullptr;
+	}
 }
 
+// Deconstructor.
 TTF::~TTF()
 {
 	Clear();
@@ -38,8 +44,10 @@ TTF::~TTF()
 // Cleans up any in use fonts and surfaces, should be called on closing program.
 void TTF::Clear()
 {
-	if (texture.HasTexture())	
-		texture.Clear();	
+	if (texture.HasTexture())
+	{
+		texture.Clear();
+	}
 
 	if (font != nullptr)
 	{
@@ -105,7 +113,9 @@ void TTF::Update()
 
 	// Delete the old texture if it exists.
 	if (texture.HasTexture())
+	{
 		texture.Clear();
+	}
 
 	SDL_Surface* surface = TTF_RenderText_Solid(font, text.c_str(), color);
 	SDL_Texture* newTexture = SDL_CreateTextureFromSurface(renderer, surface);	
@@ -119,13 +129,19 @@ void TTF::Update()
 void TTF::SetText(std::string newText)
 {
 	if (font == nullptr)
+	{
 		return;
+	}
 
 	// If we already have the same message then stop here.
 	if (text == newText)
+	{
 		return;
+	}
 	else
+	{
 		text = newText;
+	}
 
 	Update();
 };
@@ -135,16 +151,22 @@ void TTF::Draw()
 {
 	// Make sure we have data to work with.
 	if (!texture.Draw(renderer, x, y))
+	{
 		debug.Log("TTF", "Draw", "Failed to draw TTF surface with text :" + text);
+	}
 }
 
+// Check if the given point intersects with this TTF texture.
 bool TTF::PointIntersectsTexture(SDL_Point point)
 {
 	if (!texture.HasTexture())
+	{
 		return false;
+	}
 
 	SDL_Rect rect = texture.Rect();
 
+	// Check what anchor type we have and change location considered an interection to compensate.
 	switch (texture.anchor)
 	{
 	case Anchor::TopRight:
@@ -193,13 +215,13 @@ bool TTF::PointIntersectsTexture(SDL_Point point)
 		break;
 	}
 
-	if (SDL_PointInRect(&point, &rect))
-		return true;
-	else
-		return false;
+	// SDL_PointInRect returns an SDL_Bool.
+	// Internally this is a 0 for false and 1 for true so we can type cast this back to bool.
+	return static_cast<bool>(SDL_PointInRect(&point, &rect));
 }
 
-
+// Creates a new TTF object and adds it to the list with the given name.
+// Sets no font and default font size.
 TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName)
 {
 	TTF* newTTF = new TTF(givenRenderer, newName);
@@ -210,6 +232,8 @@ TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName)
 	return newTTF;
 }
 
+// Creates a new TTF object and adds it to the list with the given name.
+// Loads the fond at the given location and sets to given font size.
 TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName, std::string fontLocation, int size)
 {
 	TTF* newTTF = new TTF(givenRenderer, newName, fontLocation, size);
@@ -220,9 +244,11 @@ TTF* TTFs::CreateTTF(SDL_Renderer* givenRenderer, std::string newName, std::stri
 	return newTTF;
 }
 
+// Searches the TTF list for the given TTF, deletes it then clears it from the list.
 void TTFs::DestroyTTF(TTF* destroyTTF)
 {
 	for (auto ttf : ttfList)
+	{
 		if (ttf == destroyTTF)
 		{
 			ttfList.remove(destroyTTF);
@@ -231,11 +257,14 @@ void TTFs::DestroyTTF(TTF* destroyTTF)
 			debug.Log("TTFs", "DestroyTTF", "Removed and destroyed TTF from list");
 			return;
 		}
+	}
 }
 
+// Searches the TTF list for a TTF with the given name, deletes it then clears it from the list.
 void TTFs::DestroyTTF(std::string destroyName)
 {
 	for (auto ttf : ttfList)
+	{
 		if (destroyName == ttf->Name())
 		{
 			ttfList.remove(ttf);
@@ -244,24 +273,37 @@ void TTFs::DestroyTTF(std::string destroyName)
 			debug.Log("TTFs", "DestroyTTF", "Removed and destroyed TTF from list");
 			return;
 		}
+	}
 }
 
+// Search the list of TTFs for a TTF with the given name.
+// Returns any found TTF, returns nullptr if no TTF with given name exists.
 TTF* TTFs::GetTTF(std::string findName)
 {
 	for (auto ttf : ttfList)
+	{
 		if (findName == ttf->Name())
+		{
 			return ttf;
+		}
+	}
 
 	return nullptr;
 }
 
+// Iterate over the TTF lsit and render all TTF objects.
 void TTFs::RenderAll()
 {
 	for (auto ttf : ttfList)
+	{
 		if (ttf->active)
+		{
 			ttf->Draw();
+		}
+	}
 }
 
+// Iterate over the TTF list, clear and delete all.
 void TTFs::ClearAll()
 {
 	for (auto ttf : ttfList)

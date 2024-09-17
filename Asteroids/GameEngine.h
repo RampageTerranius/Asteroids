@@ -1,10 +1,8 @@
 #pragma once
-
-#include <SDL.h>
 #include <vector>
+
 #include "GameState.h"
 #include "Renderer.h"
-#include "EventHandle.h"
 
 class GameEngine
 {

@@ -2,6 +2,8 @@
 
 #include <string>
 
+// class for platting a point in 2d space.
+// Mainly used for calculating velocity for players/bullets/asteroids.
 class Vector2D
 {
 public:
@@ -14,8 +16,6 @@ public:
 
 	void Normalize();
 	float Length();
-
-	std::string ToString();
 
 	float x = 0.0f;
 	float y = 0.0f;

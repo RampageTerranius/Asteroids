@@ -1,9 +1,11 @@
 #pragma once
 #include "GameState.h"
-#include "Entity.h"
 #include "Command.h"
 #include "Command_PlayField.h"
+#include "TTF.h"
 
+// Gamestate for the primary play field.
+// The game itself is played in this game state
 class GameState_PlayField : public GameState
 {
 public:
@@ -32,6 +34,7 @@ private:
 	TTF* fps;
 	TTF* score;
 
+	// List of commands for user.
 	Command* commandFire = new CommandFire();
 	Command* commandForwards = new CommandMoveForward();
 	Command* commandBackwards = new CommandMoveBackwards();

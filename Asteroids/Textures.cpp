@@ -1,7 +1,11 @@
 #include "Textures.h"
+
+#include <SDL_image.h>
+
 #include "GameEngine.h"
 #include "Debug.h"
 
+// Constructor.
 Texture::Texture()
 {
 	name = "";
@@ -10,15 +14,19 @@ Texture::Texture()
 	anchor = Anchor::Center;
 }
 
+// Deconstructor.
 Texture::~Texture()
 {
 	Clear();
 }
 
+// destroy this texture and reset it to default. 
 void Texture::Clear()
 {
 	if (tex != nullptr)
+	{
 		SDL_DestroyTexture(tex);
+	}
 
 	tex = nullptr;
 
@@ -28,6 +36,8 @@ void Texture::Clear()
 	rect.w = 0;	
 }
 
+// Load a texture using the given file location and assign it a name.
+// Returns true if success, false if failed to load.
 bool Texture::Load(std::string fileLoc, std::string newName)
 {
 	if (tex != nullptr)
@@ -40,7 +50,6 @@ bool Texture::Load(std::string fileLoc, std::string newName)
 
 	// Use base SDL_Image loading function.
 	surface = IMG_Load(fileLoc.c_str());
-
 	if (surface == nullptr)
 	{
 		std::string str = SDL_GetError();
@@ -48,7 +57,7 @@ bool Texture::Load(std::string fileLoc, std::string newName)
 		return false;
 	}
 
-	// Setup the default source rect
+	// Setup the default source rect.
 	rect.x = 0;
 	rect.y = 0;
 	rect.w = surface->w;
@@ -57,12 +66,13 @@ bool Texture::Load(std::string fileLoc, std::string newName)
 	// Set the color key for transparency as RGB(255, 0 , 255)
 	SDL_SetColorKey(surface, true, SDL_MapRGB(surface->format, 255, 0, 255));
 
-	// Create the new texture
+	// Create the new texture.
 	tex = SDL_CreateTextureFromSurface(game.GetRenderer().renderer, surface);
 
 	// Clear out the old surface.
 	SDL_FreeSurface(surface);
 
+	// If we failed to create the texture using the surface then stop here.
 	if (tex == nullptr)
 	{
 		std::string str = SDL_GetError();
@@ -77,11 +87,14 @@ bool Texture::Load(std::string fileLoc, std::string newName)
 	return true;
 }
 
+// Render the texture to the screen using the given coordinates.
+// Renders with no rotation.
 bool Texture::Draw(SDL_Renderer* renderer, int x, int y)
 {
 	return Draw(renderer, 0, x, y);
 }
 
+// Render the texture to the screen using the given coordinates and the given rotation.
 bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 {
 	if (renderer != nullptr && HasTexture())
@@ -146,6 +159,7 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 		// Render the texture to the given renderer.
 		if (SDL_RenderCopyEx(renderer, tex, NULL, &tempRect, rotation, nullptr, SDL_FLIP_NONE) >= 0)
 		{
+			// If the texture is asking to render its coordinates then draw a red dot directly where the source location is.
 			if (drawGivenCoordinates)
 			{
 				SDL_SetRenderDrawColor(game.GetRenderer().renderer, 255, 0, 0, 0);
@@ -160,47 +174,63 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 	return false;
 }
 
+// Return is there is a texture or not.
 bool Texture::HasTexture()
 {
 	if (tex != nullptr)
+	{
 		return true;
+	}
 	else
+	{
 		return false;
+	}
 }
 
+// Set the given sdl_texture and set the name for this texture object.
 bool Texture::SetTexture(SDL_Texture* texture, std::string newName)
 {
 	if (texture == nullptr)
+	{
 		return false;
+	}
 
 	if (newName.empty())
+	{
 		return false;
+	}
 
 	name = newName;
 	tex = texture;
 
-	SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
+	ResetImageDimensions();
 
 	return true;
 }
 
+// Query and set the width/height of the texture to default.
 void Texture::ResetImageDimensions()
 {
 	SDL_QueryTexture(tex, nullptr, nullptr, &rect.w, &rect.h);
 }
 
+// Set the width and height of the texture by hand.
 void Texture::SetWidthHeight(int w, int h)
 {
 	rect.w = w;
 	rect.h = h;
 }
 
+// Set the scale of the image.
 void Texture::SetScale(float newScale)
 {
 	if (newScale > 0.0)
+	{
 		scale = newScale;
+	}
 }
 
+// cleanup and remove all textures from the texture list
 void Textures::Cleanup()
 {
 	for (int i = 0; i < textureList.size(); i++)
@@ -214,20 +244,29 @@ void Textures::Cleanup()
 	debug.Log("Textures", "Cleanup", "Destroyed all textures");
 }
 
+// Iterate over the texture list and return the first texture found with the given name.
+// Returns nullptr if no texture is found.
 Texture* Textures::GetTexture(std::string name)
 {
 	for (auto& tex : textureList)
+	{
 		if (tex->Name() == name)
+		{
 			return tex;
+		}
+	}
 
 	return nullptr;
 }
 
+// Creates a new texture and adds it to the list.
+// loads an image from the given location and assigning a name to the texture.
+// Returns a pointer to the texture created.
 Texture* Textures::CreateTexture(std::string fileLoc, std::string name)
 {
 	Texture* tex = nullptr;
 
-	// First check if a texture under this name already exists.
+	// First check if a texture under this name already exists, if it does return it instead.
 	tex = GetTexture(name);
 
 	if (tex != nullptr)
@@ -250,6 +289,8 @@ Texture* Textures::CreateTexture(std::string fileLoc, std::string name)
 	return textureList.back();
 }
 
+// Adds a given texture to the texture list giving it the given name.
+// Returns true on success, false when given texture doesnt exist.
 bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 {
 	if (texture == nullptr)
@@ -267,17 +308,22 @@ bool Textures::AddTexture(SDL_Texture* texture, std::string name)
 	return true;
 }
 
+// Iterate over the list of textures and delete the first texture with the given name.
 void Textures::DeleteTexture(std::string name)
 {
 	int i = 0;
 
 	for (auto& tex : textureList)
+	{
 		if (tex->Name() == name)
 		{
 			delete textureList[i];
-			textureList.erase(textureList.begin() + i);	
+			textureList.erase(textureList.begin() + i);
 			break;
 		}
 		else
+		{
 			i++;
+		}
+	}
 }

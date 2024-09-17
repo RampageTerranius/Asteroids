@@ -1,11 +1,8 @@
 #include "MainMenu.h"
-#include "PlayField.h"
-#include "EventHandle.h"
+
 #include "GameEngine.h"
+#include "PlayField.h"
 #include "Misc Functions.h"
-#include "Command.h"
-#include "Random.h"
-#include "Debug.h"
 
 // Constructor.
 GameState_MainMenu::GameState_MainMenu()

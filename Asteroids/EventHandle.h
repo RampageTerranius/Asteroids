@@ -1,6 +1,4 @@
 #pragma once
-
-#include <SDL.h>
 #include <string>
 #include <map>
 #include <list>
@@ -29,7 +27,7 @@ public:
 	bool GenerateInputAndDispatchCommands(std::list<Command*>& commandVector);
 	bool GenerateInput();
 	bool ProcessCommandList(Player* player);
-	void Bind(int key, Command* command);
+	void Bind(int keycode, Command* command);
 	SDL_Point GetMouseLocation();
 	
 	std::list<Command*> commandList;// list var type due to FILO operation types.
@@ -44,6 +42,11 @@ public:
 
 protected:
 	// Commands and keystates.
+	// commands is a map built of the following:
+	// An integer that represents the keycode for the command to activate.
+	// The command to be activated.
+	// for a full list of keycodes please see the following:
+	// https://wiki.libsdl.org/SDL2/SDLKeycodeLookup
 	std::map <int, Command*> commands;
 	static std::map <int, KeyState> state;
 	static std::map <int, bool> firstPress;

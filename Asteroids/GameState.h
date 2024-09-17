@@ -1,9 +1,6 @@
 #pragma once
-#include <vector>
-
 #include "EventHandle.h"
 #include "Textures.h"
-#include "TTF.h"
 #include "Audio.h"
 
 // Base game state.
