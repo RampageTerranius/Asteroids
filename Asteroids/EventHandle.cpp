@@ -7,11 +7,13 @@
 std::map <int, KeyState> InputManager::state = std::map <int, KeyState>();
 std::map <int, bool> InputManager::firstPress = std::map <int, bool>();
 
+// Constructor.
 InputManager::InputManager()
 {
 	mouse = SDL_Point{ 0,0 };	
 }
 
+// Clear the command list.
 void InputManager::ClearAll()
 {
 	ClearInput();
@@ -22,17 +24,24 @@ void InputManager::ClearAll()
 }
 
 // Generates all input and processes commands.
-// Used if Commands are required.
-bool InputManager::GenerateInputAndDispatchCommands(std::vector<Command*>& CommandVector)
+// Use this if you wish to give a custom list of commands to be processed.
+// (for example you wish to force a quit programatically)
+bool InputManager::GenerateInputAndDispatchCommands(std::list<Command*>& CommandVector)
 {
+	// First poll all events reported by SDL.
 	if (!GenerateInput())
+	{
 		return false;
+	}
 	else
 	{
+		// IF no events asked to quit then go ahead and process the input and dispatch commands to the list as needed.
 		DispatchCommands(CommandVector);
 		return true;
 	}
 }
+
+// Automated version of above using internal command list.
 
 bool InputManager::GenerateInputAndDispatchCommands()
 {
@@ -53,7 +62,9 @@ bool InputManager::GenerateInput()
 
 		case SDL_KEYDOWN:			
 			if (event.key.keysym.sym == SDLK_ESCAPE)
+			{
 				return false;
+			}
 
 			OnKeyDownInput(event);
 			break;
@@ -78,34 +89,42 @@ bool InputManager::GenerateInput()
 }
 
 // Add all commands to a list for processing.
-void InputManager::DispatchCommands(std::vector<Command*>& commandVector)
+void InputManager::DispatchCommands(std::list<Command*>& commandVector)
 {
 	for (std::map<int, Command*>::iterator iter = commands.begin(); iter != commands.end(); iter++)
 	{
 		if (iter->second->allowContinuousExecution)
 		{
 			if (IsHeld(iter->first))
+			{
 				commandVector.push_back(iter->second);
+			}
 		}
-		else
-			if (JustPressed(iter->first))
-				commandVector.push_back(iter->second);
+		else if (JustPressed(iter->first))
+		{
+			commandVector.push_back(iter->second);
+		}
 	}
 }
 
 // Loops through all currently qued commands and executes them.
-// Relys on DispatchCommadns to have been run beforehand.
+// Relys on DispatchCommands to have been run beforehand.
 bool InputManager::ProcessCommandList(Player* player)
 {
 	while (!commandList.empty())
 	{
+		// While there are still commands in the list,
+		// process each one, one by one using the FILO principle.
 		if (!commandList.back()->Execute(player))
 		{
 			return false;
 			break;
 		}
+
 		if (commandList.size() > 0)
+		{
 			commandList.pop_back();
+		}
 	}
 
 	return true;
@@ -149,9 +168,13 @@ void InputManager::OnMouseUpInput(SDL_Event& event)
 bool InputManager::IsHeld(int key)
 {
 	if (state[key] == KeyState::pressed)
+	{
 		return true;
+	}
 	else
+	{
 		return false;
+	}
 }
 
 // Checks if the key is currently in a pushed state then triggers a flag to not show it again untill key is let up.
@@ -163,7 +186,9 @@ bool InputManager::JustPressed(int key)
 		return true;
 	}
 	else
+	{
 		return false;
+	}
 }
 
 void InputManager::ClearInput()
@@ -171,10 +196,14 @@ void InputManager::ClearInput()
 	commandList.clear();
 
 	for (std::map<int, KeyState>::iterator iter = state.begin(); iter != state.end(); iter++)
+	{
 		iter->second = KeyState::released;
+	}
 
 	for (std::map<int, bool>::iterator iter = firstPress.begin(); iter != firstPress.end(); iter++)
+	{
 		iter->second = false;
+	}
 }
 
 SDL_Point InputManager::GetMouseLocation()

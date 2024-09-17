@@ -228,14 +228,14 @@ Sound* Sounds::CreateSound(std::string fileLoc, std::string name, bool isChunk)
 	return soundList.back();
 }
 
-Sound* Sounds::CreateChunk(std::string fileLoc, std::string name)
+Chunk* Sounds::CreateChunk(std::string fileLoc, std::string name)
 {
-	return CreateSound(fileLoc, name, true);
+	return (Chunk*)CreateSound(fileLoc, name, true);
 }
 
-Sound* Sounds::CreateMusic(std::string fileLoc, std::string name)
+Music* Sounds::CreateMusic(std::string fileLoc, std::string name)
 {
-	return CreateSound(fileLoc, name, false);
+	return (Music*)CreateSound(fileLoc, name, false);
 }
 
 void Sounds::DeleteSound(std::string name)

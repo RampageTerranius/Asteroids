@@ -75,6 +75,9 @@
     <ClInclude Include="SimpleINI\SimpleINI.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="Command_PlayField.h">
+      <Filter>Game States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameState.h"
 
+// Enum for the currently selected option in the menu.
 enum class MenuOption
 {
 	none,
@@ -10,6 +11,8 @@ enum class MenuOption
 	totalCount // Used to determine the total size of the enum, always have this as the last.
 };
 
+// Game state for when the user is in the main menu.
+// Simply shows a list of options allowign the user to either play/goto options/quit.
 class GameState_MainMenu : public GameState
 {
 public:
@@ -24,8 +27,9 @@ public:
 
 private:
 	TTFs allTTF;
-	MenuOption menuOption;	
+	MenuOption menuOption;// Currently selected menu option.
 
+	// TTF pointers for direct access.
 	TTF* menuOptionOptions;
 	TTF* menuOptionQuit;
 	TTF* menuOptionStart;

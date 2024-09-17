@@ -68,8 +68,8 @@ public:
 	Sounds();
 	void Cleanup();
 	Sound* GetSound(std::string name);
-	Sound* CreateChunk(std::string fileLoc, std::string newName);
-	Sound* CreateMusic(std::string fileLoc, std::string newName);
+	Chunk* CreateChunk(std::string fileLoc, std::string newName);
+	Music* CreateMusic(std::string fileLoc, std::string newName);
 	void DeleteSound(std::string name);
 
 private:

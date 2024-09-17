@@ -152,6 +152,7 @@
     <ClInclude Include="EventHandle.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="Command_PlayField.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Misc Functions.h" />

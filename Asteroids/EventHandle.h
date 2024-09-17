@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <string>
 #include <map>
-#include <vector>
+#include <list>
 
 #include "Textures.h"
 #include "Command.h"
@@ -26,13 +26,13 @@ class InputManager
 public:
 	InputManager();
 	bool GenerateInputAndDispatchCommands();
-	bool GenerateInputAndDispatchCommands(std::vector<Command*>& commandVector);
+	bool GenerateInputAndDispatchCommands(std::list<Command*>& commandVector);
 	bool GenerateInput();
 	bool ProcessCommandList(Player* player);
 	void Bind(int key, Command* command);
 	SDL_Point GetMouseLocation();
 	
-	std::vector<Command*> commandList;
+	std::list<Command*> commandList;// list var type due to FILO operation types.
 	void ClearInput();
 	void ClearAll();
 
@@ -50,7 +50,7 @@ protected:
 
 	SDL_Point mouse;	
 	
-	void DispatchCommands(std::vector<Command*>& commandVector);
+	void DispatchCommands(std::list<Command*>& commandVector);
 
 	void OnKeyDownInput(SDL_Event& event);
 	void OnKeyUpInput(SDL_Event& event);

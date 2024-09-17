@@ -1,11 +1,14 @@
 #pragma once
-
 #include <vector>
+
 #include "EventHandle.h"
 #include "Textures.h"
 #include "TTF.h"
 #include "Audio.h"
 
+// Base game state.
+// Functions must be provided by child classes.
+// GameStates are automatically called upon while at the end of the vector.
 class GameState
 {
 public:

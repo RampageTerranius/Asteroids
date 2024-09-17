@@ -1,6 +1,8 @@
 #pragma once
 #include "GameState.h"
 
+// Game state for the options menu.
+// NOT CURRENTLY IMPLEMENTED.
 class GameState_Options : public GameState
 {
 public:
