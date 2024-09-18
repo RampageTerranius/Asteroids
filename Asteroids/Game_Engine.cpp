@@ -6,8 +6,6 @@
 #include <SDL_ttf.h>
 
 #include <fstream>
-#include <sstream>
-#include <iostream>
 #include <string>
 #include <nlohmann/json.hpp>// nlohmann's JSON libary https://github.com/nlohmann/json
 
@@ -26,7 +24,6 @@ GameEngine::GameEngine()
 void GameEngine::LoadSettings()
 {
 	using json = nlohmann::json;
-	//TODO: attempt to load json file.
 	// Load our json file into memory.
 	std::ifstream ifs(GetEXEPath() + "Settings.json");
 
