@@ -36,17 +36,17 @@ public:
 	int SCREEN_HEIGHT = 768;
 	Uint32 FRAME_RATE = 60;
 
-	float TURN_RATE = 2.0f;
-	float VEL_INC = 0.05f;
-	float MAX_VEL = 5.0f;
+	double TURN_RATE = 2.0;
+	double VEL_INC = 0.05;
+	double MAX_VEL = 5.0;
 	int BULLET_DISTANCE = 90;
-	float BULLET_VELOCITY = 7.5;
+	double BULLET_VELOCITY = 7.5;
 
 	bool AUTO_SPAWN_ASTEROIDS = true;
-	float MAX_ASTEROID_VEL = 2.0f;
+	double MAX_ASTEROID_VEL = 2.0f;
 	int AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = 200;
 	int AUTO_SPAWN_ASTEROIDS_TIMER = 300;
-	float AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = 50;
+	double AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = 50;
 
 	class Controls
 	{

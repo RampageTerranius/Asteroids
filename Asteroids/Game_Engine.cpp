@@ -5,7 +5,12 @@
 #include <SDL_image.h>
 #include <SDL_ttf.h>
 
-#include "SimpleINI/SimpleINI.h"
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <string>
+#include <nlohmann/json.hpp>// nlohmann's JSON libary https://github.com/nlohmann/json
+
 
 #include "Debug.h"
 #include "Misc_Functions.h"
@@ -20,197 +25,117 @@ GameEngine::GameEngine()
 // Loads the settings for the program.
 void GameEngine::LoadSettings()
 {
-	// Prepare our variables for handing the settigns file.
-	CSimpleIniA ini;
-	ini.SetUnicode();
+	using json = nlohmann::json;
+	//TODO: attempt to load json file.
+	// Load our json file into memory.
+	std::ifstream ifs(GetEXEPath() + "Settings.json");
 
-	SI_Error error = ini.LoadFile((GetEXEPath() + "Settings.ini").c_str());
-
-	// In the situation we fail to load the settigns file return to defaults and create a new file.
-	if (error < 0)
+	// In the situation we fail to load the settings file return to defaults and create a new file.
+	if (!ifs.is_open())
 	{
-		ini.SetValue("Video", "ScreenName", SCREEN_NAME.c_str());
-		ini.SetValue("Video", "ScreenWidth", std::to_string(SCREEN_WIDTH).c_str());
-		ini.SetValue("Video", "ScreenHeight", std::to_string(SCREEN_HEIGHT).c_str());
-		ini.SetValue("Video", "FrameRate", std::to_string(FRAME_RATE).c_str());
-		ini.SetBoolValue("Video", "FullScreen", false);
-		ini.SetBoolValue("Video", "vSync", false);
+		json configFile;
 
-		ini.SetDoubleValue("Ship", "TurnRate", TURN_RATE);
-		ini.SetDoubleValue("Ship", "VelocityIncreasePerTick", VEL_INC);
-		ini.SetDoubleValue("Ship", "MaxVelocity", MAX_VEL);
+		// Create video settings.
+		json video;
+		video["ScreenName"] = SCREEN_NAME;
+		video["ScreenWidth"] = SCREEN_WIDTH;
+		video["ScreenHeight"] = SCREEN_HEIGHT;
+		video["FrameRate"] = FRAME_RATE;
+		video["FullScreen"] = false;
+		video["vSync"] = false;
+		
+		// Create ship settings.
+		json ship;
+		ship["TurnRate"] = TURN_RATE;
+		ship["VelocityIncreasePerTick"] = VEL_INC;
+		ship["MaxVelocity"] = MAX_VEL;
 
-		ini.SetValue("Bullet", "BulletDistance", std::to_string(BULLET_DISTANCE).c_str());
-		ini.SetDoubleValue("Bullet", "BulletVolocity", BULLET_VELOCITY);
+		// Create bullet settings.
+		json bullet;
+		bullet["BulletDistance"] = BULLET_DISTANCE;
+		bullet["BulletVelocity"] = BULLET_VELOCITY;
 
-		ini.SetBoolValue("Asteroid", "AutoSpawnAsteroids", true);
-		ini.SetDoubleValue("Asteroid", "MaxAsteroidVelocity", MAX_ASTEROID_VEL);
-		ini.SetValue("Asteroid", "AutoSpawnAsteroidsTotalSizeMax", std::to_string(AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX).c_str());
-		ini.SetValue("Asteroid", "AutoSpawnAsteroidsTimer", std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER).c_str());
-		ini.SetDoubleValue("Asteroid", "AutoSpawnAsteroidsDistanceFromPlayer", AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER);
+		// Create asteroid settings.
+		json asteroid;
+		asteroid["AutoSpawnAsteroids"] = true;
+		asteroid["MaxAsteroidVelocity"] = MAX_ASTEROID_VEL;
+		asteroid["AutoSpawnAsteroidsTotalSizeMax"] = AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX;
+		asteroid["AutoSpawnAsteroidsTimer"] = AUTO_SPAWN_ASTEROIDS_TIMER;
+		asteroid["AutoSpawnAsteroidsDistanceFromPlayer"] = AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER;
 
-		ini.SetValue("Controls", "Fire", std::to_string(SDLK_SPACE).c_str());
-		ini.SetValue("Controls", "Forwards", std::to_string(SDLK_w).c_str());
-		ini.SetValue("Controls", "Backwards", std::to_string(SDLK_s).c_str());
-		ini.SetValue("Controls", "RotateLeft", std::to_string(SDLK_a).c_str());
-		ini.SetValue("Controls", "RotateRight", std::to_string(SDLK_d).c_str());
-		ini.SetValue("Controls", "Boost", std::to_string(SDLK_LSHIFT).c_str());
-		ini.SetValue("Controls", "Equalize", std::to_string(SDLK_c).c_str());
-		ini.SetValue("Controls", "CreateAsteroid", std::to_string(SDLK_f).c_str());
+		// Create control settings.
+		json controls;
+		controls["Fire"] = SDLK_SPACE;
+		controls["Forwards"] = SDLK_w;
+		controls["Backwards"] = SDLK_s;
+		controls["RotateLeft"] = SDLK_a;
+		controls["RotateRight"] = SDLK_d;
+		controls["Boost"] = SDLK_LSHIFT;
+		controls["Equalize"] = SDLK_c;
+		controls["CreateAsteroid"] = SDLK_f;
 
-		ini.SaveFile((GetEXEPath() + "Settings.ini").c_str());
+		// Assign each section of our json file to the config object.
+		configFile["Controls"] = controls;
+		configFile["Asteroid"] = asteroid;
+		configFile["Bullet"] = bullet;
+		configFile["Ship"] = ship;
+		configFile["Video"] = video;
+
+		// Save our json file as a new settings.json.
+		std::ofstream ofs(GetEXEPath() + "Settings.json");
+		ofs << configFile.dump(4);
+		ofs.close();
 	}
 	else
 	{
-		// Otherwise, a settigns file exists and we will laod it.
+		// Otherwise, a settings file exists and we will process it.
 
-		// Load each variable.
-		// Video.
-		SCREEN_NAME = ini.GetValue("Video", "ScreenName", SCREEN_NAME.c_str());
+		// Parse our file into our json variable and close the file.
+		json settingData = json::parse(ifs);
+		ifs.close();
 
-		try
-		{
-			SCREEN_WIDTH = std::stoi(ini.GetValue("Video", "ScreenWidth", std::to_string(SCREEN_WIDTH).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value ScreenWidth, defaulting to " + std::to_string(SCREEN_WIDTH));
-		}
+		// Start parsing the data.
 
 		try
 		{
-			SCREEN_HEIGHT = std::stoi(ini.GetValue("Video", "ScreenHeight", std::to_string(SCREEN_HEIGHT).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value ScreenHeight, defaulting to " + std::to_string(SCREEN_HEIGHT));
-		}
+			// Video.
+			SCREEN_NAME = settingData["Video"]["ScreenName"];
+			SCREEN_WIDTH = settingData["Video"]["ScreenWidth"];
+			SCREEN_HEIGHT = settingData["Video"]["ScreenHeight"];
+			FRAME_RATE = settingData["Video"]["FrameRate"];
+			FULLSCREEN = settingData["Video"]["FullScreen"];
+			VSYNC = settingData["Video"]["vSync"];
 
-		try
-		{
-			FRAME_RATE = std::stoi(ini.GetValue("Video", "FrameRate", std::to_string(FRAME_RATE).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value FrameRate, defaulting to " + std::to_string(FRAME_RATE));
-		}
+			// Player.
+			TURN_RATE = settingData["Ship"]["TurnRate"];
+			VEL_INC = settingData["Ship"]["VelocityIncreasePerTick"];
+			MAX_VEL = settingData["Ship"]["MaxVelocity"];
 
-		FULLSCREEN = ini.GetBoolValue("Video", "FullScreen", false);
-		VSYNC = ini.GetBoolValue("Video", "vSync", false);
+			// Bullets.
+			BULLET_DISTANCE = settingData["Bullet"]["BulletDistance"];
+			BULLET_VELOCITY = settingData["Bullet"]["BulletVelocity"];
 
-		// Player.
-		TURN_RATE = static_cast <float> (ini.GetDoubleValue("Ship", "TurnRate", TURN_RATE));
-		VEL_INC = static_cast <float> (ini.GetDoubleValue("Ship", "VelocityIncreasePerTick", VEL_INC));
-		MAX_VEL = static_cast <float> (ini.GetDoubleValue("Ship", "MaxVelocity", MAX_VEL));
+			// Asteroids.
+			AUTO_SPAWN_ASTEROIDS = settingData["Asteroid"]["AutoSpawnAsteroids"];
+			MAX_ASTEROID_VEL = settingData["Asteroid"]["MaxAsteroidVelocity"];
+			AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = settingData["Asteroid"]["AutoSpawnAsteroidsTotalSizeMax"];
+			AUTO_SPAWN_ASTEROIDS_TIMER = settingData["Asteroid"]["AutoSpawnAsteroidsTimer"];
+			AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = settingData["Asteroid"]["AutoSpawnAsteroidsDistanceFromPlayer"];
 
-		// Bullets.
-		try
-		{
-			BULLET_DISTANCE = std::stoi(ini.GetValue("Bullet", "BulletDistance", std::to_string(BULLET_DISTANCE).c_str()));
+			// Controls.
+			controls.fire = settingData["Controls"]["Fire"];
+			controls.forwards = settingData["Controls"]["Forwards"];
+			controls.backwards = settingData["Controls"]["Backwards"];
+			controls.rotateLeft = settingData["Controls"]["RotateLeft"];
+			controls.rotateRight = settingData["Controls"]["RotateRight"];
+			controls.boost = settingData["Controls"]["Boost"];
+			controls.equalize = settingData["Controls"]["Equalize"];
+			controls.createAsteroid = settingData["Controls"]["CreateAsteroid"];
 		}
-		catch (const std::exception&)
+		catch (json::exception& e)
 		{
-			debug.Log("GameEngine", "Init", "Failed to convert value BulletDistance, defaulting to " + std::to_string(BULLET_DISTANCE));
-		}
-
-		BULLET_VELOCITY = static_cast <float> (ini.GetDoubleValue("Bullet", "BulletVolocity", BULLET_VELOCITY));
-
-		// Asteroids.
-		AUTO_SPAWN_ASTEROIDS = ini.GetBoolValue("Asteroid", "AutoSpawnAsteroids", true);
-
-		MAX_ASTEROID_VEL = static_cast <float> (ini.GetDoubleValue("Asteroid", "MaxAsteroidVelocity", MAX_ASTEROID_VEL));
-
-		try
-		{
-			AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX = std::stoi(ini.GetValue("Asteroid", "AutoSpawnAsteroidsTotalSizeMax", std::to_string(AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value AutoSpawnAsteroidsTotalSizeMax, defaulting to " + std::to_string(AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX));
-		}
-
-		try
-		{
-			AUTO_SPAWN_ASTEROIDS_TIMER = std::stoi(ini.GetValue("Asteroid", "AutoSpawnAsteroidsTimer", std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value AutoSpawnAsteroidsTimer, defaulting to " + std::to_string(AUTO_SPAWN_ASTEROIDS_TIMER));
-		}
-
-		AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER = static_cast <float> (ini.GetDoubleValue("Asteroid", "AutoSpawnAsteroidsDistanceFromPlayer", AUTO_SPAWN_ASTEROIDS_DISTANCE_FROM_PLAYER));
-
-		// Controls.		
-		try
-		{
-			controls.fire = std::stoi(ini.GetValue("Controls", "Fire", std::to_string(SDLK_SPACE).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value Fire, defaulting to " + std::to_string(SDLK_SPACE));
-		}
-
-		try
-		{
-			controls.forwards = std::stoi(ini.GetValue("Controls", "Forwards", std::to_string(SDLK_w).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value Forwards, defaulting to " + std::to_string(SDLK_w));
-		}
-
-		try
-		{
-			controls.backwards = std::stoi(ini.GetValue("Controls", "Backwards", std::to_string(SDLK_s).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value Backwards, defaulting to " + std::to_string(SDLK_s));
-		}
-
-		try
-		{
-			controls.rotateLeft = std::stoi(ini.GetValue("Controls", "RotateLeft", std::to_string(SDLK_a).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value RotateLeft, defaulting to " + std::to_string(SDLK_a));
-		}
-
-		try
-		{
-			controls.rotateRight = std::stoi(ini.GetValue("Controls", "RotateRight", std::to_string(SDLK_d).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value RotateRight, defaulting to " + std::to_string(SDLK_d));
-		}
-
-		try
-		{
-			controls.boost = std::stoi(ini.GetValue("Controls", "Boost", std::to_string(SDLK_LSHIFT).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value Boost, defaulting to " + std::to_string(SDLK_LSHIFT));
-		}
-
-		try
-		{
-			controls.equalize = std::stoi(ini.GetValue("Controls", "Equalize", std::to_string(SDLK_c).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value Equalize, defaulting to " + std::to_string(SDLK_c));
-		}
-
-		try
-		{
-			controls.createAsteroid = std::stoi(ini.GetValue("Controls", "CreateAsteroid", std::to_string(SDLK_f).c_str()));
-		}
-		catch (const std::exception&)
-		{
-			debug.Log("GameEngine", "Init", "Failed to convert value CreateAsteroid, defaulting to " + std::to_string(SDLK_f));
+			std::string str = e.what();
+			debug.Log("GameEngine", "LoadSettings", "Error loading settings file: " + str);
 		}
 	}
 }
