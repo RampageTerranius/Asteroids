@@ -34,13 +34,13 @@ public:
 	std::string SCREEN_NAME = "Asteroids";
 	int SCREEN_WIDTH = 1024;
 	int SCREEN_HEIGHT = 768;
-	float BULLET_VELOCITY = 7.5;
 	Uint32 FRAME_RATE = 60;
 
 	float TURN_RATE = 2.0f;
 	float VEL_INC = 0.05f;
 	float MAX_VEL = 5.0f;
 	int BULLET_DISTANCE = 90;
+	float BULLET_VELOCITY = 7.5;
 
 	bool AUTO_SPAWN_ASTEROIDS = true;
 	float MAX_ASTEROID_VEL = 2.0f;

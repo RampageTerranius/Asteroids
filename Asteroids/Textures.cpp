@@ -2,6 +2,8 @@
 
 #include <SDL_image.h>
 
+#include <cmath>
+
 #include "GameEngine.h"
 #include "Debug.h"
 
@@ -150,10 +152,10 @@ bool Texture::Draw(SDL_Renderer* renderer, float rotation, int x, int y)
 		}
 
 		// TODO: rework this, surely we dont need to calculate this each time we draw? we should calculate this WHEN we choose to change scale.
-		if (scale != 1.0)
+		if (scale != 1.0f)
 		{
-			tempRect.w *= scale;
-			tempRect.h *= scale;
+			tempRect.w = static_cast<int>(std::round(tempRect.w * scale));
+			tempRect.h = static_cast<int>(std::round(tempRect.h * scale));;
 		}
 
 		// Render the texture to the given renderer.

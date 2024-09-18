@@ -224,7 +224,7 @@ void GameState_PlayField::CheckForNewAsteroids()
 	}
 
 
-	int totalAsteroids = allAsteroids.allAsteroids.size();
+	int totalAsteroids = static_cast<int>(allAsteroids.allAsteroids.size());
 
 	// Check if we are below the total size limit of asteroids and if so count down a timer to spawn a new one.
 	if (totalAsteroids < game.AUTO_SPAWNED_ASTEROID_TOTAL_SIZE_MAX)
