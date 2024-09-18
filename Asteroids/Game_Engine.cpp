@@ -1,4 +1,4 @@
-#include "GameEngine.h"
+#include "Game_Engine.h"
 
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -8,7 +8,7 @@
 #include "SimpleINI/SimpleINI.h"
 
 #include "Debug.h"
-#include "Misc Functions.h"
+#include "Misc_Functions.h"
 #include "MainMenu.h"
 #include "PlayField.h"
 

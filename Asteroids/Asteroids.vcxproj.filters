@@ -18,7 +18,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameEngine.h">
+    <ClInclude Include="Game_Engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
@@ -30,7 +30,7 @@
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EventHandle.h">
+    <ClInclude Include="Event_Handle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Textures.h">
@@ -39,7 +39,7 @@
     <ClInclude Include="TTF.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Misc Functions.h">
+    <ClInclude Include="Misc_Functions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
@@ -83,7 +83,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngine.cpp">
+    <ClCompile Include="Game_Engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
@@ -92,7 +92,7 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EventHandle.cpp">
+    <ClCompile Include="Event_Handle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
@@ -107,7 +107,7 @@
     <ClCompile Include="TTF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Misc Functions.cpp">
+    <ClCompile Include="Misc_Functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">

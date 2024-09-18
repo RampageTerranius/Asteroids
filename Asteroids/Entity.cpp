@@ -1,9 +1,9 @@
 #include "Entity.h"
 
-#include "GameEngine.h"
+#include "Game_Engine.h"
 #include "Debug.h"
 #include "Random.h"
-#include "Misc Functions.h"
+#include "Misc_Functions.h"
 #include "Vector2D.h"
 
 Bullets allBullets = Bullets();

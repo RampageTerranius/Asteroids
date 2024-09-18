@@ -1,8 +1,8 @@
 #include "MainMenu.h"
 
-#include "GameEngine.h"
+#include "Game_Engine.h"
 #include "PlayField.h"
-#include "Misc Functions.h"
+#include "Misc_Functions.h"
 
 // Constructor.
 GameState_MainMenu::GameState_MainMenu()

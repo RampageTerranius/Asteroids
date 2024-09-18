@@ -2,9 +2,9 @@
 
 #include <SDL.h>
 
-#include "GameEngine.h"
+#include "Game_Engine.h"
 #include "Debug.h"
-#include "Misc Functions.h"
+#include "Misc_Functions.h"
 
 // Constructor.
 GameState_PlayField::GameState_PlayField()

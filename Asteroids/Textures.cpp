@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "GameEngine.h"
+#include "Game_Engine.h"
 #include "Debug.h"
 
 // Constructor.
